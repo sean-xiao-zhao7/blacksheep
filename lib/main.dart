@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Sheepfold',
       theme: ThemeData(useMaterial3: true),
       home: Scaffold(
-        appBar: AppBar(title: const Text('Welcome to Flutter')),
+        appBar: AppBar(title: const Text('Welcome to Sheepfold')),
         body: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(12),
@@ -22,13 +22,13 @@ class MyApp extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: const [
               Text(
-                'Flutter - The Complete Guide',
+                'Connecting mentors with mentees.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               Text(
-                'Learn Flutter step-by-step, from the ground up.',
+                'Find a mentor in your area! Or become a mentor yourself.',
                 textAlign: TextAlign.center,
               ),
             ],
