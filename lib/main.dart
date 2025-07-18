@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sheepfold/widgets/genty_header.dart';
 
 void main() {
   runApp(SheepfoldApp());
@@ -20,16 +21,7 @@ class SheepfoldApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: const Center(
-            child: Text(
-              'Sheepfold',
-              style: TextStyle(
-                fontFamily: 'Genty',
-                color: Colors.white,
-                fontSize: 82,
-              ),
-            ),
-          ),
+          child: GentyHeader(),
         ),
       ),
     );

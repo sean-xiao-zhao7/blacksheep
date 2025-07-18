@@ -1,3 +1,3 @@
 # Sheepfold
 
-An app for connecting students with mentors.
+An app for connecting mentees with mentors.
