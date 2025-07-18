@@ -14,6 +14,7 @@ class SheepfoldApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
+          padding: EdgeInsets.only(top: 150, bottom: 150),
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
@@ -23,10 +24,12 @@ class SheepfoldApp extends StatelessWidget {
             ),
           ),
           child: Column(
+            spacing: 20,
             children: [
               GentyHeader('Sheepfold'),
-              MainButton('Sign Up as Mentee'),
-              MainButton('Sign Up as Mentor'),
+              Spacer(),
+              MainButton('Sign Up as Mentee', () {}),
+              MainButton('Sign Up as Mentor', () {}),
             ],
           ),
         ),

@@ -12,7 +12,7 @@ class GentyHeader extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'Genty',
           color: Colors.white,
-          fontSize: 82,
+          fontSize: 92,
         ),
       ),
     );
