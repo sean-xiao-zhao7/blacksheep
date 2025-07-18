@@ -21,7 +21,14 @@ class SheepfoldApp extends StatelessWidget {
             ),
           ),
           child: const Center(
-            child: Text('Sheepfold', style: TextStyle(fontFamily: 'Genty')),
+            child: Text(
+              'Sheepfold',
+              style: TextStyle(
+                fontFamily: 'Genty',
+                color: Colors.white,
+                fontSize: 82,
+              ),
+            ),
           ),
         ),
       ),
