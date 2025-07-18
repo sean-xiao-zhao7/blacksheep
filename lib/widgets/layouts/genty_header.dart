@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class GentyHeader extends StatelessWidget {
-  const GentyHeader({super.key});
+  const GentyHeader(this.text, {super.key});
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        'Sheepfold',
+        text,
         style: TextStyle(
           fontFamily: 'Genty',
           color: Colors.white,

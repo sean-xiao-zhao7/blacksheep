@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sheepfold/widgets/genty_header.dart';
+import 'package:sheepfold/widgets/buttons/main_button.dart';
+import 'package:sheepfold/widgets/layouts/genty_header.dart';
 
 void main() {
   runApp(SheepfoldApp());
@@ -21,7 +22,13 @@ class SheepfoldApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: GentyHeader(),
+          child: Column(
+            children: [
+              GentyHeader('Sheepfold'),
+              MainButton('Sign Up as Mentee'),
+              MainButton('Sign Up as Mentor'),
+            ],
+          ),
         ),
       ),
     );
