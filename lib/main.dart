@@ -20,7 +20,9 @@ class SheepfoldApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: const Center(child: Text('Sheepfold')),
+          child: const Center(
+            child: Text('Sheepfold', style: TextStyle(fontFamily: 'Genty')),
+          ),
         ),
       ),
     );
