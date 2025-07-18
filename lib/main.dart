@@ -13,10 +13,11 @@ class SheepfoldApp extends StatelessWidget {
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.white, Color(0xA7DDCF00)],
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/images/main/sheepfold_background_full.png",
+              ),
+              fit: BoxFit.cover,
             ),
           ),
           child: const Center(child: Text('Sheepfold')),
