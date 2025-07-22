@@ -3,11 +3,11 @@ import 'package:sheepfold/widgets/buttons/main_button.dart';
 import 'package:sheepfold/widgets/layouts/genty_header.dart';
 
 void main() {
-  runApp(SheepfoldApp());
+  runApp(BlackSheepApp());
 }
 
-class SheepfoldApp extends StatelessWidget {
-  const SheepfoldApp([Key? key]) : super(key: key);
+class BlackSheepApp extends StatelessWidget {
+  const BlackSheepApp([Key? key]) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class SheepfoldApp extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                "assets/images/main/sheepfold_background_full.png",
+                "assets/images/main/blacksheep_background_full.png",
               ),
               fit: BoxFit.cover,
             ),
@@ -26,7 +26,7 @@ class SheepfoldApp extends StatelessWidget {
           child: Column(
             spacing: 20,
             children: [
-              GentyHeader('Sheepfold'),
+              GentyHeader('BlackSheep'),
               Spacer(),
               MainButton('Looking for connection?', () {}),
               MainButton('Mentor someone', () {}),

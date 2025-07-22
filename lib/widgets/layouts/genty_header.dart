@@ -12,7 +12,7 @@ class GentyHeader extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'Genty',
           color: Colors.white,
-          fontSize: 92,
+          fontSize: 82,
           shadows: [
             Shadow(
               blurRadius: 10.0, // shadow blur

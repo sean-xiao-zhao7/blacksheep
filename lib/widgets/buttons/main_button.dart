@@ -8,9 +8,9 @@ class MainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black,
       ),
       onPressed: () {
         handler();
