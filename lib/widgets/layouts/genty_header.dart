@@ -13,6 +13,13 @@ class GentyHeader extends StatelessWidget {
           fontFamily: 'Genty',
           color: Colors.white,
           fontSize: 92,
+          shadows: [
+            Shadow(
+              blurRadius: 10.0, // shadow blur
+              color: Colors.black, // shadow color
+              offset: Offset(2.0, 2.0), // how much shadow will be shown
+            ),
+          ],
         ),
       ),
     );

@@ -10,6 +10,7 @@ class MainButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        shadowColor: MaterialStateProperty.all<Color>(Colors.black),
       ),
       onPressed: () {
         handler();
