@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:sheepfold/widgets/buttons/main_button.dart';
-import 'package:sheepfold/widgets/layouts/genty_header.dart';
+import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen(this.switchScreen, {super.key});
@@ -21,9 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: EdgeInsets.only(top: 150, bottom: 120),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(
-            "assets/images/main/blacksheep_background_full.png",
-          ),
+          image: AssetImage("assets/images/blacksheep_background_full.png"),
           fit: BoxFit.cover,
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:sheepfold/widgets/buttons/main_button.dart';
-import 'package:sheepfold/widgets/layouts/genty_header.dart';
+import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreenInitial extends StatefulWidget {
   const RegisterScreenInitial(this.switchScreen, {super.key});
@@ -18,24 +18,36 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 150, bottom: 120),
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/images/main/blacksheep_background_full.png",
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
+      padding: EdgeInsets.only(top: 150),
+      decoration: BoxDecoration(color: Color(0xff32a2c0)),
       child: Column(
-        spacing: 20,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          GentyHeader('REGISTRATION PAGE'),
-          Spacer(),
-          Text('I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY'),
-          MainButton('CLICK HERE', () {}),
-          Text('I AM THE LEADER OF A COMMUNITY GROUP'),
-          MainButton('CLICK HERE', () {}),
+          NowHeader('REGISTRATION PAGE'),
+          Container(
+            margin: EdgeInsets.only(top: 50),
+            decoration: ShapeDecoration(
+              shape: CircleBorder(side: BorderSide(color: Color(0xfffbee5e))),
+            ),
+            child: Image(image: AssetImage('assets/images/sheep.png')),
+          ),
+          Container(
+            height: 500,
+            padding: EdgeInsets.only(top: 30, left: 50, right: 50),
+            decoration: BoxDecoration(color: Color(0xfffbee5e)),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text('I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY'),
+                SizedBox(height: 20),
+                MainButton('CLICK HERE', () {}),
+                SizedBox(height: 50),
+                Text('I AM THE LEADER OF A COMMUNITY GROUP'),
+                SizedBox(height: 20),
+                MainButton('CLICK HERE', () {}),
+              ],
+            ),
+          ),
         ],
       ),
     );
