@@ -1,0 +1,32 @@
+import 'package:flutter/widgets.dart';
+
+import 'package:sheepfold/widgets/buttons/main_button.dart';
+import 'package:sheepfold/widgets/layouts/genty_header.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 150, bottom: 120),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            "assets/images/main/blacksheep_background_full.png",
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        spacing: 20,
+        children: [
+          GentyHeader('BlackSheep'),
+          Spacer(),
+          MainButton('REGISTER', () {}),
+          MainButton('LOGIN', () {}),
+        ],
+      ),
+    );
+  }
+}
