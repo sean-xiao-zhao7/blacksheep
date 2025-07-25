@@ -3,9 +3,16 @@ import 'package:flutter/widgets.dart';
 import 'package:sheepfold/widgets/buttons/main_button.dart';
 import 'package:sheepfold/widgets/layouts/genty_header.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
