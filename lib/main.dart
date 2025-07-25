@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // screens
-import 'package:sheepfold/screens/home_screen.dart';
+import 'package:sheepfold/blacksheep_super_widget.dart';
 
 void main() {
   runApp(BlackSheepApp());
@@ -12,6 +12,6 @@ class BlackSheepApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const Scaffold(body: HomeScreen()));
+    return MaterialApp(home: const Scaffold(body: BlacksheepSuperWidget()));
   }
 }
