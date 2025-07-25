@@ -28,8 +28,8 @@ class BlackSheepApp extends StatelessWidget {
             children: [
               GentyHeader('BlackSheep'),
               Spacer(),
-              MainButton('Looking for connection?', () {}),
-              MainButton('Mentor someone', () {}),
+              MainButton('REGISTER', () {}),
+              MainButton('LOGIN', () {}),
             ],
           ),
         ),

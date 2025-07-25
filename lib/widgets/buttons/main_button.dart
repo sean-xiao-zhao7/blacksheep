@@ -9,10 +9,11 @@ class MainButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.amberAccent,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
+        fixedSize: Size.fromWidth(300),
       ),
       onPressed: () {
         handler();
