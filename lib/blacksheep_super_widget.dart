@@ -14,8 +14,39 @@ class BlacksheepSuperWidget extends StatefulWidget {
 }
 
 class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
+  var currentGroup = 'home';
+  var currentScreen = 'home_screen';
+
+  void switchScreen(newGroup, newScreen) {
+    if (newGroup != null && newScreen != null) {
+      setState(() {
+        currentGroup = newGroup;
+        currentScreen = newScreen;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return HomeScreen();
+    Widget screen;
+    switch (currentGroup) {
+      case 'home':
+        switch (currentScreen) {
+          case 'home_screen':
+            screen = HomeScreen(switchScreen);
+          default:
+            screen = HomeScreen(switchScreen);
+        }
+      case 'register':
+        switch (currentScreen) {
+          case 'register_screen_initial':
+            screen = RegisterScreenInitial(switchScreen);
+          default:
+            screen = RegisterScreenInitial(switchScreen);
+        }
+      default:
+        screen = HomeScreen(switchScreen);
+    }
+    return screen;
   }
 }

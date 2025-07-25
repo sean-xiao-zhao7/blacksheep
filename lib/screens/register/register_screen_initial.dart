@@ -4,7 +4,9 @@ import 'package:sheepfold/widgets/buttons/main_button.dart';
 import 'package:sheepfold/widgets/layouts/genty_header.dart';
 
 class RegisterScreenInitial extends StatefulWidget {
-  const RegisterScreenInitial({super.key});
+  const RegisterScreenInitial(this.switchScreen, {super.key});
+
+  final Function switchScreen;
 
   @override
   State<StatefulWidget> createState() {

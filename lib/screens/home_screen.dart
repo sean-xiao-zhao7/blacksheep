@@ -4,7 +4,9 @@ import 'package:sheepfold/widgets/buttons/main_button.dart';
 import 'package:sheepfold/widgets/layouts/genty_header.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen(this.switchScreen, {super.key});
+
+  final Function switchScreen;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           GentyHeader('BlackSheep'),
           Spacer(),
-          MainButton('REGISTER', () {}),
+          MainButton('REGISTER', () {
+            widget.switchScreen('register', 'register_screen_initial');
+          }),
           MainButton('LOGIN', () {}),
         ],
       ),
