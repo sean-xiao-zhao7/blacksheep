@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
-class RegisterScreenInitial extends StatefulWidget {
-  const RegisterScreenInitial(this.switchScreen, {super.key});
+class RegisterScreen2 extends StatefulWidget {
+  const RegisterScreen2(this.switchScreen, {super.key});
 
   final Function switchScreen;
 
@@ -15,7 +15,7 @@ class RegisterScreenInitial extends StatefulWidget {
   }
 }
 
-class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
+class _RegisterScreenInitialState extends State<RegisterScreen2> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          NowHeader('REGISTRATION'),
+          NowHeader('SIGN UP TODAY!'),
           Stack(
             children: [
               Container(height: 766),
@@ -38,32 +38,28 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Text(
-                        'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'First name',
                         ),
-                        textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20),
-                      SmallButton('CLICK HERE', () {
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Last name',
+                        ),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(labelText: 'Email'),
+                      ),
+                      SmallButton('SUBMIT', () {
                         widget.switchScreen('register', 'register_screen_2');
                       }, 0xff32a2c0),
-                      SizedBox(height: 50),
-                      Text(
-                        'I AM THE LEADER OF A COMMUNITY GROUP',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      SmallButton('CLICK HERE', () {}, 0xff062d69),
-                      SizedBox(height: 20),
+
                       SmallButton('BACK', () {
-                        widget.switchScreen('home', 'home_screen');
+                        widget.switchScreen(
+                          'register',
+                          'register_screen_initial',
+                        );
                       }, 0xffffff),
                     ],
                   ),
