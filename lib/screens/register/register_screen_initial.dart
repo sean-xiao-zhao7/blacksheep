@@ -19,66 +19,53 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 120),
+      padding: EdgeInsets.only(top: 100),
       decoration: BoxDecoration(color: Color(0xff32a2c0)),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
+      child: Stack(
         children: [
-          NowHeader('REGISTRATION'),
-          Stack(
-            children: [
-              Container(height: MediaQuery.of(context).size.height - 171),
-              Positioned(
-                top: 120,
-                bottom: 0,
-                width: 430,
-                child: Container(
-                  padding: EdgeInsets.only(top: 100, left: 50, right: 50),
-                  decoration: BoxDecoration(color: Color(0xfffbee5e)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      SmallButton('CLICK HERE', () {
-                        widget.switchScreen('register', 'register_screen_2');
-                      }, 0xff32a2c0),
-                      SizedBox(height: 50),
-                      Text(
-                        'I AM THE LEADER OF A COMMUNITY GROUP',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      SmallButton('CLICK HERE', () {}, 0xff062d69),
-                      SizedBox(height: 20),
-                      SmallButton('BACK', () {
-                        widget.switchScreen('home', 'home_screen');
-                      }, 0xffffff),
-                    ],
-                  ),
+          Container(
+            margin: EdgeInsets.only(top: 150),
+            padding: EdgeInsets.only(
+              top: 100,
+              left: 50,
+              right: 50,
+              bottom: 200,
+            ),
+            decoration: BoxDecoration(color: Color(0xfffbee5e)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              Positioned(
-                top: 0,
-                left: 100,
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  margin: EdgeInsets.only(top: 10),
-                  child: Image(image: AssetImage('assets/images/sheep.png')),
+                SmallButton('CLICK HERE', () {
+                  widget.switchScreen('register', 'register_screen_2');
+                }, 0xff32a2c0),
+                Text(
+                  'I AM THE LEADER OF A COMMUNITY GROUP',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+
+                SmallButton('CLICK HERE', () {}, 0xff062d69),
+
+                SmallButton('BACK', () {
+                  widget.switchScreen('home', 'home_screen');
+                }, 0xffffff),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            width: MediaQuery.of(context).size.width,
+            child: NowHeader('REGISTRATION'),
+          ),
+          Positioned(
+            top: -50,
+            width: MediaQuery.of(context).size.width,
+            child: Image(image: AssetImage('assets/images/sheep.png')),
           ),
         ],
       ),
