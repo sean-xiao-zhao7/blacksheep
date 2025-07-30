@@ -27,7 +27,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
           NowHeader('REGISTRATION'),
           Stack(
             children: [
-              Container(height: 766),
+              Container(height: MediaQuery.of(context).size.height - 171),
               Positioned(
                 top: 120,
                 bottom: 0,
