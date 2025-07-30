@@ -37,7 +37,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
               children: [
                 Text(
                   'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 SmallButton('CLICK HERE', () {
@@ -45,12 +48,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                 }, 0xff32a2c0),
                 Text(
                   'I AM THE LEADER OF A COMMUNITY GROUP',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-
                 SmallButton('CLICK HERE', () {}, 0xff062d69),
-
                 SmallButton('BACK', () {
                   widget.switchScreen('home', 'home_screen');
                 }, 0xffffff),
@@ -60,12 +64,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
           Positioned(
             top: 0,
             width: MediaQuery.of(context).size.width,
-            child: NowHeader('REGISTRATION'),
+            child: const NowHeader('REGISTRATION'),
           ),
           Positioned(
             top: -50,
             width: MediaQuery.of(context).size.width,
-            child: Image(image: AssetImage('assets/images/sheep.png')),
+            child: const Image(image: AssetImage('assets/images/sheep.png')),
           ),
         ],
       ),

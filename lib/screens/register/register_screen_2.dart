@@ -56,12 +56,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
           Positioned(
             top: 0,
             width: MediaQuery.of(context).size.width,
-            child: NowHeader('SIGN UP TODAY!'),
+            child: const NowHeader('SIGN UP TODAY!'),
           ),
           Positioned(
             top: -50,
             width: MediaQuery.of(context).size.width,
-            child: Image(image: AssetImage('assets/images/sheep.png')),
+            child: const Image(image: AssetImage('assets/images/sheep.png')),
           ),
         ],
       ),
