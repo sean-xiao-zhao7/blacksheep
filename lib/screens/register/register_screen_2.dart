@@ -30,7 +30,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
               right: 50,
               bottom: 200,
             ),
-            decoration: BoxDecoration(color: Color(0xfffbee5e)),
+            decoration: BoxDecoration(
+              color: Color(0xfffbee5e),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(200),
+                topRight: Radius.circular(200),
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
