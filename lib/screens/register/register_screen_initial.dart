@@ -45,7 +45,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -56,7 +56,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   'I AM THE LEADER OF A COMMUNITY GROUP',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
                 ),

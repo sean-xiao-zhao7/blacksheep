@@ -41,15 +41,36 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'First name'),
+                  decoration: const InputDecoration(
+                    labelText: 'FIRST NAME',
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Last name'),
+                  decoration: const InputDecoration(
+                    labelText: 'LAST NAME',
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(
+                    labelText: 'EMAIL',
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
                 ),
-                SmallButton('SUBMIT', () {
+                SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_2');
                 }, 0xff32a2c0),
 
