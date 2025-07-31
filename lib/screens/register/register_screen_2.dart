@@ -15,6 +15,18 @@ class RegisterScreen2 extends StatefulWidget {
 }
 
 class _RegisterScreenInitialState extends State<RegisterScreen2> {
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,6 +61,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
+                  controller: _firstNameController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -59,6 +72,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
+                  controller: _lastNameController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -69,6 +83,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
+                  controller: _emailNameController,
                 ),
                 SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_2');
