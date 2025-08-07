@@ -64,6 +64,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                   controller: _experienceController,
                   style: TextStyle(height: 2),
                   cursorHeight: 20,
+                  maxLength: 2000,                  
                 ),               
                 Text(
                   'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',

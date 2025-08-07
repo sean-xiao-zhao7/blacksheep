@@ -95,7 +95,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'The information is disposed of in a secure manner given its highly sensitive nature, once it is no longer required for the purpose (e.g. deleting messages or contact information from your device) or respecting someone’s preference to not be contacted any further.',
+                          '3. The information is disposed of in a secure manner given its highly sensitive nature, once it is no longer required for the purpose (e.g. deleting messages or contact information from your device) or respecting someone’s preference to not be contacted any further.',
                         ),
                         SizedBox(height: 20),
                         Text(

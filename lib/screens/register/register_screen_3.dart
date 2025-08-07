@@ -93,7 +93,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                   ),
                   controller: _password2Controller,
                 ),
-                SmallButton('NEXT', () {
+                SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_4');
                 }, 0xff32a2c0),
                 SmallButton('BACK', () {
