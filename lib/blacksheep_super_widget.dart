@@ -2,12 +2,14 @@ import 'package:flutter/widgets.dart';
 
 // screens
 import 'package:sheepfold/screens/home_screen.dart';
-import 'package:sheepfold/screens/register/register_screen_3.dart';
-import 'package:sheepfold/screens/register/register_screen_4.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/screens/register/register_screen_2.dart';
+import 'package:sheepfold/screens/register/register_screen_3.dart';
+import 'package:sheepfold/screens/register/register_screen_4.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_2.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
+import 'package:sheepfold/screens/register/register_screen_mentor_4.dart';
+import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
 
 class BlacksheepSuperWidget extends StatefulWidget {
   const BlacksheepSuperWidget({super.key});
@@ -57,7 +59,9 @@ class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
           case 'register_screen_mentor_3':
             screen = RegisterScreenMentor3(switchScreen);
           case 'register_screen_mentor_4':
-            screen = RegisterScreen4(switchScreen);
+            screen = RegisterScreenMentor4(switchScreen);
+          case 'register_screen_mentor_5':
+            screen = RegisterScreenMentor5(switchScreen);
           default:
             screen = RegisterScreenInitial(switchScreen);
         }

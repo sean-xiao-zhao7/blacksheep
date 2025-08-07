@@ -97,7 +97,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                   cursorHeight: 20,
                 ),
                 SmallButton('CONTINUE', () {
-                  widget.switchScreen('register', 'register_screen_mentor_3');
+                  widget.switchScreen('register', 'register_screen_mentor_4');
                 }, 0xff32a2c0),
 
                 SmallButton('BACK', () {

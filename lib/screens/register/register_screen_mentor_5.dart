@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
-class RegisterScreenMentor4 extends StatefulWidget {
-  const RegisterScreenMentor4(this.switchScreen, {super.key});
+class RegisterScreenMentor5 extends StatefulWidget {
+  const RegisterScreenMentor5(this.switchScreen, {super.key});
 
   final Function switchScreen;
 
@@ -14,7 +14,7 @@ class RegisterScreenMentor4 extends StatefulWidget {
   }
 }
 
-class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
+class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
   final _experienceController = TextEditingController();
   final _storiesController = TextEditingController();
   final _criminalController = TextEditingController();
@@ -36,7 +36,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
         children: [
           Container(
             margin: EdgeInsets.only(top: 200),
-            padding: EdgeInsets.only(top: 50, left: 50, right: 50, bottom: 50),
+            padding: EdgeInsets.only(top: 100, left: 50, right: 50, bottom: 50),
             decoration: BoxDecoration(
               color: Color(0xff9e607e),
               borderRadius: BorderRadius.only(
@@ -49,44 +49,19 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
               children: [
                 Text(
                   'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),                
+                ),
                 TextFormField(
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  maxLines: 2,
+                  maxLines: 5,
                   controller: _experienceController,
                   style: TextStyle(height: 2),
                   cursorHeight: 20,
-                ),               
+                ),
                 Text(
                   'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),                
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  controller: _storiesController,
-                ),                
-                Text(
-                  'DO YOU HAVE A CRIMINAL RECORD?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -94,6 +69,19 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                     fillColor: Colors.white,
                   ),
                   controller: _storiesController,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'AGE',
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  controller: _criminalController,
                 ),
                 SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_mentor_5');

@@ -9,7 +9,7 @@ class NowHeader extends StatelessWidget {
     return Center(
       child: Text(
         text,
-        style: TextStyle(fontFamily: 'Now', color: Colors.white, fontSize: 32),
+        style: TextStyle(fontFamily: 'Now', color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
     );
