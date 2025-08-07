@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
-class RegisterScreenMentor2 extends StatefulWidget {
-  const RegisterScreenMentor2(this.switchScreen, {super.key});
+class RegisterScreenMentor3 extends StatefulWidget {
+  const RegisterScreenMentor3(this.switchScreen, {super.key});
 
   final Function switchScreen;
 
@@ -14,20 +16,16 @@ class RegisterScreenMentor2 extends StatefulWidget {
   }
 }
 
-class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _ageNameController = TextEditingController();
-  final _genderNameController = TextEditingController();
-  final _phoneController = TextEditingController();
+class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
+  final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _longController = TextEditingController();
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _ageNameController.dispose();
-    _genderNameController.dispose();
-    _phoneController.dispose();
+    _nameController.dispose();
+    _addressController.dispose();
+    _longController.dispose();
     super.dispose();
   }
 
@@ -44,7 +42,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
               top: 100,
               left: 50,
               right: 50,
-              bottom: 50,
+              bottom: 100,
             ),
             decoration: BoxDecoration(
               color: Color(0xff9e607e),
@@ -58,7 +56,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
               children: [
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'FIRST NAME',
+                    labelText: 'NAME OF YOUR CHURCH',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -67,11 +65,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _firstNameController,
+                  controller: _nameController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'LAST NAME',
+                    labelText: 'FULL CHURCH ADDRESS',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -80,53 +78,30 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _lastNameController,
+                  controller: _addressController,
+                  maxLines: 2,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'AGE',
+                    labelText: 'HOW LONG HAVE YOU\nBEEN A FOLLOWER OF CHRIST?',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.white,                    
                   ),
-                  controller: _ageNameController,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'GENDER',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  controller: _genderNameController,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'PHONE',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  controller: _phoneController,
+                  controller: _longController,
+                  style: TextStyle(height: 3),
+                  cursorHeight: 20,
                 ),
                 SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_mentor_3');
                 }, 0xff32a2c0),
 
                 SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_initial');
+                  widget.switchScreen('register', 'register_screen_mentor_2');
                 }, 0xffffff),
               ],
             ),
@@ -136,7 +111,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
             width: MediaQuery.of(context).size.width,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: NowHeader('SIGN UP AS A COMMUNITY MENTOR'),
+              child: NowHeader('WHICH CHURCH DO YOU ATTEND?'),
             ),
           ),
           Positioned(
