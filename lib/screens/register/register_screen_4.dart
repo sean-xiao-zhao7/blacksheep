@@ -59,8 +59,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     margin: EdgeInsets.only(bottom: 20),
-                    padding: EdgeInsets.all(10),
                     child: ListView(
+                      padding: const EdgeInsets.all(20),
                       children: [
                         Text(
                           'Commitment Statements',
