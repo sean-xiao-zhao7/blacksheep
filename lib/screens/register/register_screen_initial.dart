@@ -60,7 +60,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SmallButton('CLICK HERE', () {}, 0xff062d69),
+                SmallButton('CLICK HERE', () {
+                  widget.switchScreen('register', 'register_screen_mentor_2');
+                }, 0xff062d69),
                 SmallButton('BACK', () {
                   widget.switchScreen('home', 'home_screen');
                 }, 0xffffff),
