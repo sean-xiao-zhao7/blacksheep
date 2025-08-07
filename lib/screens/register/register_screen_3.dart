@@ -17,11 +17,13 @@ class RegisterScreen3 extends StatefulWidget {
 class _RegisterScreenInitialState extends State<RegisterScreen3> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _password2Controller = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _password2Controller.dispose();
     super.dispose();
   }
 
@@ -64,6 +66,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                   controller: _emailController,
                 ),
                 TextFormField(
+                  obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'PASSWORD',
                     labelStyle: TextStyle(
@@ -77,6 +80,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                   controller: _passwordController,
                 ),
                 TextFormField(
+                  obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'RE-ENTER PASSWORD',
                     labelStyle: TextStyle(
@@ -87,9 +91,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _passwordController,
+                  controller: _password2Controller,
                 ),
-                SmallButton('NEXT', () {}, 0xff32a2c0),
+                SmallButton('NEXT', () {
+                  widget.switchScreen('register', 'register_screen_4');
+                }, 0xff32a2c0),
                 SmallButton('BACK', () {
                   widget.switchScreen('register', 'register_screen_2');
                 }, 0xffffff),
