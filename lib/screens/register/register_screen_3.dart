@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
-class RegisterScreen2 extends StatefulWidget {
-  const RegisterScreen2(this.switchScreen, {super.key});
+class RegisterScreen3 extends StatefulWidget {
+  const RegisterScreen3(this.switchScreen, {super.key});
 
   final Function switchScreen;
 
@@ -14,18 +14,14 @@ class RegisterScreen2 extends StatefulWidget {
   }
 }
 
-class _RegisterScreenInitialState extends State<RegisterScreen2> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _ageNameController = TextEditingController();
-  final _genderNameController = TextEditingController();
+class _RegisterScreenInitialState extends State<RegisterScreen3> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _ageNameController.dispose();
-    _genderNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -56,7 +52,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
               children: [
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'FIRST NAME',
+                    labelText: 'EMAIL (username)',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -65,11 +61,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _firstNameController,
+                  controller: _emailController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'LAST NAME',
+                    labelText: 'PASSWORD',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -78,11 +74,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _lastNameController,
+                  controller: _passwordController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'AGE',
+                    labelText: 'RE-ENTER PASSWORD',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -91,27 +87,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
-                  controller: _ageNameController,
+                  controller: _passwordController,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'GENDER',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  controller: _genderNameController,
-                ),
-                SmallButton('CONTINUE', () {
-                  widget.switchScreen('register', 'register_screen_3');
-                }, 0xff32a2c0),
-
+                SmallButton('NEXT', () {}, 0xff32a2c0),
                 SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_initial');
+                  widget.switchScreen('register', 'register_screen_2');
                 }, 0xffffff),
               ],
             ),
@@ -119,7 +99,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
           Positioned(
             top: 0,
             width: MediaQuery.of(context).size.width,
-            child: const NowHeader('SIGN UP TODAY!'),
+            child: const NowHeader('LOGIN INFO'),
           ),
           Positioned(
             top: 40,
