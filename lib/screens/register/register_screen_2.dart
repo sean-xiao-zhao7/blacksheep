@@ -17,13 +17,15 @@ class RegisterScreen2 extends StatefulWidget {
 class _RegisterScreenInitialState extends State<RegisterScreen2> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _emailNameController = TextEditingController();
+  final _ageNameController = TextEditingController();
+  final _genderNameController = TextEditingController();
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _emailNameController.dispose();
+    _ageNameController.dispose();
+    _genderNameController.dispose();
     super.dispose();
   }
 
@@ -40,7 +42,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
               top: 100,
               left: 50,
               right: 50,
-              bottom: 200,
+              bottom: 100,
             ),
             decoration: BoxDecoration(
               color: Color(0xfffbee5e),
@@ -60,6 +62,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
                   controller: _firstNameController,
                 ),
@@ -71,19 +75,36 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
                   controller: _lastNameController,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'EMAIL',
+                    labelText: 'AGE',
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                  controller: _emailNameController,
+                  controller: _ageNameController,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'GENDER',
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  controller: _genderNameController,
                 ),
                 SmallButton('CONTINUE', () {
                   widget.switchScreen('register', 'register_screen_2');
