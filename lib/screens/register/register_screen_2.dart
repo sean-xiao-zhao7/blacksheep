@@ -19,7 +19,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   final _lastNameController = TextEditingController();
   final _ageNameController = TextEditingController();
   final _genderNameController = TextEditingController();
+
+  // form
   final _formKey = GlobalKey<FormState>();
+  String _firstName = '';
+  String _lastName = '';
+  String _age = '';
+  String _gender = '';
 
   @override
   void dispose() {
@@ -31,7 +37,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   }
 
   void submit() {
-    _formKey.currentState!.validate();
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState!.save();
+    }
   }
 
   @override
@@ -78,6 +87,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         return 'First name is required.';
                       }
                     },
+                    onSaved: (value) {
+                      _firstName = value!;
+                    },
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -91,6 +103,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       fillColor: Colors.white,
                     ),
                     controller: _lastNameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Last name is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _lastName = value!;
+                    },
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -104,6 +124,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       fillColor: Colors.white,
                     ),
                     controller: _ageNameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Age is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _age = value!;
+                    },
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -117,6 +145,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       fillColor: Colors.white,
                     ),
                     controller: _genderNameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Gender is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _gender = value!;
+                    },
                   ),
                   SmallButton('CONTINUE', () {
                     submit();
