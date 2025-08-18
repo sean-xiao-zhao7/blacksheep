@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:sheepfold/widgets/buttons/small_button.dart';
@@ -90,7 +88,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
-                    fillColor: Colors.white,                    
+                    fillColor: Colors.white,
                   ),
                   controller: _longController,
                   style: TextStyle(height: 3),

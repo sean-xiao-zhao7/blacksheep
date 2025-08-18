@@ -25,7 +25,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   String _firstName = '';
   String _lastName = '';
   String _age = '';
-  String _gender = '';
+  String _gender = 'MALE';
 
   @override
   void dispose() {
@@ -133,26 +133,27 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       _age = value!;
                     },
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'GENDER',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                  Column(
+                    children: <Widget>[
+                      RadioListTile(
+                        title: Text("MALE"),
+                        value: 'MALE',
+                        groupValue: _gender,
+                        onChanged: (value) {
+                          _gender = value!;
+                        },
+                        activeColor: Color(0xff32a2c0),
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    controller: _genderNameController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Gender is required.';
-                      }
-                    },
-                    onSaved: (value) {
-                      _gender = value!;
-                    },
+                      RadioListTile(
+                        title: Text("FEMALE"),
+                        value: 'FEMALE',
+                        groupValue: _gender,
+                        onChanged: (value) {
+                          _gender = value!;
+                        },
+                        activeColor: Color(0xff32a2c0),
+                      ),
+                    ],
                   ),
                   SmallButton('CONTINUE', () {
                     submit();
