@@ -66,6 +66,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     fillColor: Colors.white,
                   ),
                   controller: _firstNameController,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'First name is required.';
+                    }
+                  },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(

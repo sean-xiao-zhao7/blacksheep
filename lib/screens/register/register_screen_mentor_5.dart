@@ -207,7 +207,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                     ),
                   ),
                 ),
-                SmallButton('CONTINUE', () {
+                SmallButton('ACCEPT AND FINISH', () {
                   widget.switchScreen('register', 'register_screen_mentor_5');
                 }, 0xff32a2c0),
                 SizedBox(height: 5),
