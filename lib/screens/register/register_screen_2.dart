@@ -140,7 +140,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         value: 'MALE',
                         groupValue: _gender,
                         onChanged: (value) {
-                          _gender = value!;
+                          setState(() {
+                            _gender = value!;
+                          });
                         },
                         activeColor: Color(0xff32a2c0),
                       ),
@@ -149,7 +151,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         value: 'FEMALE',
                         groupValue: _gender,
                         onChanged: (value) {
-                          _gender = value!;
+                          setState(() {
+                            _gender = value!;
+                          });
                         },
                         activeColor: Color(0xff32a2c0),
                       ),
