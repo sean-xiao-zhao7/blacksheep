@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "745015994572",
+    "firebase_url": "https://blacksheep-dff33-default-rtdb.firebaseio.com",
+    "project_id": "blacksheep-dff33",
+    "storage_bucket": "blacksheep-dff33.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745015994572:android:fb946c5bc7a73a01fbfa69",
+        "android_client_info": {
+          "package_name": "com.example.sheepfold"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_NOyp_xX6uN0bznNmsEHKGpu3kWivw9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
