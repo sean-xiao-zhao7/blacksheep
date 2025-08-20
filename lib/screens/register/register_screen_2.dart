@@ -36,10 +36,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     super.dispose();
   }
 
-  void submit() {
+  bool submit() {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -90,6 +93,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     onSaved: (value) {
                       _firstName = value!;
                     },
+                    autocorrect: false,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -111,6 +115,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     onSaved: (value) {
                       _lastName = value!;
                     },
+                    autocorrect: false,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -132,6 +137,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     onSaved: (value) {
                       _age = value!;
                     },
+                    autocorrect: false,
                   ),
                   Column(
                     children: <Widget>[
@@ -160,8 +166,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     ],
                   ),
                   SmallButton('CONTINUE', () {
-                    submit();
-                    widget.switchScreen('register', 'register_screen_3');
+                    if (submit()) {
+                      widget.switchScreen('register', 'register_screen_3');
+                    }
                   }, 0xff32a2c0),
 
                   SmallButton('BACK', () {
