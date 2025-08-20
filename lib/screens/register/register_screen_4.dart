@@ -7,7 +7,6 @@ final _firebase = FirebaseAuth.instance;
 
 class RegisterScreen4 extends StatefulWidget {
   const RegisterScreen4(this.switchScreen, {super.key});
-
   final Function switchScreen;
 
   @override
@@ -21,6 +20,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
 
+  // form
+  final _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password = '';
+  String _password_reenter = '';
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -29,16 +34,26 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     super.dispose();
   }
 
-  void completeRegister() async {
-    try {
-      final userInfo = _firebase.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _password2Controller.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      print('Error register.');
-      print(e.code);
+  bool submit() {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState!.save();
+      return true;
+    } else {
+      return false;
     }
+  }
+
+  void completeRegister() async {
+    // try {
+    //   final userInfo = _firebase.createUserWithEmailAndPassword(
+    //     email: _email,
+    //     password: _password,
+    //   );
+    // } on FirebaseAuthException catch (e) {
+    //   print('Error register.');
+    //   print(e.code);
+    // }
   }
 
   @override
@@ -63,57 +78,92 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                 topRight: Radius.circular(200),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'EMAIL (username)',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'EMAIL (username)',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Email is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _email = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _emailController,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'PASSWORD',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'PASSWORD',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Password is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _password = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _passwordController,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'RE-ENTER PASSWORD',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'RE-ENTER PASSWORD',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _password2Controller,
+                    validator: (value) {
+                      print(_password.compareTo(_password_reenter));
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Password re-enter is required.';
+                      } else if (_password.compareTo(_password_reenter) != 0) {
+                        return "Both passwords must be equal.";
+                      }
+                    },
+                    onSaved: (value) {
+                      _password_reenter = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _password2Controller,
-                ),
-                SmallButton('COMPLETE', () {
-                  completeRegister();
-                }, 0xff32a2c0),
-                SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_3');
-                }, 0xffffff),
-              ],
+                  SmallButton('COMPLETE', () {
+                    if (submit()) {
+                      completeRegister();
+                    }
+                  }, 0xff32a2c0),
+                  SmallButton('BACK', () {
+                    widget.switchScreen('register', 'register_screen_3');
+                  }, 0xffffff),
+                ],
+              ),
             ),
           ),
           Positioned(
