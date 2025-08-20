@@ -19,12 +19,27 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
   final _storiesController = TextEditingController();
   final _criminalController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+  String _exp = '';
+  String _stories = '';
+  String _crim = '';
+
   @override
   void dispose() {
     _experienceController.dispose();
     _storiesController.dispose();
     _criminalController.dispose();
     super.dispose();
+  }
+
+  bool submit() {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState!.save();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -44,66 +59,101 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                 topRight: Radius.circular(200),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),                
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    maxLines: 2,
+                    controller: _experienceController,
+                    style: TextStyle(height: 2),
+                    cursorHeight: 20,
+                    maxLength: 2000,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Experience text is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _exp = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  maxLines: 2,
-                  controller: _experienceController,
-                  style: TextStyle(height: 2),
-                  cursorHeight: 20,
-                  maxLength: 2000,                  
-                ),               
-                Text(
-                  'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),                
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    controller: _storiesController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Bible parallel text is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _stories = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _storiesController,
-                ),                
-                Text(
-                  'DO YOU HAVE A CRIMINAL RECORD?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    'DO YOU HAVE A CRIMINAL RECORD?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    controller: _criminalController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Criminal record text is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _crim = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _storiesController,
-                ),
-                SmallButton('CONTINUE', () {
-                  widget.switchScreen('register', 'register_screen_mentor_5');
-                }, 0xff32a2c0),
+                  SmallButton('CONTINUE', () {
+                    if (submit()) {
+                      widget.switchScreen(
+                        'register',
+                        'register_screen_mentor_5',
+                      );
+                    }
+                  }, 0xff32a2c0),
 
-                SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_mentor_3');
-                }, 0xffffff),
-              ],
+                  SmallButton('BACK', () {
+                    widget.switchScreen('register', 'register_screen_mentor_3');
+                  }, 0xffffff),
+                ],
+              ),
             ),
           ),
           Positioned(

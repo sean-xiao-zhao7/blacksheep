@@ -19,12 +19,27 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
   final _addressController = TextEditingController();
   final _longController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+  String _church = '';
+  String _address = '';
+  String _long = '';
+
   @override
   void dispose() {
     _nameController.dispose();
     _addressController.dispose();
     _longController.dispose();
     super.dispose();
+  }
+
+  bool submit() {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState!.save();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -49,59 +64,95 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                 topRight: Radius.circular(200),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'NAME OF YOUR CHURCH',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'NAME OF YOUR CHURCH',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _nameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Church name is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _church = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _nameController,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'FULL CHURCH ADDRESS',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'FULL CHURCH ADDRESS',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _addressController,
+                    maxLines: 2,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Address is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _address = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _addressController,
-                  maxLines: 2,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'HOW LONG HAVE YOU\nBEEN A FOLLOWER OF CHRIST?',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText:
+                          'HOW LONG HAVE YOU\nBEEN A FOLLOWER OF CHRIST?',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Colors.white,
+                    controller: _longController,
+                    style: TextStyle(height: 3),
+                    cursorHeight: 20,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'How long at church is required.';
+                      }
+                    },
+                    onSaved: (value) {
+                      _long = value!;
+                    },
+                    autocorrect: false,
                   ),
-                  controller: _longController,
-                  style: TextStyle(height: 3),
-                  cursorHeight: 20,
-                ),
-                SmallButton('CONTINUE', () {
-                  widget.switchScreen('register', 'register_screen_mentor_4');
-                }, 0xff32a2c0),
+                  SmallButton('CONTINUE', () {
+                    if (submit()) {
+                      widget.switchScreen(
+                        'register',
+                        'register_screen_mentor_4',
+                      );
+                    }
+                  }, 0xff32a2c0),
 
-                SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_mentor_2');
-                }, 0xffffff),
-              ],
+                  SmallButton('BACK', () {
+                    widget.switchScreen('register', 'register_screen_mentor_2');
+                  }, 0xffffff),
+                ],
+              ),
             ),
           ),
           Positioned(
