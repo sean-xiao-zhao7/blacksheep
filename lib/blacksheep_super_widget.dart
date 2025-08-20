@@ -10,6 +10,7 @@ import 'package:sheepfold/screens/register/register_screen_mentor_2.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_4.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
+import 'package:sheepfold/screens/register/register_screen_mentor_6.dart';
 
 class BlacksheepSuperWidget extends StatefulWidget {
   const BlacksheepSuperWidget({super.key});
@@ -62,6 +63,8 @@ class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
             screen = RegisterScreenMentor4(switchScreen);
           case 'register_screen_mentor_5':
             screen = RegisterScreenMentor5(switchScreen);
+          case 'register_screen_mentor_6':
+            screen = RegisterScreenMentor6(switchScreen);
           default:
             screen = RegisterScreenInitial(switchScreen);
         }
