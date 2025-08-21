@@ -48,6 +48,7 @@ class _loginScreenState extends State<LoginScreen> {
         password: _password,
       );
       print(userInfo);
+      widget.switchScreen('chat', 'chat_list');
     } on FirebaseAuthException catch (e) {
       print('Error login.');
       print(e.code);

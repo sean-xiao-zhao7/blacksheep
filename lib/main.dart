@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 // screens
-import 'package:sheepfold/blacksheep_super_widget.dart';
+import 'package:sheepfold/blacksheep_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

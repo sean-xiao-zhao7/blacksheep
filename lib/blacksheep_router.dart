@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:sheepfold/screens/chat/chat_list.dart';
+import 'package:sheepfold/screens/chat/single_chat.dart';
 
 // screens
 import 'package:sheepfold/screens/home_screen.dart';
@@ -75,6 +77,15 @@ class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
             screen = LoginScreen(switchScreen);
           default:
             screen = LoginScreen(switchScreen);
+        }
+      case 'chat':
+        switch (currentScreen) {
+          case 'chat_list':
+            screen = ChatList(switchScreen);
+          case 'single_chat':
+            screen = SingleChat(switchScreen);
+          default:
+            screen = ChatList(switchScreen);
         }
       default:
         screen = HomeScreen(switchScreen);
