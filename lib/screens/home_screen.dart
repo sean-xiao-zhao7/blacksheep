@@ -33,7 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
           MainButton('REGISTER', () {
             widget.switchScreen('register', 'register_screen_initial');
           }),
-          MainButton('LOGIN', () {}),
+          MainButton('LOGIN', () {
+            widget.switchScreen('login', 'login_screen');
+          }),
         ],
       ),
     );

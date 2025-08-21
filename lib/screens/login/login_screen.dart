@@ -6,7 +6,8 @@ import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
 final _firebase = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen(this.switchScreen, {super.key});
+  final Function switchScreen;
 
   @override
   State<StatefulWidget> createState() {
@@ -17,18 +18,15 @@ class LoginScreen extends StatefulWidget {
 class _loginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _password2Controller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  String _password_reenter = '';
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _password2Controller.dispose();
     super.dispose();
   }
 
@@ -48,6 +46,7 @@ class _loginScreenState extends State<LoginScreen> {
         email: _email,
         password: _password,
       );
+      print(userInfo);
     } on FirebaseAuthException catch (e) {
       print('Error login.');
       print(e.code);
@@ -127,33 +126,7 @@ class _loginScreenState extends State<LoginScreen> {
                     },
                     autocorrect: false,
                   ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'RE-ENTER PASSWORD',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    controller: _password2Controller,
-                    validator: (value) {
-                      print(_password.compareTo(_password_reenter));
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Password re-enter is required.';
-                      } else if (_password.compareTo(_password_reenter) != 0) {
-                        return "Both passwords must be equal.";
-                      }
-                    },
-                    onSaved: (value) {
-                      _password_reenter = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  SmallButton('COMPLETE', () {
+                  SmallButton('Login', () {
                     if (submit()) {
                       loginAsyncAction();
                     }

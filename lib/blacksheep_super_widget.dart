@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 // screens
 import 'package:sheepfold/screens/home_screen.dart';
+import 'package:sheepfold/screens/login/login_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/screens/register/register_screen_2.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
@@ -67,6 +68,13 @@ class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
             screen = RegisterScreenMentor6(switchScreen);
           default:
             screen = RegisterScreenInitial(switchScreen);
+        }
+      case 'login':
+        switch (currentScreen) {
+          case 'login_screen':
+            screen = LoginScreen(switchScreen);
+          default:
+            screen = LoginScreen(switchScreen);
         }
       default:
         screen = HomeScreen(switchScreen);

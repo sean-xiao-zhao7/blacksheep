@@ -5,7 +5,6 @@ import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2(this.switchScreen, {super.key});
-
   final Function switchScreen;
 
   @override
