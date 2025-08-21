@@ -56,24 +56,28 @@ class _loginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 100),
-      decoration: BoxDecoration(color: Color(0xfffbee5e)),
+      padding: EdgeInsets.only(top: 50),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/blacksheep_background_full.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 150),
+            margin: EdgeInsets.only(top: 200),
             padding: EdgeInsets.only(
-              top: 100,
+              top: 150,
               left: 50,
               right: 50,
               bottom: 100,
             ),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/blacksheep_background_full.png",
-                ),
-                fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              color: Color(0xfffbee5e),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(200),
+                topRight: Radius.circular(200),
               ),
             ),
             child: Form(
@@ -136,9 +140,17 @@ class _loginScreenState extends State<LoginScreen> {
             ),
           ),
           Positioned(
-            top: 0,
+            top: 40,
             width: MediaQuery.of(context).size.width,
-            child: const GentyHeader('BLACKSHEEP'),
+            child: const GentyHeader('BlackSheep', fontSize: 70,),
+          ),
+          Positioned(
+            top: 40,
+            width: MediaQuery.of(context).size.width,
+            child: const Image(
+              image: AssetImage('assets/images/sheep.png'),
+              height: 300,
+            ),
           ),
         ],
       ),

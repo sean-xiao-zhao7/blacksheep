@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GentyHeader extends StatelessWidget {
-  const GentyHeader(this.text, {super.key});
+  const GentyHeader(this.text, {super.key, this.fontSize = 70});
   final String text;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class GentyHeader extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'Genty',
           color: Colors.white,
-          fontSize: 70,
+          fontSize: fontSize,
           shadows: [
             Shadow(
               blurRadius: 10.0, // shadow blur
