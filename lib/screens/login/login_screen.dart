@@ -43,7 +43,7 @@ class _loginScreenState extends State<LoginScreen> {
 
   void loginAsyncAction() async {
     try {
-      final userInfo = _firebase.signInWithEmailAndPassword(
+      final userInfo = await _firebase.signInWithEmailAndPassword(
         email: _email,
         password: _password,
       );
