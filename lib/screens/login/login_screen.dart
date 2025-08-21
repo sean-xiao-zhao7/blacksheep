@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
+import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -67,12 +68,7 @@ class _loginScreenState extends State<LoginScreen> {
         children: [
           Container(
             margin: EdgeInsets.only(top: 200),
-            padding: EdgeInsets.only(
-              top: 150,
-              left: 50,
-              right: 50,
-              bottom: 100,
-            ),
+            padding: EdgeInsets.only(top: 30, left: 50, right: 50, bottom: 100),
             decoration: BoxDecoration(
               color: Color(0xfffbee5e),
               borderRadius: BorderRadius.only(
@@ -83,8 +79,9 @@ class _loginScreenState extends State<LoginScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  NowHeader('Please Login', color: Colors.black),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'EMAIL (username)',
@@ -135,6 +132,9 @@ class _loginScreenState extends State<LoginScreen> {
                       loginAsyncAction();
                     }
                   }, 0xff32a2c0),
+                  SmallButton('Register', () {
+                    widget.switchScreen('register', 'register_screen_initial');
+                  }, 0xff32a2c0),
                 ],
               ),
             ),
@@ -142,7 +142,7 @@ class _loginScreenState extends State<LoginScreen> {
           Positioned(
             top: 40,
             width: MediaQuery.of(context).size.width,
-            child: const GentyHeader('BlackSheep', fontSize: 70,),
+            child: const GentyHeader('BlackSheep', fontSize: 70),
           ),
           Positioned(
             top: 40,
