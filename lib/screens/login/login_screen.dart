@@ -50,8 +50,21 @@ class _loginScreenState extends State<LoginScreen> {
       print(userInfo);
       widget.switchScreen('chat', 'chat_list');
     } on FirebaseAuthException catch (e) {
-      print('Error login.');
       print(e.code);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      if (e.code == 'invalid-credential') {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Email or password invalid.')));
+      } else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Email format invalid.')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid login. Please try again later.')),
+        );
+      }
     }
   }
 

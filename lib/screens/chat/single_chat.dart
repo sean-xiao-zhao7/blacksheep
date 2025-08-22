@@ -16,6 +16,7 @@ class _SingleChatState extends State<SingleChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: NowHeader('BlackSheep Chat', color: Colors.black)),
+      body: Center(child: NowHeader('Single Chat Content')),
     );
   }
 }
