@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // screens
@@ -29,9 +28,23 @@ class BlacksheepRouter extends StatefulWidget {
 class _BlacksheepRouter extends State<BlacksheepRouter> {
   var currentGroup = 'home';
   var currentScreen = 'home_screen';
+  var _loading = false;
 
   void switchScreen(newGroup, newScreen) {
-    if (newGroup != null && newScreen != null) {
+    if (currentScreen == 'login_screen') {
+      setState(() {
+        _loading = true;
+      });
+      if (newGroup != null && newScreen != null) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          setState(() {
+            currentGroup = newGroup;
+            currentScreen = newScreen;
+            _loading = false;
+          });
+        });
+      }
+    } else {
       setState(() {
         currentGroup = newGroup;
         currentScreen = newScreen;
@@ -93,15 +106,27 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
         screen = HomeScreen(switchScreen);
     }
 
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (ctx, snapshot) {
-        if (currentGroup == 'chat' && !snapshot.hasData) {
-          return LoginScreen(switchScreen);
-        } else {
-          return screen;
-        }
-      },
-    );
+    if (_loading) {
+      return Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    } else {
+      return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, snapshot) {
+          if (currentGroup == 'chat' && !snapshot.hasData) {
+            return LoginScreen(switchScreen);
+          } else {
+            return screen;
+          }
+        },
+      );
+    }
   }
 }
