@@ -17,7 +17,7 @@ class BlackSheepApp extends StatelessWidget {
   const BlackSheepApp([Key? key]) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: const Scaffold(body: BlacksheepSuperWidget()));
+  Widget build(BuildContext context) {    
+    return MaterialApp(home: const Scaffold(body: BlacksheepRouter()));
   }
 }

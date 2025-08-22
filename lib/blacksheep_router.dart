@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sheepfold/screens/chat/chat_list.dart';
-import 'package:sheepfold/screens/chat/single_chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // screens
 import 'package:sheepfold/screens/home_screen.dart';
@@ -14,17 +14,19 @@ import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_4.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_6.dart';
+import 'package:sheepfold/screens/chat/chat_list.dart';
+import 'package:sheepfold/screens/chat/single_chat.dart';
 
-class BlacksheepSuperWidget extends StatefulWidget {
-  const BlacksheepSuperWidget({super.key});
+class BlacksheepRouter extends StatefulWidget {
+  const BlacksheepRouter({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _BlacksheepSuperWidgetState();
+    return _BlacksheepRouter();
   }
 }
 
-class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
+class _BlacksheepRouter extends State<BlacksheepRouter> {
   var currentGroup = 'home';
   var currentScreen = 'home_screen';
 
@@ -90,6 +92,16 @@ class _BlacksheepSuperWidgetState extends State<BlacksheepSuperWidget> {
       default:
         screen = HomeScreen(switchScreen);
     }
-    return screen;
+
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (ctx, snapshot) {
+        if (currentGroup == 'chat' && !snapshot.hasData) {
+          return LoginScreen(switchScreen);
+        } else {
+          return screen;
+        }
+      },
+    );
   }
 }
