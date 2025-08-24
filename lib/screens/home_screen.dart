@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         spacing: 20,
         children: [
-          GentyHeader('BlackSheep'),
+          GentyHeader('BlackSheep 2'),
           Spacer(),
           MainButton('REGISTER', () {
             widget.switchScreen('register', 'register_screen_initial');

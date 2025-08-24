@@ -15,6 +15,7 @@ import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_6.dart';
 import 'package:sheepfold/screens/chat/chat_list.dart';
 import 'package:sheepfold/screens/chat/single_chat.dart';
+import 'package:sheepfold/screens/splash_screen.dart';
 
 class BlacksheepRouter extends StatefulWidget {
   const BlacksheepRouter({super.key});
@@ -55,6 +56,12 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
   @override
   Widget build(BuildContext context) {
     Widget screen;
+
+    // splash screen on initial load
+    if (currentScreen == 'home_screen') {
+      return SplashScreen(switchScreen);
+    }
+
     switch (currentGroup) {
       case 'home':
         switch (currentScreen) {
