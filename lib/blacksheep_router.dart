@@ -28,7 +28,7 @@ class BlacksheepRouter extends StatefulWidget {
 
 class _BlacksheepRouter extends State<BlacksheepRouter> {
   var currentGroup = 'home';
-  var currentScreen = 'home_screen';
+  var currentScreen = 'splash_screen';
   var _loading = false;
 
   void switchScreen(newGroup, newScreen) {
@@ -58,7 +58,7 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
     Widget screen;
 
     // splash screen on initial load
-    if (currentScreen == 'home_screen') {
+    if (currentScreen == 'splash_screen') {
       return SplashScreen(switchScreen);
     }
 
