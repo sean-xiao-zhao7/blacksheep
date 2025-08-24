@@ -63,19 +63,12 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
     }
 
     switch (currentGroup) {
-      case 'home':
-        switch (currentScreen) {
-          case 'home_screen':
-            screen = HomeScreen(switchScreen);
-          default:
-            screen = HomeScreen(switchScreen);
-        }
       case 'register':
         switch (currentScreen) {
           case 'register_screen_initial':
             screen = RegisterScreenInitial(switchScreen);
           case 'register_screen_2':
-            screen = RegisterScreen2(switchScreen);
+            screen = RegisterScreen2(switchScreen, {});
           case 'register_screen_3':
             screen = RegisterScreen3(switchScreen);
           case 'register_screen_4':
@@ -110,7 +103,7 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
             screen = ChatList(switchScreen);
         }
       default:
-        screen = HomeScreen(switchScreen);
+        screen = HomeScreen();
     }
 
     if (_loading) {

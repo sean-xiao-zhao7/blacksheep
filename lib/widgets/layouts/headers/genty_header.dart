@@ -14,6 +14,7 @@ class GentyHeader extends StatelessWidget {
           fontFamily: 'Genty',
           color: Colors.white,
           fontSize: fontSize,
+          decorationThickness: 0,
           shadows: [
             Shadow(
               blurRadius: 10.0, // shadow blur

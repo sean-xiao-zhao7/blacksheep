@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sheepfold/screens/register/register_screen_2.dart';
+import 'package:sheepfold/screens/register/register_screen_4.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreen3 extends StatefulWidget {
-  const RegisterScreen3(this.switchScreen, {super.key});
-
+  const RegisterScreen3(
+    this.switchScreen, {
+    this.registerData = const {},
+    super.key,
+  });
   final Function switchScreen;
+  final Map<String, String> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -161,11 +167,25 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                   ),
                 ),
                 SmallButton('CONTINUE', () {
-                  widget.switchScreen('register', 'register_screen_4');                  
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => RegisterScreen4(
+                        widget.switchScreen,
+                        registerData: widget.registerData,
+                      ),
+                    ),
+                  );
                 }, 0xff32a2c0),
                 SizedBox(height: 10),
                 SmallButton('BACK', () {
-                  widget.switchScreen('register', 'register_screen_2');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => RegisterScreen2(
+                        widget.switchScreen,
+                        widget.registerData,
+                      ),
+                    ),
+                  );
                 }, 0xffffff),
               ],
             ),

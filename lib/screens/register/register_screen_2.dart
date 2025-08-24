@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreen2 extends StatefulWidget {
-  const RegisterScreen2(this.switchScreen, {super.key});
+  const RegisterScreen2(this.switchScreen, this.registerData, {super.key});
   final Function switchScreen;
+  final Map<String, String> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -25,6 +26,18 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   String _lastName = '';
   String _age = '';
   String _gender = 'MALE';
+  Map<String, String> newData = {};
+
+  @override
+  void initState() {
+    _firstNameController.text =
+        widget.registerData['firstName'] == null ||
+            widget.registerData['firstName']!.isEmpty
+        ? ""
+        : widget.registerData['firstName']!;
+    newData = {...widget.registerData};
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -39,6 +52,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      newData['firstName'] = _firstName;
+      newData['lastName'] = _lastName;
+      newData['age'] = _age;
+      newData['gender'] = _gender;
       return true;
     } else {
       return false;
@@ -166,7 +183,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                   ),
                   SmallButton('CONTINUE', () {
                     if (submit()) {
-                      widget.switchScreen('register', 'register_screen_3');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => RegisterScreen3(
+                            widget.switchScreen,
+                            registerData: newData,
+                          ),
+                        ),
+                      );
                     }
                   }, 0xff32a2c0),
 

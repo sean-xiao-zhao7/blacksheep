@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
 class RegisterScreen4 extends StatefulWidget {
-  const RegisterScreen4(this.switchScreen, {super.key});
+  const RegisterScreen4(
+    this.switchScreen, {
+    this.registerData = const {},
+    super.key,
+  });
   final Function switchScreen;
+  final Map<String, String> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -38,6 +44,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      widget.registerData['email'] = _email;
       return true;
     } else {
       return false;
@@ -45,15 +52,15 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   }
 
   void completeRegister() async {
-    // try {
-    //   final userInfo = _firebase.createUserWithEmailAndPassword(
-    //     email: _email,
-    //     password: _password,
-    //   );
-    // } on FirebaseAuthException catch (e) {
-    //   print('Error register.');
-    //   print(e.code);
-    // }
+    try {
+      final userInfo = _firebase.createUserWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      );
+    } on FirebaseAuthException catch (e) {
+      print('Error register.');
+      print(e.code);
+    }
   }
 
   @override
@@ -160,7 +167,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                     }
                   }, 0xff32a2c0),
                   SmallButton('BACK', () {
-                    widget.switchScreen('register', 'register_screen_3');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => RegisterScreen3(
+                          widget.switchScreen,
+                          registerData: widget.registerData,
+                        ),
+                      ),
+                    );
                   }, 0xffffff),
                 ],
               ),

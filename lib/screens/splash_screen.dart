@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sheepfold/screens/home_screen.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,11 +29,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 6000), () {
-      setState(() {
-        widget.switchScreen('home', 'home_screen');
-      });
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
     });
 
     _controller.play();
