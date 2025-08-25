@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
-
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
@@ -19,11 +18,29 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
   final _experienceController = TextEditingController();
   final _storiesController = TextEditingController();
   final _criminalController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
-  String _exp = '';
-  String _stories = '';
-  String _crim = '';
+  Map<String, String> newData = {};
+
+  @override
+  void initState() {
+    _experienceController.text =
+        widget.registerData['exp'] == null ||
+            widget.registerData['exp']!.isEmpty
+        ? ""
+        : widget.registerData['exp']!;
+    _storiesController.text =
+        widget.registerData['stories'] == null ||
+            widget.registerData['stories']!.isEmpty
+        ? ""
+        : widget.registerData['stories']!;
+    _criminalController.text =
+        widget.registerData['crim'] == null ||
+            widget.registerData['crim']!.isEmpty
+        ? ""
+        : widget.registerData['crim']!;
+    newData = {...widget.registerData};
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -37,6 +54,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      newData['exp'] = _experienceController.text;
+      newData['stories'] = _storiesController.text;
+      newData['crim'] = _criminalController.text;
       return true;
     } else {
       return false;
@@ -94,9 +114,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           return 'Experience text is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _exp = value!;
-                      },
                       autocorrect: false,
                     ),
                     Text(
@@ -117,9 +134,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Bible parallel text is required.';
                         }
-                      },
-                      onSaved: (value) {
-                        _stories = value!;
                       },
                       autocorrect: false,
                     ),
@@ -142,16 +156,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           return 'Criminal record text is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _crim = value!;
-                      },
                       autocorrect: false,
                     ),
                     SmallButton('CONTINUE', () {
                       if (submit()) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => RegisterScreenMentor5({}),
+                            builder: (ctx) => RegisterScreenMentor5(newData),
                           ),
                         );
                       }
@@ -159,7 +170,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                     SmallButton('BACK', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenMentor3({}),
+                          builder: (ctx) => RegisterScreenMentor3(newData),
                         ),
                       );
                     }, 0xffffff),

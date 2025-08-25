@@ -19,11 +19,29 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _longController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
-  String _church = '';
-  String _address = '';
-  String _long = '';
+  Map<String, String> newData = {};
+
+  @override
+  void initState() {
+    _nameController.text =
+        widget.registerData['name'] == null ||
+            widget.registerData['name']!.isEmpty
+        ? ""
+        : widget.registerData['name']!;
+    _addressController.text =
+        widget.registerData['address'] == null ||
+            widget.registerData['address']!.isEmpty
+        ? ""
+        : widget.registerData['address']!;
+    _longController.text =
+        widget.registerData['long'] == null ||
+            widget.registerData['long']!.isEmpty
+        ? ""
+        : widget.registerData['long']!;
+    newData = {...widget.registerData};
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -37,6 +55,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      newData['name'] = _nameController.text;
+      newData['address'] = _addressController.text;
+      newData['long'] = _longController.text;
       return true;
     } else {
       return false;
@@ -88,9 +109,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           return 'Church name is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _church = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -110,9 +128,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Address is required.';
                         }
-                      },
-                      onSaved: (value) {
-                        _address = value!;
                       },
                       autocorrect: false,
                     ),
@@ -136,16 +151,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           return 'How long at church is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _long = value!;
-                      },
                       autocorrect: false,
                     ),
                     SmallButton('CONTINUE', () {
                       if (submit()) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => RegisterScreenMentor4({}),
+                            builder: (ctx) => RegisterScreenMentor4(newData),
                           ),
                         );
                       }
@@ -153,7 +165,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                     SmallButton('BACK', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenMentor2({}),
+                          builder: (ctx) => RegisterScreenMentor2(newData),
                         ),
                       );
                     }, 0xffffff),

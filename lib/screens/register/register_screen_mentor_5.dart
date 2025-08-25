@@ -16,18 +16,6 @@ class RegisterScreenMentor5 extends StatefulWidget {
 }
 
 class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
-  final _experienceController = TextEditingController();
-  final _storiesController = TextEditingController();
-  final _criminalController = TextEditingController();
-
-  @override
-  void dispose() {
-    _experienceController.dispose();
-    _storiesController.dispose();
-    _criminalController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,7 +205,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                   SmallButton('CONTINUE', () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => RegisterScreenMentor6({}),
+                        builder: (ctx) =>
+                            RegisterScreenMentor6(widget.registerData),
                       ),
                     );
                   }, 0xff32a2c0),
@@ -225,7 +214,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                   SmallButton('BACK', () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => RegisterScreenMentor4({}),
+                        builder: (ctx) =>
+                            RegisterScreenMentor4(widget.registerData),
                       ),
                     );
                   }, 0xffffff),

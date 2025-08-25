@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sheepfold/screens/home_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_2.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_2.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
@@ -69,7 +70,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                     );
                   }, 0xff062d69),
                   SmallButton('BACK', () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) {
+                          return HomeScreen();
+                        },
+                      ),
+                    );
                   }, 0xffffff),
                 ],
               ),

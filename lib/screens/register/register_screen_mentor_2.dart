@@ -18,23 +18,49 @@ class RegisterScreenMentor2 extends StatefulWidget {
 class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _ageNameController = TextEditingController();
-  final _genderNameController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _genderController = TextEditingController();
   final _phoneController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
-  String _firstName = '';
-  String _lastName = '';
-  String _age = '';
-  String _gender = 'MALE';
-  String _phone = '';
+  Map<String, String> newData = {};
+
+  @override
+  void initState() {
+    _firstNameController.text =
+        widget.registerData['firstName'] == null ||
+            widget.registerData['firstName']!.isEmpty
+        ? ""
+        : widget.registerData['firstName']!;
+    _lastNameController.text =
+        widget.registerData['lastName'] == null ||
+            widget.registerData['lastName']!.isEmpty
+        ? ""
+        : widget.registerData['lastName']!;
+    _ageController.text =
+        widget.registerData['age'] == null ||
+            widget.registerData['age']!.isEmpty
+        ? ""
+        : widget.registerData['age']!;
+    _genderController.text =
+        widget.registerData['gender'] == null ||
+            widget.registerData['gender']!.isEmpty
+        ? ""
+        : widget.registerData['gender']!;
+    _phoneController.text =
+        widget.registerData['phone'] == null ||
+            widget.registerData['phone']!.isEmpty
+        ? ""
+        : widget.registerData['phone']!;
+    newData = {...widget.registerData};
+    super.initState();
+  }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _ageNameController.dispose();
-    _genderNameController.dispose();
+    _ageController.dispose();
+    _genderController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -43,6 +69,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
+      newData['firstName'] = _firstNameController.text;
+      newData['lastName'] = _lastNameController.text;
+      newData['age'] = _ageController.text;
+      newData['gender'] = _genderController.text;
+      newData['phone'] = _phoneController.text;
       return true;
     } else {
       return false;
@@ -94,9 +125,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           return 'First name is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _firstName = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -116,9 +144,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           return 'Last name is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _lastName = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -132,14 +157,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         filled: true,
                         fillColor: Colors.white,
                       ),
-                      controller: _ageNameController,
+                      controller: _ageController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Age is required.';
                         }
-                      },
-                      onSaved: (value) {
-                        _age = value!;
                       },
                       autocorrect: false,
                     ),
@@ -160,9 +182,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           return 'Phone number is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _phone = value!;
-                      },
                       autocorrect: false,
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: false,
@@ -173,10 +192,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         RadioListTile(
                           title: Text("MALE"),
                           value: 'MALE',
-                          groupValue: _gender,
+                          groupValue: _genderController.text,
                           onChanged: (value) {
                             setState(() {
-                              _gender = value!;
+                              _genderController.text = value!;
                             });
                           },
                           activeColor: Color(0xff32a2c0),
@@ -184,10 +203,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         RadioListTile(
                           title: Text("FEMALE"),
                           value: 'FEMALE',
-                          groupValue: _gender,
+                          groupValue: _genderController.text,
                           onChanged: (value) {
                             setState(() {
-                              _gender = value!;
+                              _genderController.text = value!;
                             });
                           },
                           activeColor: Color(0xff32a2c0),
@@ -198,7 +217,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                       if (submit()) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => RegisterScreenMentor3({}),
+                            builder: (ctx) => RegisterScreenMentor3(newData),
                           ),
                         );
                       }
