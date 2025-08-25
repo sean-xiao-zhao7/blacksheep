@@ -5,8 +5,7 @@ import 'package:sheepfold/screens/home_screen.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen(this.switchScreen, {super.key});
-  final Function switchScreen;
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();

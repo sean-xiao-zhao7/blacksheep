@@ -7,12 +7,7 @@ import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 final _firebase = FirebaseAuth.instance;
 
 class RegisterScreen4 extends StatefulWidget {
-  const RegisterScreen4(
-    this.switchScreen, {
-    this.registerData = const {},
-    super.key,
-  });
-  final Function switchScreen;
+  const RegisterScreen4({this.registerData = const {}, super.key});
   final Map<String, String> registerData;
 
   @override
@@ -169,10 +164,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                   SmallButton('BACK', () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => RegisterScreen3(
-                          widget.switchScreen,
-                          registerData: widget.registerData,
-                        ),
+                        builder: (ctx) =>
+                            RegisterScreen3(registerData: widget.registerData),
                       ),
                     );
                   }, 0xffffff),

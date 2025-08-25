@@ -4,8 +4,7 @@ import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreen2 extends StatefulWidget {
-  const RegisterScreen2(this.switchScreen, this.registerData, {super.key});
-  final Function switchScreen;
+  const RegisterScreen2(this.registerData, {super.key});
   final Map<String, String> registerData;
 
   @override
@@ -185,18 +184,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     if (submit()) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => RegisterScreen3(
-                            widget.switchScreen,
-                            registerData: newData,
-                          ),
+                          builder: (ctx) =>
+                              RegisterScreen3(registerData: newData),
                         ),
                       );
                     }
                   }, 0xff32a2c0),
 
-                  SmallButton('BACK', () {
-                    widget.switchScreen('register', 'register_screen_initial');
-                  }, 0xffffff),
+                  SmallButton('BACK', () {}, 0xffffff),
                 ],
               ),
             ),

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sheepfold/screens/splash_screen.dart';
 import 'firebase_options.dart';
-
-// screens
-import 'package:sheepfold/blacksheep_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +15,7 @@ class BlackSheepApp extends StatelessWidget {
   const BlackSheepApp([Key? key]) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {    
-    return MaterialApp(home: const Scaffold(body: BlacksheepRouter()));
+  Widget build(BuildContext context) {
+    return MaterialApp(home: const Scaffold(body: SplashScreen()));
   }
 }

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sheepfold/screens/register/register_screen_initial.dart';
 
 import 'package:sheepfold/widgets/buttons/main_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
@@ -28,7 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           GentyHeader('BlackSheep'),
           Spacer(),
-          MainButton('REGISTER', () {}),
+          MainButton('REGISTER', () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => RegisterScreenInitial()),
+            );
+          }),
           MainButton('LOGIN', () {}),
         ],
       ),

@@ -59,48 +59,48 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
 
     // splash screen on initial load
     if (currentScreen == 'splash_screen') {
-      return SplashScreen(switchScreen);
+      return SplashScreen();
     }
 
     switch (currentGroup) {
       case 'register':
         switch (currentScreen) {
           case 'register_screen_initial':
-            screen = RegisterScreenInitial(switchScreen);
+            screen = RegisterScreenInitial();
           case 'register_screen_2':
-            screen = RegisterScreen2(switchScreen, {});
+            screen = RegisterScreen2();
           case 'register_screen_3':
-            screen = RegisterScreen3(switchScreen);
+            screen = RegisterScreen3();
           case 'register_screen_4':
-            screen = RegisterScreen4(switchScreen);
+            screen = RegisterScreen4();
           case 'register_screen_mentor_2':
-            screen = RegisterScreenMentor2(switchScreen);
+            screen = RegisterScreenMentor2();
           case 'register_screen_mentor_3':
-            screen = RegisterScreenMentor3(switchScreen);
+            screen = RegisterScreenMentor3();
           case 'register_screen_mentor_4':
-            screen = RegisterScreenMentor4(switchScreen);
+            screen = RegisterScreenMentor4();
           case 'register_screen_mentor_5':
-            screen = RegisterScreenMentor5(switchScreen);
+            screen = RegisterScreenMentor5();
           case 'register_screen_mentor_6':
-            screen = RegisterScreenMentor6(switchScreen);
+            screen = RegisterScreenMentor6();
           default:
-            screen = RegisterScreenInitial(switchScreen);
+            screen = RegisterScreenInitial();
         }
       case 'login':
         switch (currentScreen) {
           case 'login_screen':
-            screen = LoginScreen(switchScreen);
+            screen = LoginScreen();
           default:
-            screen = LoginScreen(switchScreen);
+            screen = LoginScreen();
         }
       case 'chat':
         switch (currentScreen) {
           case 'chat_list':
-            screen = ChatList(switchScreen);
+            screen = ChatList();
           case 'single_chat':
-            screen = SingleChat(switchScreen);
+            screen = SingleChat();
           default:
-            screen = ChatList(switchScreen);
+            screen = ChatList();
         }
       default:
         screen = HomeScreen();
@@ -121,7 +121,7 @@ class _BlacksheepRouter extends State<BlacksheepRouter> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, snapshot) {
           if (currentGroup == 'chat' && !snapshot.hasData) {
-            return LoginScreen(switchScreen);
+            return LoginScreen();
           } else {
             return screen;
           }

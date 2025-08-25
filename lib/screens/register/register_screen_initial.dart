@@ -5,9 +5,7 @@ import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreenInitial extends StatefulWidget {
-  const RegisterScreenInitial(this.switchScreen, {super.key});
-
-  final Function switchScreen;
+  const RegisterScreenInitial({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,9 +47,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SmallButton('CLICK HERE', () {
-                  widget.switchScreen('register', 'register_screen_2');
-                }, 0xff32a2c0),
+                SmallButton('CLICK HERE', () {}, 0xff32a2c0),
                 Text(
                   'I AM THE LEADER OF A COMMUNITY GROUP',
                   style: const TextStyle(
@@ -60,12 +56,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SmallButton('CLICK HERE', () {
-                  widget.switchScreen('register', 'register_screen_mentor_2');
-                }, 0xff062d69),
-                SmallButton('BACK', () {
-                  widget.switchScreen('home', 'home_screen');
-                }, 0xffffff),
+                SmallButton('CLICK HERE', () {}, 0xff062d69),
+                SmallButton('BACK', () {}, 0xffffff),
               ],
             ),
           ),

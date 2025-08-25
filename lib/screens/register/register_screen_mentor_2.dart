@@ -4,9 +4,7 @@ import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreenMentor2 extends StatefulWidget {
-  const RegisterScreenMentor2(this.switchScreen, {super.key});
-
-  final Function switchScreen;
+  const RegisterScreenMentor2({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -188,17 +186,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                     ],
                   ),
                   SmallButton('CONTINUE', () {
-                    if (submit()) {
-                      widget.switchScreen(
-                        'register',
-                        'register_screen_mentor_3',
-                      );
-                    }
+                    if (submit()) {}
                   }, 0xff32a2c0),
-
-                  SmallButton('BACK', () {
-                    widget.switchScreen('register', 'register_screen_initial');
-                  }, 0xffffff),
+                  SmallButton('BACK', () {}, 0xffffff),
                 ],
               ),
             ),
