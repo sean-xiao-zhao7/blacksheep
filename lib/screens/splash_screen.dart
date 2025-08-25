@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:sheepfold/screens/home_screen.dart';
 import 'package:video_player/video_player.dart';
@@ -34,10 +32,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 6000), () {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+    Future.delayed(const Duration(milliseconds: 6000), () {}).then((value) {
+      if (mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+      }
     });
 
     _controller.play();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sheepfold/screens/login/login_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 
 import 'package:sheepfold/widgets/buttons/main_button.dart';
@@ -35,7 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (ctx) => RegisterScreenInitial()),
             );
           }),
-          MainButton('LOGIN', () {}),
+          MainButton('LOGIN', () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (ctx) => LoginScreen()));
+          }),
         ],
       ),
     );

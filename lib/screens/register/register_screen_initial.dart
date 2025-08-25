@@ -57,7 +57,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                   textAlign: TextAlign.center,
                 ),
                 SmallButton('CLICK HERE', () {}, 0xff062d69),
-                SmallButton('BACK', () {}, 0xffffff),
+                SmallButton('BACK', () {
+                  Navigator.of(context).pop();
+                }, 0xffffff),
               ],
             ),
           ),

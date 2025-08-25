@@ -7,8 +7,7 @@ import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 final _firebase = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen(this.switchScreen, {super.key});
-  final Function switchScreen;
+  const LoginScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -48,7 +47,6 @@ class _loginScreenState extends State<LoginScreen> {
         password: _password,
       );
       print(userInfo);
-      widget.switchScreen('chat', 'chat_list');
     } on FirebaseAuthException catch (e) {
       print(e.code);
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -147,7 +145,7 @@ class _loginScreenState extends State<LoginScreen> {
                     }
                   }, 0xff32a2c0),
                   SmallButton('Register', () {
-                    widget.switchScreen('register', 'register_screen_initial');
+                    Navigator.of(context).pop();
                   }, 0xff32a2c0),
                 ],
               ),
