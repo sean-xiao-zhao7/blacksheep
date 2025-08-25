@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sheepfold/screens/home_screen.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late VideoPlayerController _controller;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -27,16 +29,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 6000), () {}).then((value) {
+    _timer = Timer(Duration(seconds: 6), () {
       if (mounted) {
-        Navigator.of(
+        Navigator.pushReplacement(
           context,
-        ).push(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+          MaterialPageRoute(builder: (ctx) => HomeScreen()),
+        );
       }
     });
 
