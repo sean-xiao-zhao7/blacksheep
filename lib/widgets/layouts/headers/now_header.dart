@@ -13,6 +13,7 @@ class NowHeader extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'Now',
           color: color,
+          decorationThickness: 0,
           fontSize: 26,
           fontWeight: FontWeight.bold,
         ),

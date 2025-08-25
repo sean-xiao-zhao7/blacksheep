@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
+import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
@@ -63,153 +64,161 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 100),
-      decoration: BoxDecoration(color: Color(0xff32a2c0)),
-      child: Stack(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 150),
-            padding: EdgeInsets.only(
-              top: 100,
-              left: 50,
-              right: 50,
-              bottom: 100,
-            ),
-            decoration: BoxDecoration(
-              color: Color(0xfffbee5e),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(200),
-                topRight: Radius.circular(200),
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(top: 100),
+        decoration: BoxDecoration(color: Color(0xff32a2c0)),
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 150),
+              padding: EdgeInsets.only(
+                top: 100,
+                left: 50,
+                right: 50,
+                bottom: 100,
               ),
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'FIRST NAME',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+              decoration: BoxDecoration(
+                color: Color(0xfffbee5e),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(200),
+                  topRight: Radius.circular(200),
+                ),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'FIRST NAME',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
+                      controller: _firstNameController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'First name is required.';
+                        }
+                      },
+                      onSaved: (value) {
+                        _firstName = value!;
+                      },
+                      autocorrect: false,
                     ),
-                    controller: _firstNameController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'First name is required.';
-                      }
-                    },
-                    onSaved: (value) {
-                      _firstName = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'LAST NAME',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'LAST NAME',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
+                      controller: _lastNameController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Last name is required.';
+                        }
+                      },
+                      onSaved: (value) {
+                        _lastName = value!;
+                      },
+                      autocorrect: false,
                     ),
-                    controller: _lastNameController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Last name is required.';
-                      }
-                    },
-                    onSaved: (value) {
-                      _lastName = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'AGE',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'AGE',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
+                      controller: _ageNameController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Age is required.';
+                        }
+                      },
+                      onSaved: (value) {
+                        _age = value!;
+                      },
+                      autocorrect: false,
                     ),
-                    controller: _ageNameController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Age is required.';
+                    Column(
+                      children: <Widget>[
+                        RadioListTile(
+                          title: Text("MALE"),
+                          value: 'MALE',
+                          groupValue: _gender,
+                          onChanged: (value) {
+                            setState(() {
+                              _gender = value!;
+                            });
+                          },
+                          activeColor: Color(0xff32a2c0),
+                        ),
+                        RadioListTile(
+                          title: Text("FEMALE"),
+                          value: 'FEMALE',
+                          groupValue: _gender,
+                          onChanged: (value) {
+                            setState(() {
+                              _gender = value!;
+                            });
+                          },
+                          activeColor: Color(0xff32a2c0),
+                        ),
+                      ],
+                    ),
+                    SmallButton('CONTINUE', () {
+                      if (submit()) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) =>
+                                RegisterScreen3(registerData: newData),
+                          ),
+                        );
                       }
-                    },
-                    onSaved: (value) {
-                      _age = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      RadioListTile(
-                        title: Text("MALE"),
-                        value: 'MALE',
-                        groupValue: _gender,
-                        onChanged: (value) {
-                          setState(() {
-                            _gender = value!;
-                          });
-                        },
-                        activeColor: Color(0xff32a2c0),
-                      ),
-                      RadioListTile(
-                        title: Text("FEMALE"),
-                        value: 'FEMALE',
-                        groupValue: _gender,
-                        onChanged: (value) {
-                          setState(() {
-                            _gender = value!;
-                          });
-                        },
-                        activeColor: Color(0xff32a2c0),
-                      ),
-                    ],
-                  ),
-                  SmallButton('CONTINUE', () {
-                    if (submit()) {
+                    }, 0xff32a2c0),
+
+                    SmallButton('BACK', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) =>
-                              RegisterScreen3(registerData: newData),
+                          builder: (ctx) => RegisterScreenInitial(),
                         ),
                       );
-                    }
-                  }, 0xff32a2c0),
-
-                  SmallButton('BACK', () {}, 0xffffff),
-                ],
+                    }, 0xffffff),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            top: 0,
-            width: MediaQuery.of(context).size.width,
-            child: const NowHeader('SIGN UP TODAY!'),
-          ),
-          Positioned(
-            top: 40,
-            width: MediaQuery.of(context).size.width,
-            child: const Image(
-              image: AssetImage('assets/images/sheep.png'),
-              height: 200,
+            Positioned(
+              top: 0,
+              width: MediaQuery.of(context).size.width,
+              child: const NowHeader('SIGN UP TODAY!'),
             ),
-          ),
-        ],
+            Positioned(
+              top: 40,
+              width: MediaQuery.of(context).size.width,
+              child: const Image(
+                image: AssetImage('assets/images/sheep.png'),
+                height: 200,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

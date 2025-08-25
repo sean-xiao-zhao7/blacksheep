@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
@@ -68,103 +69,114 @@ class _loginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 50),
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/blacksheep_background_full.png"),
-          fit: BoxFit.cover,
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(top: 50),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 200),
-            padding: EdgeInsets.only(top: 30, left: 50, right: 50, bottom: 100),
-            decoration: BoxDecoration(
-              color: Color(0xfffbee5e),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(200),
-                topRight: Radius.circular(200),
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 200),
+              padding: EdgeInsets.only(
+                top: 30,
+                left: 50,
+                right: 50,
+                bottom: 100,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xfffbee5e),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(200),
+                  topRight: Radius.circular(200),
+                ),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    NowHeader('Please Login', color: Colors.black),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'EMAIL (username)',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Email is required.';
+                        }
+                      },
+                      onSaved: (value) {
+                        _email = value!;
+                      },
+                      autocorrect: false,
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'PASSWORD',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Password is required.';
+                        }
+                      },
+                      onSaved: (value) {
+                        _password = value!;
+                      },
+                      autocorrect: false,
+                    ),
+                    SmallButton('Login', () {
+                      if (submit()) {
+                        loginAsyncAction();
+                      }
+                    }, 0xff32a2c0),
+                    SmallButton('Register', () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => RegisterScreenInitial(),
+                        ),
+                      );
+                    }, 0xff32a2c0),
+                  ],
+                ),
               ),
             ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NowHeader('Please Login', color: Colors.black),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'EMAIL (username)',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    controller: _emailController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Email is required.';
-                      }
-                    },
-                    onSaved: (value) {
-                      _email = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'PASSWORD',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    controller: _passwordController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Password is required.';
-                      }
-                    },
-                    onSaved: (value) {
-                      _password = value!;
-                    },
-                    autocorrect: false,
-                  ),
-                  SmallButton('Login', () {
-                    if (submit()) {
-                      loginAsyncAction();
-                    }
-                  }, 0xff32a2c0),
-                  SmallButton('Register', () {
-                    Navigator.of(context).pop();
-                  }, 0xff32a2c0),
-                ],
+            Positioned(
+              top: 40,
+              width: MediaQuery.of(context).size.width,
+              child: const GentyHeader('BlackSheep', fontSize: 70),
+            ),
+            Positioned(
+              top: 40,
+              width: MediaQuery.of(context).size.width,
+              child: const Image(
+                image: AssetImage('assets/images/sheep.png'),
+                height: 300,
               ),
             ),
-          ),
-          Positioned(
-            top: 40,
-            width: MediaQuery.of(context).size.width,
-            child: const GentyHeader('BlackSheep', fontSize: 70),
-          ),
-          Positioned(
-            top: 40,
-            width: MediaQuery.of(context).size.width,
-            child: const Image(
-              image: AssetImage('assets/images/sheep.png'),
-              height: 300,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
