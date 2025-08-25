@@ -17,15 +17,11 @@ class RegisterScreen2 extends StatefulWidget {
 class _RegisterScreenInitialState extends State<RegisterScreen2> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _ageNameController = TextEditingController();
-  final _genderNameController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _genderController = TextEditingController();
 
   // form
   final _formKey = GlobalKey<FormState>();
-  String _firstName = '';
-  String _lastName = '';
-  String _age = '';
-  String _gender = 'MALE';
   Map<String, String> newData = {};
 
   @override
@@ -35,6 +31,21 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
             widget.registerData['firstName']!.isEmpty
         ? ""
         : widget.registerData['firstName']!;
+    _lastNameController.text =
+        widget.registerData['lastName'] == null ||
+            widget.registerData['lastName']!.isEmpty
+        ? ""
+        : widget.registerData['firstName']!;
+    _ageController.text =
+        widget.registerData['age'] == null ||
+            widget.registerData['age']!.isEmpty
+        ? ""
+        : widget.registerData['age']!;
+    _genderController.text =
+        widget.registerData['gender'] == null ||
+            widget.registerData['gender']!.isEmpty
+        ? ""
+        : widget.registerData['gender']!;
     newData = {...widget.registerData};
     super.initState();
   }
@@ -43,8 +54,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _ageNameController.dispose();
-    _genderNameController.dispose();
+    _ageController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -52,10 +63,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      newData['firstName'] = _firstName;
-      newData['lastName'] = _lastName;
-      newData['age'] = _age;
-      newData['gender'] = _gender;
+      newData['firstName'] = _firstNameController.text;
+      newData['lastName'] = _lastNameController.text;
+      newData['age'] = _ageController.text;
+      newData['gender'] = _genderController.text;
       return true;
     } else {
       return false;
@@ -107,9 +118,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           return 'First name is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _firstName = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -129,9 +137,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           return 'Last name is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _lastName = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -145,14 +150,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         filled: true,
                         fillColor: Colors.white,
                       ),
-                      controller: _ageNameController,
+                      controller: _ageController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Age is required.';
                         }
-                      },
-                      onSaved: (value) {
-                        _age = value!;
                       },
                       autocorrect: false,
                     ),
@@ -161,10 +163,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         RadioListTile(
                           title: Text("MALE"),
                           value: 'MALE',
-                          groupValue: _gender,
+                          groupValue: _genderController.text,
                           onChanged: (value) {
                             setState(() {
-                              _gender = value!;
+                              _genderController.text = value!;
                             });
                           },
                           activeColor: Color(0xff32a2c0),
@@ -172,10 +174,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         RadioListTile(
                           title: Text("FEMALE"),
                           value: 'FEMALE',
-                          groupValue: _gender,
+                          groupValue: _genderController.text,
                           onChanged: (value) {
                             setState(() {
-                              _gender = value!;
+                              _genderController.text = value!;
                             });
                           },
                           activeColor: Color(0xff32a2c0),
