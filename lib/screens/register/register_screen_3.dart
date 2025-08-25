@@ -15,18 +15,6 @@ class RegisterScreen3 extends StatefulWidget {
 }
 
 class _RegisterScreenInitialState extends State<RegisterScreen3> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _password2Controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _password2Controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

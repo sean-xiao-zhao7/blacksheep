@@ -20,12 +20,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
-
-  // form
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
-  String _password_reenter = '';
+  Map<String, String> newData = {};
 
   @override
   void dispose() {
@@ -35,11 +31,22 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    _emailController.text =
+        widget.registerData['email'] == null ||
+            widget.registerData['email']!.isEmpty
+        ? ''
+        : widget.registerData['email']!;
+    newData = {...widget.registerData};
+    super.initState();
+  }
+
   bool submit() {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      widget.registerData['email'] = _email;
+      newData['email'] = _emailController.text;
       return true;
     } else {
       return false;
@@ -103,9 +110,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                           return 'Email is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _email = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -126,9 +130,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                           return 'Password is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _password = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -145,16 +146,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       ),
                       controller: _password2Controller,
                       validator: (value) {
-                        print(_password.compareTo(_password_reenter));
                         if (value == null || value.trim().isEmpty) {
                           return 'Password re-enter is required.';
-                        } else if (_password.compareTo(_password_reenter) !=
+                        } else if (_passwordController.text.compareTo(
+                              _password2Controller.text,
+                            ) !=
                             0) {
                           return "Both passwords must be equal.";
                         }
-                      },
-                      onSaved: (value) {
-                        _password_reenter = value!;
                       },
                       autocorrect: false,
                     ),
@@ -164,11 +163,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       }
                     }, 0xff32a2c0),
                     SmallButton('BACK', () {
+                      newData['email'] = _emailController.text;
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => RegisterScreen3(
-                            registerData: widget.registerData,
-                          ),
+                          builder: (ctx) =>
+                              RegisterScreen3(registerData: newData),
                         ),
                       );
                     }, 0xffffff),
