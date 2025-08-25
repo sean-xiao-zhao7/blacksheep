@@ -43,11 +43,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     _controller.play();
     return Scaffold(
-      body: Expanded(
-        child: _controller.value.isInitialized
-            ? VideoPlayer(_controller)
-            : Container(),
-      ),
+      body: _controller.value.isInitialized
+          ? VideoPlayer(_controller)
+          : Container(),
     );
   }
 }
