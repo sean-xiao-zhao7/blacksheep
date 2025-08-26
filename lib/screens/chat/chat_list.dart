@@ -2,8 +2,7 @@ import "package:flutter/material.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class ChatList extends StatefulWidget {
-  const ChatList(this.switchScreen, {super.key});
-  final Function switchScreen;
+  const ChatList({super.key});
 
   @override
   State<StatefulWidget> createState() {

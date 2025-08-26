@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
@@ -22,6 +23,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, String> newData = {};
+  String errorCode = '';
 
   @override
   void dispose() {
@@ -53,16 +55,28 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     }
   }
 
-  void completeRegister() async {
-    // try {
-    //   final userInfo = _firebase.createUserWithEmailAndPassword(
-    //     email: _email,
-    //     password: _password,
-    //   );
-    // } on FirebaseAuthException catch (e) {
-    //   print('Error register.');
-    //   print(e.code);
-    // }
+  completeRegister() async {
+    try {
+      final userInfo = await _firebase.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userInfo.user!.uid)
+          .set({
+            'email': userInfo.user!.email,
+            'firstName': widget.registerData['firstName'],
+            'lastName': widget.registerData['lastName'],
+            'age': widget.registerData['age'],
+            'gender': widget.registerData['gender'],
+            'type': 'mentee',
+          });
+    } on FirebaseAuthException catch (e) {
+      print('Error register.');
+      print(e.code);
+      errorCode = e.code;
+    }
   }
 
   @override
@@ -160,6 +174,17 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                     SmallButton('COMPLETE', () {
                       if (submit()) {
                         completeRegister();
+                        if (errorCode != '') {
+                          if (errorCode == 'weak-password') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Password should be at least 6 chars.',
+                                ),
+                              ),
+                            );
+                          }
+                        }
                       }
                     }, 0xff32a2c0),
                     SmallButton('BACK', () {
