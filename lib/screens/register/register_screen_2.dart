@@ -3,6 +3,7 @@ import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
+import 'package:flutter/services.dart';
 
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2(this.registerData, {super.key});
@@ -157,6 +158,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         }
                       },
                       autocorrect: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                     Column(
                       children: <Widget>[

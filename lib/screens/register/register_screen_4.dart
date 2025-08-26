@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -61,17 +61,28 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(userInfo.user!.uid)
-          .set({
-            'email': userInfo.user!.email,
-            'firstName': widget.registerData['firstName'],
-            'lastName': widget.registerData['lastName'],
-            'age': widget.registerData['age'],
-            'gender': widget.registerData['gender'],
-            'type': 'mentee',
-          });
+      // FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userInfo.user!.uid)
+      //     .set({
+      //       'email': userInfo.user!.email,
+      //       'firstName': widget.registerData['firstName'],
+      //       'lastName': widget.registerData['lastName'],
+      //       'age': widget.registerData['age'],
+      //       'gender': widget.registerData['gender'],
+      //       'type': 'mentee',
+      //     });
+      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+        "users",
+      );
+      await firebaseDatabaseRef.set({
+        'email': userInfo.user!.email,
+        'firstName': widget.registerData['firstName'],
+        'lastName': widget.registerData['lastName'],
+        'age': widget.registerData['age'],
+        'gender': widget.registerData['gender'],
+        'type': 'mentee',
+      });
     } on FirebaseAuthException catch (e) {
       print('Error register.');
       print(e.code);
@@ -175,15 +186,15 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       if (submit()) {
                         completeRegister();
                         if (errorCode != '') {
+                          var message = '';
                           if (errorCode == 'weak-password') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Password should be at least 6 chars.',
-                                ),
-                              ),
-                            );
+                            message = 'Password should be at least 6 chars.';
+                          } else if (errorCode == 'email-already-in-use') {
+                            message = 'Email already in use.';
                           }
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(message)));
                         }
                       }
                     }, 0xff32a2c0),
