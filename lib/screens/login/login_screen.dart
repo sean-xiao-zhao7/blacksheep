@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:sheepfold/screens/chat/chat_list.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
@@ -19,10 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _loginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
 
   @override
   void dispose() {
@@ -44,10 +43,26 @@ class _loginScreenState extends State<LoginScreen> {
   void loginAsyncAction() async {
     try {
       final userInfo = await _firebase.signInWithEmailAndPassword(
-        email: _email,
-        password: _password,
+        email: _emailController.text,
+        password: _passwordController.text,
       );
       print(userInfo);
+
+      // get userData from database
+      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+        "users/${userInfo.user!.uid}",
+      );
+      final event = await firebaseDatabaseRef.once(DatabaseEventType.value);
+      final userData = event.snapshot.value;
+
+      final Map<String, String> sessionData = {};
+      sessionData['uid'] = userInfo.user?.uid;
+      sessionData['refreshToken'] = userInfo.user?.refreshToken;
+      sessionData['email'] = userData.email;
+
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (ctx) => ChatList(sessionData)));
     } on FirebaseAuthException catch (e) {
       print(e.code);
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -118,9 +133,6 @@ class _loginScreenState extends State<LoginScreen> {
                           return 'Email is required.';
                         }
                       },
-                      onSaved: (value) {
-                        _email = value!;
-                      },
                       autocorrect: false,
                     ),
                     TextFormField(
@@ -140,9 +152,6 @@ class _loginScreenState extends State<LoginScreen> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Password is required.';
                         }
-                      },
-                      onSaved: (value) {
-                        _password = value!;
                       },
                       autocorrect: false,
                     ),

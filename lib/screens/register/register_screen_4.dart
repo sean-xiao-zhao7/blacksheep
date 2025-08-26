@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:sheepfold/screens/chat/chat_list.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -61,28 +62,23 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      // FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(userInfo.user!.uid)
-      //     .set({
-      //       'email': userInfo.user!.email,
-      //       'firstName': widget.registerData['firstName'],
-      //       'lastName': widget.registerData['lastName'],
-      //       'age': widget.registerData['age'],
-      //       'gender': widget.registerData['gender'],
-      //       'type': 'mentee',
-      //     });
-      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
-        "users",
-      );
-      await firebaseDatabaseRef.set({
+      final userData = {
         'email': userInfo.user!.email,
+        'uid': userInfo.user!.uid,
+        'authToken': userInfo.user!.refreshToken,
         'firstName': widget.registerData['firstName'],
         'lastName': widget.registerData['lastName'],
         'age': widget.registerData['age'],
         'gender': widget.registerData['gender'],
         'type': 'mentee',
-      });
+      };
+      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+        "users/${userInfo.user!.uid}",
+      );
+      await firebaseDatabaseRef.set(userData);
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (ctx) => ChatList({})));
     } on FirebaseAuthException catch (e) {
       print('Error register.');
       print(e.code);

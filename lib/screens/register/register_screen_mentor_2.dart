@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
-
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
@@ -164,6 +164,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         }
                       },
                       autocorrect: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -183,14 +187,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         }
                       },
                       autocorrect: false,
-                      keyboardType: TextInputType.numberWithOptions(
-                        decimal: false,
-                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                     Column(
                       children: <Widget>[
                         RadioListTile(
-                          title: Text("MALE"),
+                          title: Text("male"),
                           value: 'MALE',
                           groupValue: _genderController.text,
                           onChanged: (value) {
@@ -201,7 +206,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           activeColor: Color(0xff32a2c0),
                         ),
                         RadioListTile(
-                          title: Text("FEMALE"),
+                          title: Text("female"),
                           value: 'FEMALE',
                           groupValue: _genderController.text,
                           onChanged: (value) {

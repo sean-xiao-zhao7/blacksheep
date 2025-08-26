@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
-import 'package:flutter/services.dart';
 
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2(this.registerData, {super.key});
@@ -166,7 +166,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                     Column(
                       children: <Widget>[
                         RadioListTile(
-                          title: Text("MALE"),
+                          title: Text("male"),
                           value: 'MALE',
                           groupValue: _genderController.text,
                           onChanged: (value) {
@@ -177,7 +177,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           activeColor: Color(0xff32a2c0),
                         ),
                         RadioListTile(
-                          title: Text("FEMALE"),
+                          title: Text("female"),
                           value: 'FEMALE',
                           groupValue: _genderController.text,
                           onChanged: (value) {
