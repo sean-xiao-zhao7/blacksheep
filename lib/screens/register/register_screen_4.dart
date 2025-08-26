@@ -62,14 +62,14 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      final userData = {
-        'email': userInfo.user!.email,
+      final Map<String, String> userData = {
+        'email': userInfo.user!.email!,
         'uid': userInfo.user!.uid,
-        'authToken': userInfo.user!.refreshToken,
-        'firstName': widget.registerData['firstName'],
-        'lastName': widget.registerData['lastName'],
-        'age': widget.registerData['age'],
-        'gender': widget.registerData['gender'],
+        'authToken': userInfo.user!.refreshToken!,
+        'firstName': widget.registerData['firstName']!,
+        'lastName': widget.registerData['lastName']!,
+        'age': widget.registerData['age']!,
+        'gender': widget.registerData['gender']!,
         'type': 'mentee',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
@@ -78,7 +78,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
       await firebaseDatabaseRef.set(userData);
       Navigator.of(
         context,
-      ).push(MaterialPageRoute(builder: (ctx) => ChatList({})));
+      ).push(MaterialPageRoute(builder: (ctx) => ChatList(userData)));
     } on FirebaseAuthException catch (e) {
       print('Error register.');
       print(e.code);

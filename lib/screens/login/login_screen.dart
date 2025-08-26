@@ -46,19 +46,20 @@ class _loginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      print(userInfo);
 
       // get userData from database
-      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
-        "users/${userInfo.user!.uid}",
-      );
-      final event = await firebaseDatabaseRef.once(DatabaseEventType.value);
-      final userData = event.snapshot.value;
-
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child("users/${userInfo.user!.uid}").get();
+      if (!snapshot.exists) {
+        throw Error();
+        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
+      }
+      final userData = snapshot.value;
       final Map<String, String> sessionData = {};
-      sessionData['uid'] = userInfo.user?.uid;
-      sessionData['refreshToken'] = userInfo.user?.refreshToken;
-      sessionData['email'] = userData.email;
+      sessionData['uid'] = userInfo.user!.uid;
+      sessionData['refreshToken'] = userInfo.user!.refreshToken!;
+      // sessionData['email'] = userData!.;
+      print(userData);
 
       Navigator.of(
         context,
