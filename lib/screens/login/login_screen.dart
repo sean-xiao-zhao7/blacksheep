@@ -14,14 +14,16 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _loginScreenState();
+    return _LoginScreenState();
   }
 }
 
-class _loginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Map<String, String> sessionData = {};
+  var errorCode = '';
 
   @override
   void dispose() {
@@ -41,6 +43,7 @@ class _loginScreenState extends State<LoginScreen> {
   }
 
   void loginAsyncAction() async {
+    errorCode = '';
     try {
       final userInfo = await _firebase.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -54,32 +57,11 @@ class _loginScreenState extends State<LoginScreen> {
         throw Error();
         // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
       }
-      final userData = snapshot.value;
-      final Map<String, String> sessionData = {};
+      sessionData = {};
       sessionData['uid'] = userInfo.user!.uid;
       sessionData['refreshToken'] = userInfo.user!.refreshToken!;
-      // sessionData['email'] = userData!.;
-      print(userData);
-
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => ChatList(sessionData)));
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      if (e.code == 'invalid-credential') {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Email or password invalid.')));
-      } else if (e.code == 'invalid-email') {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Email format invalid.')));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid login. Please try again later.')),
-        );
-      }
+      errorCode = e.code;
     }
   }
 
@@ -133,6 +115,8 @@ class _loginScreenState extends State<LoginScreen> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Email is required.';
                         }
+
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -153,12 +137,41 @@ class _loginScreenState extends State<LoginScreen> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Password is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
                     SmallButton('Login', () {
                       if (submit()) {
                         loginAsyncAction();
+                        if (errorCode != '') {
+                          ScaffoldMessenger.of(context).clearSnackBars();
+                          if (errorCode == 'invalid-credential') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Email or password invalid.'),
+                              ),
+                            );
+                          } else if (errorCode == 'invalid-email') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Email format invalid.')),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Invalid login. Please try again later.',
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => ChatList(sessionData),
+                            ),
+                          );
+                        }
                       }
                     }, 0xff32a2c0),
                     SmallButton('Register', () {

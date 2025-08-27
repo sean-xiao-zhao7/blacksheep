@@ -118,8 +118,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         if (value == null || value.trim().isEmpty) {
                           return 'First name is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -137,8 +139,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Last name is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -156,6 +160,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Age is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                       keyboardType: TextInputType.number,
@@ -199,7 +204,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         );
                       }
                     }, 0xff32a2c0),
-
                     SmallButton('BACK', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

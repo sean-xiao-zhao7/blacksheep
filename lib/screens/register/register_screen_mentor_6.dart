@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_5.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
+import 'package:sheepfold/screens/chat/chat_list.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -22,6 +24,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, String> newData = {};
+  Map<String, String> userData = {};
+  String errorCode = '';
 
   @override
   void initState() {
@@ -54,15 +58,28 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
   }
 
   void completeRegister() async {
+    errorCode = '';
     try {
-      final userInfo = _firebase.createUserWithEmailAndPassword(
+      final userInfo = await _firebase.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
-      print(userInfo);
+      userData = {
+        'email': userInfo.user!.email!,
+        'uid': userInfo.user!.uid,
+        'authToken': userInfo.user!.refreshToken!,
+        'firstName': widget.registerData['firstName']!,
+        'lastName': widget.registerData['lastName']!,
+        'age': widget.registerData['age']!,
+        'gender': widget.registerData['gender']!,
+        'type': 'mentee',
+      };
+      DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+        "users/${userInfo.user!.uid}",
+      );
+      await firebaseDatabaseRef.set(userData);
     } on FirebaseAuthException catch (e) {
-      print('Error register.');
-      print(e.code);
+      errorCode = e.code;
     }
   }
 
@@ -110,6 +127,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Email is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -130,6 +148,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Password is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -155,12 +174,30 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
                             0) {
                           return "Both passwords must be equal.";
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
                     SmallButton('COMPLETE', () {
                       if (submit()) {
                         completeRegister();
+                        if (errorCode != '') {
+                          var message = '';
+                          if (errorCode == 'weak-password') {
+                            message = 'Password should be at least 6 chars.';
+                          } else if (errorCode == 'email-already-in-use') {
+                            message = 'Email already in use.';
+                          }
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(message)));
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => ChatList(userData),
+                            ),
+                          );
+                        }
                       }
                     }, 0xff32a2c0),
                     SmallButton('BACK', () {

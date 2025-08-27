@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sheepfold/screens/login/login_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 

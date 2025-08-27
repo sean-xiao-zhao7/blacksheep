@@ -24,6 +24,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, String> newData = {};
+  Map<String, String> userData = {};
   String errorCode = '';
 
   @override
@@ -57,12 +58,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   }
 
   completeRegister() async {
+    errorCode = '';
     try {
       final userInfo = await _firebase.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
-      final Map<String, String> userData = {
+      userData = {
         'email': userInfo.user!.email!,
         'uid': userInfo.user!.uid,
         'authToken': userInfo.user!.refreshToken!,
@@ -76,12 +78,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         "users/${userInfo.user!.uid}",
       );
       await firebaseDatabaseRef.set(userData);
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => ChatList(userData)));
     } on FirebaseAuthException catch (e) {
-      print('Error register.');
-      print(e.code);
       errorCode = e.code;
     }
   }
@@ -130,6 +127,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Email is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -150,6 +148,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Password is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -175,6 +174,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                             0) {
                           return "Both passwords must be equal.";
                         }
+                        return null;
                       },
                       autocorrect: false,
                     ),
@@ -191,6 +191,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                           ScaffoldMessenger.of(
                             context,
                           ).showSnackBar(SnackBar(content: Text(message)));
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => ChatList(userData),
+                            ),
+                          );
                         }
                       }
                     }, 0xff32a2c0),

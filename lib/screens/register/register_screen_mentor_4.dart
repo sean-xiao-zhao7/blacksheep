@@ -113,8 +113,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Experience text is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     Text(
                       'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
@@ -134,8 +136,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Bible parallel text is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     Text(
                       'DO YOU HAVE A CRIMINAL RECORD?',
@@ -155,8 +159,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Criminal record text is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     SmallButton('CONTINUE', () {
                       if (submit()) {

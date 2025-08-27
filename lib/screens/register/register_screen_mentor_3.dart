@@ -108,8 +108,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Church name is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -128,8 +130,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Address is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -150,8 +154,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                         if (value == null || value.trim().isEmpty) {
                           return 'How long at church is required.';
                         }
+                        return null;
                       },
                       autocorrect: false,
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                     SmallButton('CONTINUE', () {
                       if (submit()) {
