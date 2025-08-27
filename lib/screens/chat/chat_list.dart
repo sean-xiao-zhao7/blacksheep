@@ -21,6 +21,13 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
+    final firstName = widget.userData['firstName'];
+    if (firstName != null) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: NowHeader('BlackSheep ', color: Colors.black),
@@ -37,7 +44,7 @@ class _ChatListState extends State<ChatList> {
                   strokeCap: StrokeCap.round,
                 ),
               )
-            : Text('Welcome ${widget.userData['firstName']} to BlackSheep!'),
+            : Text('Welcome $firstName to BlackSheep!'),
       ),
     );
   }
