@@ -12,7 +12,7 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  // bool _isLoading = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -21,16 +21,23 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
-    // clear nav stack
-    // Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-
     return Scaffold(
       appBar: AppBar(
         title: NowHeader('BlackSheep ', color: Colors.black),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-        child: Text('Welcome ${widget.userData['firstName']} to BlackSheep!'),
+        child: _isLoading
+            ? Center(
+                heightFactor: 20,
+                child: CircularProgressIndicator(
+                  color: Color(0xff32a2c0),
+                  strokeWidth: 10,
+                  strokeAlign: 5,
+                  strokeCap: StrokeCap.round,
+                ),
+              )
+            : Text('Welcome ${widget.userData['firstName']} to BlackSheep!'),
       ),
     );
   }
