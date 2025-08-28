@@ -17,14 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _controller =
-        VideoPlayerController.networkUrl(
-            Uri.parse('https://blacksheep01.com/assets/videos/video1.mp4'),
-          )
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {});
-          });
+    _controller = VideoPlayerController.asset('assets/videos/video1.mp4')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
   }
 
   @override
