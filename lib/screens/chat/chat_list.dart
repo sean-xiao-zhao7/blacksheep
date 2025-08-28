@@ -33,24 +33,31 @@ class _ChatListState extends State<ChatList> {
       appBar: AppBar(
         title: NowHeader('BlackSheep ', color: Colors.black),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff32a2c0),
+        backgroundColor: Colors.yellow,
       ),
-      body: SingleChildScrollView(
-        child: _isLoading
-            ? Center(
-                heightFactor: 20,
-                child: CircularProgressIndicator(
-                  color: Color(0xff32a2c0),
-                  strokeWidth: 10,
-                  strokeAlign: 5,
-                  strokeCap: StrokeCap.round,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: _isLoading
+              ? Center(
+                  heightFactor: 20,
+                  child: CircularProgressIndicator(
+                    color: Color(0xff32a2c0),
+                    strokeWidth: 10,
+                    strokeAlign: 5,
+                    strokeCap: StrokeCap.round,
+                  ),
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: NowHeader('Welcome $firstName!'),
                 ),
-              )
-            : Container(
-                height: 200,
-                decoration: BoxDecoration(color: Color(0xff32a2c0)),
-                child: Center(child: NowHeader('Welcome $firstName!')),
-              ),
+        ),
       ),
     );
   }
