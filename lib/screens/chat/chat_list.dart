@@ -22,6 +22,7 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     final firstName = widget.userData['firstName'];
+
     if (firstName != null) {
       setState(() {
         _isLoading = false;
@@ -32,6 +33,7 @@ class _ChatListState extends State<ChatList> {
       appBar: AppBar(
         title: NowHeader('BlackSheep ', color: Colors.black),
         automaticallyImplyLeading: false,
+        backgroundColor: Color(0xff32a2c0),
       ),
       body: SingleChildScrollView(
         child: _isLoading
@@ -44,7 +46,11 @@ class _ChatListState extends State<ChatList> {
                   strokeCap: StrokeCap.round,
                 ),
               )
-            : Text('Welcome $firstName to BlackSheep!'),
+            : Container(
+                height: 200,
+                decoration: BoxDecoration(color: Color(0xff32a2c0)),
+                child: Center(child: NowHeader('Welcome $firstName!')),
+              ),
       ),
     );
   }

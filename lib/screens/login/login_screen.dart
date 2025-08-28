@@ -52,14 +52,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // get userData from database
       final ref = FirebaseDatabase.instance.ref();
-      final snapshot = await ref.child("users/${userInfo.user!.uid}").get();
+      DataSnapshot snapshot = await ref
+          .child("users/${userInfo.user!.uid}")
+          .get();
       if (!snapshot.exists) {
         throw Error();
         // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
       }
+      Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
       sessionData = {};
       sessionData['uid'] = userInfo.user!.uid;
       sessionData['refreshToken'] = userInfo.user!.refreshToken!;
+      sessionData['firstName'] = userData['firstName']!;
+
+      if (mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => ChatList(sessionData)));
+      }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
     }
@@ -165,12 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           }
-                        } else {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => ChatList(sessionData),
-                            ),
-                          );
                         }
                       }
                     }, 0xff32a2c0),
