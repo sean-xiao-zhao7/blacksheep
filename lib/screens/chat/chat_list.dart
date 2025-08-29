@@ -1,5 +1,6 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
@@ -20,6 +21,8 @@ class _ChatListState extends State<ChatList> {
   void initState() {
     super.initState();
   }
+
+  void connectToMentor(String type) {}
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +79,22 @@ class _ChatListState extends State<ChatList> {
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Color(0xff32a2c0).withAlpha(210),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       child: NowHeader(
                         'Start connecting with a mentor by selecting one of the choices below:',
                         fontSize: 22,
                         color: Colors.white,
                       ),
+                    ),
+                    MainButton(
+                      'Connect by phone',
+                      connectToMentor,
+                      size: 400,
+                    ),
+                    MainButton(
+                      'Connect by BlackSheep messenger',
+                      connectToMentor,
+                      size: 400,
                     ),
                   ],
                 ),
