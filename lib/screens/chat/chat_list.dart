@@ -1,3 +1,4 @@
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
@@ -34,7 +35,18 @@ class _ChatListState extends State<ChatList> {
       appBar: AppBar(
         title: GentyHeader('BlackSheep', fontSize: 40),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff32a2c0),        
+        backgroundColor: Color(0xff32a2c0),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.person, color: Colors.white),
+          ),
+        ],
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.menu, color: Colors.white),
+        ),
+        centerTitle: false,
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -59,7 +71,7 @@ class _ChatListState extends State<ChatList> {
               : Column(
                   spacing: 20,
                   children: [
-                    NowHeader('Welcome $firstName!', fontSize: 28,),
+                    NowHeader('Welcome $firstName!', fontSize: 28),
                     Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
