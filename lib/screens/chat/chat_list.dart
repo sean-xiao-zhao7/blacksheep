@@ -1,5 +1,6 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
@@ -39,17 +40,62 @@ class _ChatListState extends State<ChatList> {
         title: GentyHeader('BlackSheep', fontSize: 40),
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xff32a2c0),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu, color: Colors.white),
+            );
+          },
+        ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return SizedBox.expand(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[Text(widget.userData['firstName']!)],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
             icon: Icon(Icons.person, color: Colors.white),
           ),
         ],
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu, color: Colors.white),
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Color(0xff32a2c0)),
+              child: GentyHeader('BlackSheep', fontSize: 30),
+            ),
+            ListTile(
+              title: const Text('Logout'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-        centerTitle: false,
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -86,11 +132,7 @@ class _ChatListState extends State<ChatList> {
                         color: Colors.white,
                       ),
                     ),
-                    MainButton(
-                      'Connect by phone',
-                      connectToMentor,
-                      size: 400,
-                    ),
+                    MainButton('Connect by phone', connectToMentor, size: 400),
                     MainButton(
                       'Connect by BlackSheep messenger',
                       connectToMentor,
