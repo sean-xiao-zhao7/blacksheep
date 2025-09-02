@@ -37,7 +37,7 @@ class _ChatListState extends State<ChatList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: GentyHeader('BlackSheep', fontSize: 40),
+        title: GentyHeader('BlackSheep', fontSize: 34),
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xff32a2c0),
         leading: Builder(
@@ -120,7 +120,9 @@ class _ChatListState extends State<ChatList> {
               : Column(
                   spacing: 20,
                   children: [
+                    SizedBox(height: 20),
                     NowHeader('Welcome $firstName!', fontSize: 28),
+                    SizedBox(height: 20),
                     Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -128,13 +130,14 @@ class _ChatListState extends State<ChatList> {
                       ),
                       child: NowHeader(
                         'Start connecting with a mentor by selecting one of the choices below:',
-                        fontSize: 22,
+                        fontSize: 20,
                         color: Colors.white,
                       ),
                     ),
+                    SizedBox(height: 210),
                     MainButton('Connect by phone', connectToMentor, size: 400),
                     MainButton(
-                      'Connect by BlackSheep messenger',
+                      'Connect by chat app',
                       connectToMentor,
                       size: 400,
                     ),
