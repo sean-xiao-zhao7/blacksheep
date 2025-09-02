@@ -97,8 +97,15 @@ class _ChatListState extends State<ChatList> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xff32a2c0)),
-              child: GentyHeader('BlackSheep', fontSize: 30),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/images/blacksheep_background_full.png",
+                  ),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
               title: const Text('Logout'),
