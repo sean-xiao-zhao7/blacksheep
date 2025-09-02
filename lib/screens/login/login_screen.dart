@@ -64,6 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['uid'] = userInfo.user!.uid;
       sessionData['refreshToken'] = userInfo.user!.refreshToken!;
       sessionData['firstName'] = userData['firstName']!;
+      sessionData['lastName'] = userData['lastName']!;
+      sessionData['email'] = userData['email']!;
 
       if (mounted) {
         Navigator.of(

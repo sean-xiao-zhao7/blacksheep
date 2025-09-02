@@ -53,15 +53,34 @@ class _ChatListState extends State<ChatList> {
         actions: [
           IconButton(
             onPressed: () {
-              showBottomSheet(
+              showModalBottomSheet(
                 context: context,
                 builder: (BuildContext context) {
-                  return SizedBox.expand(
-                    child: Center(
+                  return FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                      padding: EdgeInsets.all(40),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[Text(widget.userData['firstName']!)],
+                        children: [
+                          Text(
+                            'Name: ${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                            style: TextStyle(
+                              color: Color(0xff32a2c0),
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            'Email: ${widget.userData['email']!}',
+                            style: TextStyle(
+                              color: Color(0xff32a2c0),
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -124,17 +143,17 @@ class _ChatListState extends State<ChatList> {
                     NowHeader('Welcome $firstName!', fontSize: 28),
                     SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(30),
                       decoration: BoxDecoration(
                         color: Color(0xff32a2c0).withAlpha(210),
                       ),
                       child: NowHeader(
                         'Start connecting with a mentor by selecting one of the choices below:',
-                        fontSize: 20,
+                        fontSize: 22,
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 210),
+                    SizedBox(height: 200),
                     MainButton('Connect by phone', connectToMentor, size: 400),
                     MainButton(
                       'Connect by chat app',
