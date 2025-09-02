@@ -28,6 +28,8 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     final firstName = widget.userData['firstName'];
+    final userType = widget.userData['type'];
+    final menteeCount = 0;
 
     if (firstName != null) {
       setState(() {
@@ -132,44 +134,93 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: _isLoading
-              ? Center(
-                  heightFactor: 20,
-                  child: CircularProgressIndicator(
-                    color: Color(0xff32a2c0),
-                    strokeWidth: 10,
-                    strokeAlign: 5,
-                    strokeCap: StrokeCap.round,
-                  ),
-                )
-              : Column(
-                  spacing: 20,
-                  children: [
-                    SizedBox(height: 20),
-                    NowHeader('Welcome $firstName!', fontSize: 28),
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: Color(0xff32a2c0).withAlpha(210),
+        child: userType == 'mentee'
+            ? SingleChildScrollView(
+                child: _isLoading
+                    ? Center(
+                        heightFactor: 20,
+                        child: CircularProgressIndicator(
+                          color: Color(0xff32a2c0),
+                          strokeWidth: 10,
+                          strokeAlign: 5,
+                          strokeCap: StrokeCap.round,
+                        ),
+                      )
+                    : Column(
+                        spacing: 20,
+                        children: [
+                          SizedBox(height: 20),
+                          NowHeader('Welcome $firstName!', fontSize: 28),
+                          SizedBox(height: 20),
+                          Container(
+                            padding: EdgeInsets.all(30),
+                            decoration: BoxDecoration(
+                              color: Color(0xff32a2c0).withAlpha(210),
+                            ),
+                            child: NowHeader(
+                              'Start connecting with a mentor by selecting one of the choices below:',
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 200),
+                          MainButton(
+                            'Connect by phone',
+                            connectToMentor,
+                            size: 400,
+                          ),
+                          MainButton(
+                            'Connect by chat app',
+                            connectToMentor,
+                            size: 400,
+                          ),
+                        ],
                       ),
-                      child: NowHeader(
-                        'Start connecting with a mentor by selecting one of the choices below:',
-                        fontSize: 22,
-                        color: Colors.white,
+              )
+            : SingleChildScrollView(
+                child: _isLoading
+                    ? Center(
+                        heightFactor: 20,
+                        child: CircularProgressIndicator(
+                          color: Color(0xff32a2c0),
+                          strokeWidth: 10,
+                          strokeAlign: 5,
+                          strokeCap: StrokeCap.round,
+                        ),
+                      )
+                    : Column(
+                        spacing: 20,
+                        children: [
+                          SizedBox(height: 5),
+                          NowHeader('Welcome $firstName!', fontSize: 26),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Color(0xff32a2c0).withAlpha(210),
+                            ),
+                            child: NowHeader(
+                              'As mentor, you can chat with mentees who connected with you below:',
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          menteeCount == 0
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff32a2c0).withAlpha(210),
+                                  ),
+                                  padding: EdgeInsets.all(20),
+                                  margin: EdgeInsets.only(top: 150),
+                                  child: NowHeader(
+                                    'No mentees connected yet. Please check back later!',
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : ListView(children: []),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 200),
-                    MainButton('Connect by phone', connectToMentor, size: 400),
-                    MainButton(
-                      'Connect by chat app',
-                      connectToMentor,
-                      size: 400,
-                    ),
-                  ],
-                ),
-        ),
+              ),
       ),
     );
   }

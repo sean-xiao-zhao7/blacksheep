@@ -72,7 +72,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
         'lastName': widget.registerData['lastName']!,
         'age': widget.registerData['age']!,
         'gender': widget.registerData['gender']!,
-        'type': 'mentee',
+        'exp': widget.registerData['exp']!,
+        'stories': widget.registerData['stories']!,
+        'crim': widget.registerData['crim']!,
+        'church_name': widget.registerData['name']!,
+        'address': widget.registerData['address']!,
+        'long': widget.registerData['long']!,
+        'type': 'mentor',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
         "users/${userInfo.user!.uid}",
