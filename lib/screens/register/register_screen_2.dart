@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'dart:math';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
@@ -132,18 +131,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
       latitude = locationData.longitude!;
       _isLoading = false;
     });
-  }
-
-  double calculateDistance(lat1, lon1, lat2, lon2) {
-    var p =
-        0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
-    var c = cos;
-    var a =
-        0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    var radiusOfEarth = 6371;
-    return radiusOfEarth * 2 * asin(sqrt(a));
   }
 
   @override

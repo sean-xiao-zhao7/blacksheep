@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
 import 'package:sheepfold/screens/register/register_screen_mentor_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
@@ -7,7 +8,7 @@ import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreenMentor2 extends StatefulWidget {
   const RegisterScreenMentor2(this.registerData, {super.key});
-  final Map<String, String> registerData;
+  final Map<String, dynamic> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -21,8 +22,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
   final _ageController = TextEditingController();
   final _genderController = TextEditingController();
   final _phoneController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> newData = {};
+  Map<String, dynamic> newData = {};
+  double latitude = 0;
+  double longitude = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -51,6 +56,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
             widget.registerData['phone']!.isEmpty
         ? ""
         : widget.registerData['phone']!;
+    latitude = widget.registerData['latitude'] == null
+        ? 0
+        : widget.registerData['latitude']! as double;
+    longitude = widget.registerData['longitude'] == null
+        ? 0
+        : widget.registerData['longitude']! as double;
     newData = {...widget.registerData};
     super.initState();
   }
@@ -66,7 +77,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
   }
 
   bool submit() {
-    final isValid = _formKey.currentState!.validate();
+    bool isValid = _formKey.currentState!.validate();
+    if (latitude == 0 && longitude == 0) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Current location is required.')));
+      isValid = false;
+    }
+
     if (isValid) {
       _formKey.currentState!.save();
       newData['firstName'] = _firstNameController.text;
@@ -74,10 +93,51 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
       newData['age'] = _ageController.text;
       newData['gender'] = _genderController.text;
       newData['phone'] = _phoneController.text;
+      newData['latitude'] = latitude;
+      newData['longitude'] = longitude;
       return true;
     } else {
       return false;
     }
+  }
+
+  void getLocationAsync() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+    LocationData locationData = await location.getLocation();
+    setState(() {
+      latitude = locationData.latitude!;
+      latitude = locationData.longitude!;
+      _isLoading = false;
+    });
   }
 
   @override
@@ -198,32 +258,43 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                     ),
-                    Column(
+                    Row(
                       children: <Widget>[
-                        RadioListTile(
-                          title: Text("male"),
-                          value: 'MALE',
-                          groupValue: _genderController.text,
-                          onChanged: (value) {
-                            setState(() {
-                              _genderController.text = value!;
-                            });
-                          },
-                          activeColor: Color(0xff32a2c0),
+                        Expanded(
+                          child: RadioListTile(
+                            title: Text("Male"),
+                            value: 'MALE',
+                            groupValue: _genderController.text,
+                            onChanged: (value) {
+                              setState(() {
+                                _genderController.text = value!;
+                              });
+                            },
+                            activeColor: Color(0xff32a2c0),
+                          ),
                         ),
-                        RadioListTile(
-                          title: Text("female"),
-                          value: 'FEMALE',
-                          groupValue: _genderController.text,
-                          onChanged: (value) {
-                            setState(() {
-                              _genderController.text = value!;
-                            });
-                          },
-                          activeColor: Color(0xff32a2c0),
+                        Expanded(
+                          child: RadioListTile(
+                            title: Text("Female"),
+                            value: 'FEMALE',
+                            groupValue: _genderController.text,
+                            onChanged: (value) {
+                              setState(() {
+                                _genderController.text = value!;
+                              });
+                            },
+                            activeColor: Color(0xff32a2c0),
+                          ),
                         ),
                       ],
                     ),
+                    longitude == 0 && latitude == 0
+                        ? (_isLoading
+                              ? CircularProgressIndicator()
+                              : SmallButton('Get current location', () {
+                                  getLocationAsync();
+                                }, 0xff32a2c0))
+                        : Text('Location obtained!'),
                     SmallButton('CONTINUE', () {
                       if (submit()) {
                         Navigator.of(context).push(

@@ -1,4 +1,5 @@
 import "package:firebase_auth/firebase_auth.dart";
+import 'dart:math';
 import "package:flutter/material.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
@@ -25,6 +26,18 @@ class _ChatListState extends State<ChatList> {
 
   void connectToMentor(String type) {
     // make database connection
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p =
+        0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
+    var c = cos;
+    var a =
+        0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    var radiusOfEarth = 6371;
+    return radiusOfEarth * 2 * asin(sqrt(a));
   }
 
   @override

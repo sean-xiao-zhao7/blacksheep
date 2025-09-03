@@ -10,7 +10,7 @@ final _firebase = FirebaseAuth.instance;
 
 class RegisterScreenMentor6 extends StatefulWidget {
   const RegisterScreenMentor6(this.registerData, {super.key});
-  final Map<String, String> registerData;
+  final Map<String, dynamic> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,8 +23,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> newData = {};
-  Map<String, String> userData = {};
+  Map<String, dynamic> newData = {};
+  Map<String, dynamic> userData = {};
   String errorCode = '';
 
   @override
@@ -78,6 +78,8 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
         'church_name': widget.registerData['name']!,
         'address': widget.registerData['address']!,
         'long': widget.registerData['long']!,
+        'longitude': widget.registerData['longitude']!,
+        'latitude': widget.registerData['latitude']!,
         'type': 'mentor',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(

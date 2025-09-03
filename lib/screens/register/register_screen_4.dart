@@ -72,6 +72,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         'lastName': widget.registerData['lastName']!,
         'age': widget.registerData['age']!,
         'gender': widget.registerData['gender']!,
+        'latitude': widget.registerData['latitude']!,
+        'longitude': widget.registerData['longitude']!,
         'type': 'mentee',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(

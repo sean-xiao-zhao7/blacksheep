@@ -6,7 +6,7 @@ import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreenMentor4 extends StatefulWidget {
   const RegisterScreenMentor4(this.registerData, {super.key});
-  final Map<String, String> registerData;
+  final Map<String, dynamic> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -19,7 +19,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
   final _storiesController = TextEditingController();
   final _criminalController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> newData = {};
+  Map<String, dynamic> newData = {};
 
   @override
   void initState() {
