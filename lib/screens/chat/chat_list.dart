@@ -7,7 +7,7 @@ import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class ChatList extends StatefulWidget {
   const ChatList(this.userData, {super.key});
-  final Map<String, String> userData;
+  final Map<String, dynamic> userData;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +23,9 @@ class _ChatListState extends State<ChatList> {
     super.initState();
   }
 
-  void connectToMentor(String type) {}
+  void connectToMentor(String type) {
+    // make database connection
+  }
 
   @override
   Widget build(BuildContext context) {

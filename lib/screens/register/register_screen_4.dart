@@ -10,7 +10,7 @@ final _firebase = FirebaseAuth.instance;
 
 class RegisterScreen4 extends StatefulWidget {
   const RegisterScreen4({this.registerData = const {}, super.key});
-  final Map<String, String> registerData;
+  final Map<String, dynamic> registerData;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,8 +23,8 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> newData = {};
-  Map<String, String> userData = {};
+  Map<String, dynamic> newData = {};
+  Map<String, dynamic> userData = {};
   String errorCode = '';
 
   @override
