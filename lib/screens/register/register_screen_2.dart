@@ -168,29 +168,33 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                     ),
-                    Column(
+                    Row(
                       children: <Widget>[
-                        RadioListTile(
-                          title: Text("male"),
-                          value: 'MALE',
-                          groupValue: _genderController.text,
-                          onChanged: (value) {
-                            setState(() {
-                              _genderController.text = value!;
-                            });
-                          },
-                          activeColor: Color(0xff32a2c0),
+                        Expanded(
+                          child: RadioListTile(
+                            title: Text("male"),
+                            value: 'MALE',
+                            groupValue: _genderController.text,
+                            onChanged: (value) {
+                              setState(() {
+                                _genderController.text = value!;
+                              });
+                            },
+                            activeColor: Color(0xff32a2c0),
+                          ),
                         ),
-                        RadioListTile(
-                          title: Text("female"),
-                          value: 'FEMALE',
-                          groupValue: _genderController.text,
-                          onChanged: (value) {
-                            setState(() {
-                              _genderController.text = value!;
-                            });
-                          },
-                          activeColor: Color(0xff32a2c0),
+                        Expanded(
+                          child: RadioListTile(
+                            title: Text("female"),
+                            value: 'FEMALE',
+                            groupValue: _genderController.text,
+                            onChanged: (value) {
+                              setState(() {
+                                _genderController.text = value!;
+                              });
+                            },
+                            activeColor: Color(0xff32a2c0),
+                          ),
                         ),
                       ],
                     ),
