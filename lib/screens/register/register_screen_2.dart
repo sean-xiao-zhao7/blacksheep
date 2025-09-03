@@ -20,10 +20,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   final _lastNameController = TextEditingController();
   final _ageController = TextEditingController();
   final _genderController = TextEditingController();
+  final _locationController = TextEditingController();
 
   // form
   final _formKey = GlobalKey<FormState>();
   Map<String, String> newData = {};
+  String location = '';
 
   @override
   void initState() {
@@ -47,6 +49,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
             widget.registerData['gender']!.isEmpty
         ? ""
         : widget.registerData['gender']!;
+    _locationController.text =
+        widget.registerData['location'] == null ||
+            widget.registerData['location']!.isEmpty
+        ? ""
+        : widget.registerData['location']!;
     newData = {...widget.registerData};
     super.initState();
   }
@@ -57,17 +64,27 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     _lastNameController.dispose();
     _ageController.dispose();
     _genderController.dispose();
+    _locationController.dispose();
     super.dispose();
   }
 
   bool submit() {
-    final isValid = _formKey.currentState!.validate();
+    bool isValid = _formKey.currentState!.validate();
+    if (location == '') {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Current location is required.')));
+      isValid = false;
+    }
+
     if (isValid) {
       _formKey.currentState!.save();
       newData['firstName'] = _firstNameController.text;
       newData['lastName'] = _lastNameController.text;
       newData['age'] = _ageController.text;
       newData['gender'] = _genderController.text;
+      newData['location'] = _locationController.text;
       return true;
     } else {
       return false;
@@ -85,10 +102,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
             Container(
               margin: EdgeInsets.only(top: 150),
               padding: EdgeInsets.only(
-                top: 100,
+                top: 80,
                 left: 50,
                 right: 50,
-                bottom: 100,
+                bottom: 50,
               ),
               decoration: BoxDecoration(
                 color: Color(0xfffbee5e),
@@ -172,7 +189,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       children: <Widget>[
                         Expanded(
                           child: RadioListTile(
-                            title: Text("male"),
+                            title: Text("Male"),
                             value: 'MALE',
                             groupValue: _genderController.text,
                             onChanged: (value) {
@@ -185,7 +202,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                         Expanded(
                           child: RadioListTile(
-                            title: Text("female"),
+                            title: Text("Female"),
                             value: 'FEMALE',
                             groupValue: _genderController.text,
                             onChanged: (value) {
@@ -198,6 +215,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                       ],
                     ),
+                    SmallButton('Get current location', () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => RegisterScreenInitial(),
+                        ),
+                      );
+                    }, 0xff32a2c0),
                     SmallButton('CONTINUE', () {
                       if (submit()) {
                         Navigator.of(context).push(
