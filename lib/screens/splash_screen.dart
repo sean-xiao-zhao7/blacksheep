@@ -34,18 +34,34 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     _timer = Timer(Duration(seconds: 6), () {
       if (mounted) {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (ctx) => HomeScreen()),
         );
       }
     });
-
     _controller.play();
+
     return Scaffold(
-      body: _controller.value.isInitialized
-          ? VideoPlayer(_controller)
-          : Container(),
+      body: FractionallySizedBox(
+        widthFactor: 1,
+        heightFactor: 1,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/blacksheep_background_full.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: _controller.value.isInitialized
+              ? FractionallySizedBox(
+                  widthFactor: 1.25,
+                  heightFactor: 0.65,
+                  child: VideoPlayer(_controller),
+                )
+              : CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }
