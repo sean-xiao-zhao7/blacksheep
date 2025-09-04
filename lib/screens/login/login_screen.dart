@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> sessionData = {};
+  Map<String, dynamic> sessionData = {};
   var errorCode = '';
 
   @override
@@ -67,6 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['lastName'] = userData['lastName']!;
       sessionData['email'] = userData['email']!;
       sessionData['type'] = userData['type']!;
+      sessionData['latitude'] = userData['latitude']!;
+      sessionData['longitude'] = userData['longitude']!;
 
       if (mounted) {
         Navigator.of(

@@ -1,4 +1,5 @@
 import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_database/firebase_database.dart";
 import 'dart:math';
 import "package:flutter/material.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
@@ -24,7 +25,37 @@ class _ChatListState extends State<ChatList> {
     super.initState();
   }
 
-  void connectToMentor(String type) {
+  void connectToMentor(String type) async {
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('users').get();
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
+
+      // find closest mentor
+      String closestUid = '';
+      double closestDistance = 100000000;
+      for (String key in allUsers.keys) {
+        Map<dynamic, dynamic> currentUser = allUsers[key];
+        if (currentUser['type'] == 'mentor') {
+          double newDistance = calculateDistance(
+            currentUser['latitude'],
+            currentUser['longitude'],
+            widget.userData['latitude'],
+            widget.userData['longitude'],
+          );
+          if (newDistance < closestDistance) {
+            closestDistance = newDistance;
+            closestUid = key;
+          }
+        }
+      }
+      print('$closestUid, $closestDistance');
+    } else {
+      print('No mentors.');
+    }
+  }
+
+  void getChats(String type) {
     // make database connection
   }
 
@@ -181,12 +212,12 @@ class _ChatListState extends State<ChatList> {
                           SizedBox(height: 200),
                           MainButton(
                             'Connect by phone',
-                            connectToMentor,
+                            () => connectToMentor('phone'),
                             size: 400,
                           ),
                           MainButton(
                             'Connect by chat app',
-                            connectToMentor,
+                            () => connectToMentor('chat'),
                             size: 400,
                           ),
                         ],
