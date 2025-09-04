@@ -79,6 +79,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
         "users/${userInfo.user!.uid}",
       );
+      if (mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => ChatList(userData)));
+      }
       await firebaseDatabaseRef.set(userData);
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
@@ -193,12 +198,6 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                           ScaffoldMessenger.of(
                             context,
                           ).showSnackBar(SnackBar(content: Text(message)));
-                        } else {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => ChatList(userData),
-                            ),
-                          );
                         }
                       }
                     }, 0xff32a2c0),
