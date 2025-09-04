@@ -20,14 +20,14 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 80),
+        padding: EdgeInsets.only(top: 50),
         decoration: BoxDecoration(color: Color(0xfff7ca2d)),
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 200),
+              margin: EdgeInsets.only(top: 120),
               padding: EdgeInsets.only(
-                top: 100,
+                top: 80,
                 left: 50,
                 right: 50,
                 bottom: 50,
@@ -231,7 +231,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
               ),
             ),
             Positioned(
-              top: 60,
+              top: 10,
               width: MediaQuery.of(context).size.width,
               child: const Image(
                 image: AssetImage('assets/images/sheep.png'),

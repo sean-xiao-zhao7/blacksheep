@@ -128,7 +128,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     LocationData locationData = await location.getLocation();
     setState(() {
       latitude = locationData.latitude!;
-      latitude = locationData.longitude!;
+      longitude = locationData.longitude!;
       _isLoading = false;
     });
   }
