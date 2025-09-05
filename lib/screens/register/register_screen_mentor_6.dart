@@ -85,12 +85,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
         "users/${userInfo.user!.uid}",
       );
+      await firebaseDatabaseRef.set(userData);
       if (mounted) {
         Navigator.of(
           context,
         ).push(MaterialPageRoute(builder: (ctx) => ChatList(userData)));
       }
-      await firebaseDatabaseRef.set(userData);
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
     }

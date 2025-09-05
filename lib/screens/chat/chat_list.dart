@@ -19,44 +19,93 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
+  Map<String, dynamic> matches = {};
 
   @override
   void initState() {
     super.initState();
+    getMatches();
   }
 
-  void connectToMentor(String type) async {
-    final ref = FirebaseDatabase.instance.ref();
-    final snapshot = await ref.child('users').get();
-    if (snapshot.exists) {
-      Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
-
-      // find closest mentor
-      String closestUid = '';
-      double closestDistance = 100000000;
-      for (String key in allUsers.keys) {
-        Map<dynamic, dynamic> currentUser = allUsers[key];
-        if (currentUser['type'] == 'mentor') {
-          double newDistance = calculateDistance(
-            currentUser['latitude'],
-            currentUser['longitude'],
-            widget.userData['latitude'],
-            widget.userData['longitude'],
-          );
-          if (newDistance < closestDistance) {
-            closestDistance = newDistance;
-            closestUid = key;
-          }
-        }
-      }
-      print('$closestUid, $closestDistance');
-    } else {
-      print('No mentors.');
+  void getMatches() async {
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance.ref("users-matches");
+      Query query = ref.equalTo(widget.userData['uid']);
+    } catch (error) {
+      print(error);
     }
   }
 
-  void getChats(String type) {
-    // make database connection
+  void connectToMentor(String type) async {
+    setState(() {
+      _isLoading = true;
+    });
+    String snackMessage = '';
+
+    try {
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('users').get();
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> allUsers =
+            snapshot.value as Map<dynamic, dynamic>;
+
+        // find closest mentor
+        String closestUid = '';
+        double closestDistance = 100000000;
+        for (String key in allUsers.keys) {
+          Map<dynamic, dynamic> currentUser = allUsers[key];
+          if (currentUser['type'] == 'mentor') {
+            double newDistance = calculateDistance(
+              currentUser['latitude'],
+              currentUser['longitude'],
+              widget.userData['latitude'],
+              widget.userData['longitude'],
+            );
+            if (newDistance < closestDistance) {
+              closestDistance = newDistance;
+              closestUid = key;
+            }
+          }
+        }
+        // print('$closestUid, $closestDistance');
+
+        Map<String, dynamic> matchData = {
+          'mentor': closestUid,
+          'mentee': widget.userData['uid'],
+          'type': type,
+        };
+        DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+          "users-matches",
+        );
+        DatabaseReference newUserMatch = firebaseDatabaseRef.push();
+        await newUserMatch.set(matchData);
+        snackMessage = 'Successfully matched with mentor via $type!';
+      } else {
+        snackMessage = 'No mentors in system yet. Please check back later!';
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(snackMessage)));
+      }
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No mentors in system yet. Please check back later!'),
+          ),
+        );
+      }
+    }
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2) {
