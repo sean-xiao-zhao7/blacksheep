@@ -23,7 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> sessionData = {};
-  var errorCode = '';
+  String errorCode = '';
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -43,6 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginAsyncAction() async {
+    setState(() {
+      _isLoading = true;
+    });
     errorCode = '';
     try {
       final userInfo = await _firebase.signInWithEmailAndPassword(
@@ -77,6 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -156,33 +163,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       autocorrect: false,
                     ),
-                    SmallButton('Login', () {
-                      if (submit()) {
-                        loginAsyncAction();
-                        if (errorCode != '') {
-                          ScaffoldMessenger.of(context).clearSnackBars();
-                          if (errorCode == 'invalid-credential') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Email or password invalid.'),
-                              ),
-                            );
-                          } else if (errorCode == 'invalid-email') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Email format invalid.')),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Invalid login. Please try again later.',
-                                ),
-                              ),
-                            );
-                          }
-                        }
-                      }
-                    }, 0xff32a2c0),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : SmallButton('Login', () {
+                            if (submit()) {
+                              loginAsyncAction();
+                              if (errorCode != '') {
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                if (errorCode == 'invalid-credential') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Email or password invalid.',
+                                      ),
+                                    ),
+                                  );
+                                } else if (errorCode == 'invalid-email') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Email format invalid.'),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Invalid login. Please try again later.',
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                            }
+                          }, 0xff32a2c0),
                     SmallButton('Register', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
