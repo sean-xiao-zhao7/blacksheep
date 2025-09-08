@@ -30,7 +30,16 @@ class _ChatListState extends State<ChatList> {
   void getMatches() async {
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref("users-matches");
-      Query query = ref.equalTo(widget.userData['uid']);
+      Query query = ref
+          .orderByChild(widget.userData['type'])
+          .equalTo(widget.userData['uid']);
+      DataSnapshot snapshot = await query.get();
+      if (!snapshot.exists) {
+        throw Error();
+        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
+      }
+
+      print(snapshot.value);
     } catch (error) {
       print(error);
     }
