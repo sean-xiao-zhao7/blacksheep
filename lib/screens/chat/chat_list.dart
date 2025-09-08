@@ -29,17 +29,21 @@ class _ChatListState extends State<ChatList> {
 
   void getMatches() async {
     try {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("users-matches");
-      Query query = ref
-          .orderByChild(widget.userData['type'])
-          .equalTo(widget.userData['uid']);
-      DataSnapshot snapshot = await query.get();
+      DatabaseReference ref = FirebaseDatabase.instance.ref();
+      DataSnapshot snapshot = await ref.child("users-matches").get();
       if (!snapshot.exists) {
         throw Error();
-        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
       }
+      Map<dynamic, dynamic> allMatches =
+          snapshot.value as Map<dynamic, dynamic>;
 
-      print(snapshot.value);
+      for (final String key in allMatches.keys) {
+        final currentMatch = allMatches[key];
+        if (widget.userData['type'] == 'mentor' &&
+            currentMatch['mentor'] == widget.userData['uid']) {
+        } else if (widget.userData['type'] == 'mentee' &&
+            currentMatch['mentee'] == widget.userData['uid']) {}
+      }
     } catch (error) {
       print(error);
     }
