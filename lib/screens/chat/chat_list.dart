@@ -19,7 +19,7 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
-  Map<String, dynamic> matches = {};
+  List matches = [];
 
   @override
   void initState() {
@@ -37,13 +37,22 @@ class _ChatListState extends State<ChatList> {
       Map<dynamic, dynamic> allMatches =
           snapshot.value as Map<dynamic, dynamic>;
 
+      List myMatches = [];
       for (final String key in allMatches.keys) {
-        final currentMatch = allMatches[key];
+        var currentMatch = allMatches[key];
         if (widget.userData['type'] == 'mentor' &&
             currentMatch['mentor'] == widget.userData['uid']) {
+          currentMatch['matchId'] = key;
+          myMatches.add(currentMatch);
         } else if (widget.userData['type'] == 'mentee' &&
-            currentMatch['mentee'] == widget.userData['uid']) {}
+            currentMatch['mentee'] == widget.userData['uid']) {
+          currentMatch['matchId'] = key;
+          myMatches.add(currentMatch);
+        }
       }
+      setState(() {
+        matches = myMatches;
+      });
     } catch (error) {
       print(error);
     }
@@ -259,7 +268,7 @@ class _ChatListState extends State<ChatList> {
                         children: [
                           SizedBox(height: 20),
                           NowHeader('Welcome $firstName!', fontSize: 28),
-                          SizedBox(height: 20),
+                          // SizedBox(height: 20),
                           Container(
                             padding: EdgeInsets.all(30),
                             decoration: BoxDecoration(
