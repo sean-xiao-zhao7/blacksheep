@@ -296,7 +296,10 @@ class _ChatListState extends State<ChatList> {
                         : Column(
                             spacing: 10,
                             children: [
-                              NowHeader('Welcome $firstName!', fontSize: 18),
+                              NowHeader(
+                                'Welcome $firstName! Chatting with mentor',
+                                fontSize: 18,
+                              ),
                               Expanded(child: SingleChat()),
                             ],
                           )))

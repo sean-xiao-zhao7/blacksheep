@@ -21,14 +21,13 @@ class _SingleChatState extends State<SingleChat> {
       margin: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          Expanded(child: ListView(children: [Text('Dummy chat')])),
+          Expanded(child: ListView(children: [Text('Hello!')])),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Enter chat message',
-              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              filled: true,
               fillColor: Colors.white,
+              filled: true,
+              hintText: 'Enter chat message',
+              suffixIcon: Icon(Icons.send, color: Color(0xff32a2c0)),
             ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
@@ -38,6 +37,8 @@ class _SingleChatState extends State<SingleChat> {
             },
             autocorrect: false,
             textCapitalization: TextCapitalization.sentences,
+            maxLines: 3,
+            minLines: 1,
           ),
         ],
       ),
