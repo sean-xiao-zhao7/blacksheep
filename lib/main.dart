@@ -16,6 +16,6 @@ class BlackSheepApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const Scaffold(body: SplashScreen()));
+    return MaterialApp(home: SplashScreen());
   }
 }

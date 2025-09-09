@@ -266,8 +266,8 @@ class _ChatListState extends State<ChatList> {
                     : Column(
                         spacing: 20,
                         children: [
-                          SizedBox(height: 20),
-                          NowHeader('Welcome $firstName!', fontSize: 28),
+                          SizedBox(height: 5),
+                          NowHeader('Welcome $firstName!', fontSize: 24),
                           // SizedBox(height: 20),
                           Container(
                             padding: EdgeInsets.all(30),
@@ -276,11 +276,11 @@ class _ChatListState extends State<ChatList> {
                             ),
                             child: NowHeader(
                               'Start connecting with a mentor by selecting one of the choices below:',
-                              fontSize: 22,
+                              fontSize: 20,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 200),
+                          SizedBox(height: 250),
                           MainButton(
                             'Connect by phone',
                             () => connectToMentor('phone'),

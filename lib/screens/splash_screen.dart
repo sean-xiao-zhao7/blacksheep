@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     _timer = Timer(Duration(seconds: 6), () {
       if (mounted) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (ctx) => HomeScreen()),
         );
