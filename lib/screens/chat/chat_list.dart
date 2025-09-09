@@ -2,6 +2,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'dart:math';
 import "package:flutter/material.dart";
+import "package:sheepfold/screens/chat/single_chat.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
@@ -252,92 +253,95 @@ class _ChatListState extends State<ChatList> {
         ),
         height: MediaQuery.of(context).size.height,
         child: userType == 'mentee'
-            ? SingleChildScrollView(
-                child: _isLoading
-                    ? Center(
-                        heightFactor: 20,
-                        child: CircularProgressIndicator(
-                          color: Color(0xff32a2c0),
-                          strokeWidth: 10,
-                          strokeAlign: 5,
-                          strokeCap: StrokeCap.round,
-                        ),
-                      )
-                    : Column(
-                        spacing: 20,
-                        children: [
-                          SizedBox(height: 5),
-                          NowHeader('Welcome $firstName!', fontSize: 24),
-                          // SizedBox(height: 20),
-                          Container(
-                            padding: EdgeInsets.all(30),
-                            decoration: BoxDecoration(
-                              color: Color(0xff32a2c0).withAlpha(210),
-                            ),
-                            child: NowHeader(
-                              'Start connecting with a mentor by selecting one of the choices below:',
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(height: 250),
-                          MainButton(
-                            'Connect by phone',
-                            () => connectToMentor('phone'),
-                            size: 400,
-                          ),
-                          MainButton(
-                            'Connect by chat app',
-                            () => connectToMentor('chat'),
-                            size: 400,
-                          ),
-                        ],
+            ? (_isLoading
+                  ? Center(
+                      heightFactor: 20,
+                      child: CircularProgressIndicator(
+                        color: Color(0xff32a2c0),
+                        strokeWidth: 10,
+                        strokeAlign: 5,
+                        strokeCap: StrokeCap.round,
                       ),
-              )
-            : SingleChildScrollView(
-                child: _isLoading
-                    ? Center(
-                        heightFactor: 20,
-                        child: CircularProgressIndicator(
-                          color: Color(0xff32a2c0),
-                          strokeWidth: 10,
-                          strokeAlign: 5,
-                          strokeCap: StrokeCap.round,
-                        ),
-                      )
-                    : Column(
-                        spacing: 20,
-                        children: [
-                          SizedBox(height: 5),
-                          NowHeader('Welcome $firstName!', fontSize: 26),
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Color(0xff32a2c0).withAlpha(210),
-                            ),
-                            child: NowHeader(
-                              'As mentor, you can chat with mentees who connected with you below:',
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                          menteeCount == 0
-                              ? Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff32a2c0).withAlpha(210),
-                                  ),
-                                  padding: EdgeInsets.all(20),
-                                  margin: EdgeInsets.only(top: 150),
-                                  child: NowHeader(
-                                    'No mentees connected yet. Please check back later!',
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : ListView(children: []),
-                        ],
+                    )
+                  : (matches.isEmpty
+                        ? Column(
+                            spacing: 20,
+                            children: [
+                              SizedBox(height: 5),
+                              NowHeader('Welcome $firstName!', fontSize: 22),
+                              Container(
+                                padding: EdgeInsets.all(30),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff32a2c0).withAlpha(210),
+                                ),
+                                child: NowHeader(
+                                  'Start connecting with a mentor by selecting one of the choices below:',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 250),
+                              MainButton(
+                                'Connect by phone',
+                                () => connectToMentor('phone'),
+                                size: 400,
+                              ),
+                              MainButton(
+                                'Connect by chat app',
+                                () => connectToMentor('chat'),
+                                size: 400,
+                              ),
+                            ],
+                          )
+                        : Column(
+                            spacing: 10,
+                            children: [
+                              NowHeader('Welcome $firstName!', fontSize: 18),
+                              Expanded(child: SingleChat()),
+                            ],
+                          )))
+            : (_isLoading
+                  ? Center(
+                      heightFactor: 20,
+                      child: CircularProgressIndicator(
+                        color: Color(0xff32a2c0),
+                        strokeWidth: 10,
+                        strokeAlign: 5,
+                        strokeCap: StrokeCap.round,
                       ),
-              ),
+                    )
+                  : Column(
+                      spacing: 20,
+                      children: [
+                        SizedBox(height: 5),
+                        NowHeader('Welcome $firstName!', fontSize: 26),
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Color(0xff32a2c0).withAlpha(210),
+                          ),
+                          child: NowHeader(
+                            'As mentor, you can chat with mentees who connected with you below:',
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        menteeCount == 0
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xff32a2c0).withAlpha(210),
+                                ),
+                                padding: EdgeInsets.all(20),
+                                margin: EdgeInsets.only(top: 150),
+                                child: NowHeader(
+                                  'No mentees connected yet. Please check back later!',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : ListView(children: []),
+                      ],
+                    )),
       ),
     );
   }
