@@ -7,6 +7,7 @@ import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import 'package:video_player/video_player.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList(this.userData, {super.key});
@@ -21,11 +22,17 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
   List matches = [];
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
     getMatches();
+    _controller = VideoPlayerController.asset('assets/videos/video2.mp4')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
   }
 
   void getMatches() async {
@@ -155,6 +162,8 @@ class _ChatListState extends State<ChatList> {
       });
     }
 
+    _controller.play();
+
     return Scaffold(
       appBar: AppBar(
         title: GentyHeader('BlackSheep', fontSize: 34),
@@ -267,9 +276,8 @@ class _ChatListState extends State<ChatList> {
                         ? Column(
                             spacing: 10,
                             children: [
-                              NowHeader('Welcome $firstName!', fontSize: 22),
                               Container(
-                                padding: EdgeInsets.all(30),
+                                padding: EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   color: Color(0xffa06181).withAlpha(230),
                                   borderRadius: BorderRadius.all(
@@ -282,7 +290,12 @@ class _ChatListState extends State<ChatList> {
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 300),
+                              _controller.value.isInitialized
+                                  ? SizedBox(
+                                      height: 360,
+                                      child: VideoPlayer(_controller),
+                                    )
+                                  : CircularProgressIndicator(),
                               MainButton(
                                 'In app text',
                                 () => connectToMentor('chat'),
