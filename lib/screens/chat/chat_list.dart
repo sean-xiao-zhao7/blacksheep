@@ -265,30 +265,32 @@ class _ChatListState extends State<ChatList> {
                     )
                   : (matches.isEmpty
                         ? Column(
-                            spacing: 20,
+                            spacing: 10,
                             children: [
-                              SizedBox(height: 5),
                               NowHeader('Welcome $firstName!', fontSize: 22),
                               Container(
                                 padding: EdgeInsets.all(30),
                                 decoration: BoxDecoration(
-                                  color: Color(0xff32a2c0).withAlpha(210),
+                                  color: Color(0xffa06181).withAlpha(230),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
                                 ),
                                 child: NowHeader(
-                                  'Start connecting with a mentor by selecting one of the choices below:',
+                                  'Find your place in your community!\nPlease select how you\'d prefer to connect:',
                                   fontSize: 20,
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 250),
+                              SizedBox(height: 300),
                               MainButton(
-                                'Connect by phone',
-                                () => connectToMentor('phone'),
+                                'In app text',
+                                () => connectToMentor('chat'),
                                 size: 400,
                               ),
                               MainButton(
-                                'Connect by chat app',
-                                () => connectToMentor('chat'),
+                                'Phone',
+                                () => connectToMentor('phone'),
                                 size: 400,
                               ),
                             ],
