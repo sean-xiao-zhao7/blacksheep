@@ -109,9 +109,10 @@ class _ChatListState extends State<ChatList> {
         );
         DatabaseReference newUserMatch = firebaseDatabaseRef.push();
         await newUserMatch.set(matchData);
-        snackMessage = 'Successfully matched with mentor via $type!';
+        // snackMessage = 'Successfully matched with mentor via $type!';
+        snackMessage = "We will notify you once a matchup becomes available!";
       } else {
-        snackMessage = 'No mentors in system yet. Please check back later!';
+        snackMessage = 'Please check back later!';
       }
 
       setState(() {
@@ -129,11 +130,9 @@ class _ChatListState extends State<ChatList> {
       });
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No mentors in system yet. Please check back later!'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Please check back later!')));
       }
     }
   }
@@ -331,19 +330,7 @@ class _ChatListState extends State<ChatList> {
                   : Column(
                       spacing: 20,
                       children: [
-                        SizedBox(height: 5),
                         NowHeader('Welcome $firstName!', fontSize: 26),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Color(0xff32a2c0).withAlpha(210),
-                          ),
-                          child: NowHeader(
-                            'As mentor, you can chat with mentees who connected with you below:',
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
                         menteeCount == 0
                             ? Container(
                                 decoration: BoxDecoration(
@@ -352,7 +339,7 @@ class _ChatListState extends State<ChatList> {
                                 padding: EdgeInsets.all(20),
                                 margin: EdgeInsets.only(top: 150),
                                 child: NowHeader(
-                                  'No mentees connected yet. Please check back later!',
+                                  'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
                                   fontSize: 20,
                                   color: Colors.white,
                                 ),
