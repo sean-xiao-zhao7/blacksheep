@@ -21,13 +21,16 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
+  bool _showInitialMessage = false;
   List matches = [];
   late VideoPlayerController _controller;
+  String _type = '';
+  String _menteeInitialMessage = '';
 
   @override
   void initState() {
     super.initState();
-    getMatches();
+    _getMatches();
     _controller = VideoPlayerController.asset('assets/videos/video2.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
@@ -35,7 +38,7 @@ class _ChatListState extends State<ChatList> {
       });
   }
 
-  void getMatches() async {
+  void _getMatches() async {
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("users-matches").get();
@@ -66,7 +69,14 @@ class _ChatListState extends State<ChatList> {
     }
   }
 
-  void connectToMentor(String type) async {
+  void _showMenteeInitialMessage(String type) {
+    setState(() {
+      _showInitialMessage = true;
+      _type = type;
+    });
+  }
+
+  void _connectToMentor() async {
     setState(() {
       _isLoading = true;
     });
@@ -97,19 +107,17 @@ class _ChatListState extends State<ChatList> {
             }
           }
         }
-        // print('$closestUid, $closestDistance');
 
         Map<String, dynamic> matchData = {
           'mentor': closestUid,
           'mentee': widget.userData['uid'],
-          'type': type,
+          'type': _type,
         };
         DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
           "users-matches",
         );
         DatabaseReference newUserMatch = firebaseDatabaseRef.push();
         await newUserMatch.set(matchData);
-        // snackMessage = 'Successfully matched with mentor via $type!';
         snackMessage = "We will notify you once a matchup becomes available!";
       } else {
         snackMessage = 'Please check back later!';
@@ -274,38 +282,77 @@ class _ChatListState extends State<ChatList> {
                   : (matches.isEmpty
                         ? Column(
                             spacing: 10,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Color(0xffa06181).withAlpha(230),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: NowHeader(
-                                  'Find your place in your community!\nPlease select how you\'d prefer to connect:',
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              _controller.value.isInitialized
-                                  ? SizedBox(
-                                      height: 360,
-                                      child: VideoPlayer(_controller),
-                                    )
-                                  : CircularProgressIndicator(),
-                              MainButton(
-                                'In app text',
-                                () => connectToMentor('chat'),
-                                size: 400,
-                              ),
-                              MainButton(
-                                'Phone',
-                                () => connectToMentor('phone'),
-                                size: 400,
-                              ),
-                            ],
+                            children: (_showInitialMessage
+                                ? [
+                                    Container(
+                                      padding: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffa06181).withAlpha(230),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: NowHeader(
+                                        'In a few words, tell us what you\'re looking for?',
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        hintText: 'Enter initial message',
+                                        prefixIcon: Icon(
+                                          Icons.message,
+                                          color: Color(0xff32a2c0),
+                                        ),
+                                      ),
+                                      autocorrect: false,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      maxLines: 5,
+                                      minLines: 5,
+                                      maxLength: 2000,
+                                    ),
+                                    MainButton(
+                                      'Finish',
+                                      () => {_connectToMentor()},
+                                      size: 400,
+                                    ),
+                                  ]
+                                : [
+                                    Container(
+                                      padding: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffa06181).withAlpha(230),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: NowHeader(
+                                        'Find your place in your community!\nPlease select how you\'d prefer to connect:',
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    _controller.value.isInitialized
+                                        ? SizedBox(
+                                            height: 360,
+                                            child: VideoPlayer(_controller),
+                                          )
+                                        : CircularProgressIndicator(),
+                                    MainButton(
+                                      'In app text',
+                                      () => _showMenteeInitialMessage('chat'),
+                                      size: 400,
+                                    ),
+                                    MainButton(
+                                      'Phone',
+                                      () => _showMenteeInitialMessage('phone'),
+                                      size: 400,
+                                    ),
+                                  ]),
                           )
                         : Column(
                             spacing: 10,
