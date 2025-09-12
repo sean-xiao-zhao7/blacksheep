@@ -66,7 +66,7 @@ class _ChatListState extends State<ChatList> {
         matches = myMatches;
       });
     } catch (error) {
-      print(error);
+      // print(error);
     }
   }
 
@@ -82,8 +82,9 @@ class _ChatListState extends State<ChatList> {
       snackMessage = 'Please enter a short message.';
     } else {
       try {
-        final ref = FirebaseDatabase.instance.ref();
-        final snapshot = await ref.child('users').get();
+        final usersRef = FirebaseDatabase.instance.ref().child('users');
+        final snapshot = await usersRef.get();
+
         if (snapshot.exists) {
           Map<dynamic, dynamic> allUsers =
               snapshot.value as Map<dynamic, dynamic>;
@@ -112,12 +113,26 @@ class _ChatListState extends State<ChatList> {
             'mentee': widget.userData['uid'],
             'type': type,
           };
-          DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+          DatabaseReference matchesRef = FirebaseDatabase.instance.ref(
             "users-matches",
           );
-          DatabaseReference newUserMatch = firebaseDatabaseRef.push();
+          DatabaseReference newUserMatch = matchesRef.push();
           await newUserMatch.set(matchData);
           snackMessage = "We will notify you once a matchup becomes available!";
+
+          // add initial mentee message as first message of a new chat thread
+          DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
+          DatabaseReference newChatRef = chatstRef.push();
+          await newChatRef.set({'uid': widget.userData['uid']});
+          newChatRef.child('messages').push().set({
+            'message': _menteeInitialMessageController.text,
+          });
+
+          // update current user with new match id and chat id
+          usersRef.child(widget.userData['uid']).update({
+            'match-id': newUserMatch.key,
+            'chat-id': newChatRef.key,
+          });
         } else {
           snackMessage = 'Please check back later!';
         }
