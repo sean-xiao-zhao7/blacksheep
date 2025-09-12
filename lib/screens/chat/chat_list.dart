@@ -1,13 +1,14 @@
+import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'dart:math';
-import "package:flutter/material.dart";
+import 'package:video_player/video_player.dart';
+
 import "package:sheepfold/screens/chat/single_chat.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
-import 'package:video_player/video_player.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList(this.userData, {super.key});
@@ -24,8 +25,7 @@ class _ChatListState extends State<ChatList> {
   bool _showInitialMessage = false;
   List matches = [];
   late VideoPlayerController _controller;
-  String _type = '';
-  String _menteeInitialMessage = '';
+  final _menteeInitialMessageController = TextEditingController();
 
   @override
   void initState() {
@@ -38,6 +38,7 @@ class _ChatListState extends State<ChatList> {
       });
   }
 
+  /// get all matches belonging to current mentor (only mentor)
   void _getMatches() async {
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -69,82 +70,78 @@ class _ChatListState extends State<ChatList> {
     }
   }
 
-  void _showMenteeInitialMessage(String type) {
-    setState(() {
-      _showInitialMessage = true;
-      _type = type;
-    });
-  }
-
-  void _connectToMentor() async {
+  /// Make database connection between current user and a mentor (only mentee)
+  void _connectToMentor(String type) async {
     setState(() {
       _isLoading = true;
     });
     String snackMessage = '';
 
-    try {
-      final ref = FirebaseDatabase.instance.ref();
-      final snapshot = await ref.child('users').get();
-      if (snapshot.exists) {
-        Map<dynamic, dynamic> allUsers =
-            snapshot.value as Map<dynamic, dynamic>;
+    if (_menteeInitialMessageController.text.isEmpty ||
+        _menteeInitialMessageController.text.length < 10) {
+      snackMessage = 'Please enter a short message.';
+    } else {
+      try {
+        final ref = FirebaseDatabase.instance.ref();
+        final snapshot = await ref.child('users').get();
+        if (snapshot.exists) {
+          Map<dynamic, dynamic> allUsers =
+              snapshot.value as Map<dynamic, dynamic>;
 
-        // find closest mentor
-        String closestUid = '';
-        double closestDistance = 100000000;
-        for (String key in allUsers.keys) {
-          Map<dynamic, dynamic> currentUser = allUsers[key];
-          if (currentUser['type'] == 'mentor') {
-            double newDistance = calculateDistance(
-              currentUser['latitude'],
-              currentUser['longitude'],
-              widget.userData['latitude'],
-              widget.userData['longitude'],
-            );
-            if (newDistance < closestDistance) {
-              closestDistance = newDistance;
-              closestUid = key;
+          // find closest mentor
+          String closestUid = '';
+          double closestDistance = 100000000;
+          for (String key in allUsers.keys) {
+            Map<dynamic, dynamic> currentUser = allUsers[key];
+            if (currentUser['type'] == 'mentor') {
+              double newDistance = calculateDistance(
+                currentUser['latitude'],
+                currentUser['longitude'],
+                widget.userData['latitude'],
+                widget.userData['longitude'],
+              );
+              if (newDistance < closestDistance) {
+                closestDistance = newDistance;
+                closestUid = key;
+              }
             }
           }
+
+          Map<String, dynamic> matchData = {
+            'mentor': closestUid,
+            'mentee': widget.userData['uid'],
+            'type': type,
+          };
+          DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
+            "users-matches",
+          );
+          DatabaseReference newUserMatch = firebaseDatabaseRef.push();
+          await newUserMatch.set(matchData);
+          snackMessage = "We will notify you once a matchup becomes available!";
+        } else {
+          snackMessage = 'Please check back later!';
         }
 
-        Map<String, dynamic> matchData = {
-          'mentor': closestUid,
-          'mentee': widget.userData['uid'],
-          'type': _type,
-        };
-        DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
-          "users-matches",
-        );
-        DatabaseReference newUserMatch = firebaseDatabaseRef.push();
-        await newUserMatch.set(matchData);
-        snackMessage = "We will notify you once a matchup becomes available!";
-      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (error) {
+        setState(() {
+          _isLoading = false;
+        });
         snackMessage = 'Please check back later!';
       }
+    }
 
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(snackMessage)));
-      }
-    } catch (error) {
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Please check back later!')));
-      }
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
     }
   }
 
+  /// Calculate distance between two coordinates.
   double calculateDistance(lat1, lon1, lat2, lon2) {
     var p =
         0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
@@ -316,10 +313,21 @@ class _ChatListState extends State<ChatList> {
                                       maxLines: 5,
                                       minLines: 5,
                                       maxLength: 2000,
+                                      controller:
+                                          _menteeInitialMessageController,
                                     ),
                                     MainButton(
                                       'Finish',
-                                      () => {_connectToMentor()},
+                                      () => {_connectToMentor('chat')},
+                                      size: 400,
+                                    ),
+                                    MainButton(
+                                      'Cancel',
+                                      () => {
+                                        setState(() {
+                                          _showInitialMessage = false;
+                                        }),
+                                      },
                                       size: 400,
                                     ),
                                   ]
@@ -346,12 +354,16 @@ class _ChatListState extends State<ChatList> {
                                         : CircularProgressIndicator(),
                                     MainButton(
                                       'In app text',
-                                      () => _showMenteeInitialMessage('chat'),
+                                      () => {
+                                        setState(() {
+                                          _showInitialMessage = true;
+                                        }),
+                                      },
                                       size: 400,
                                     ),
                                     MainButton(
                                       'Phone',
-                                      () => _showMenteeInitialMessage('phone'),
+                                      () => {_connectToMentor('phone')},
                                       size: 400,
                                     ),
                                   ]),
