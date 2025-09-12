@@ -131,8 +131,8 @@ class _ChatListState extends State<ChatList> {
 
           // update current user with new match id and chat id
           usersRef.child(widget.userData['uid']).update({
-            'match-id': newUserMatch.key,
-            'chat-id': newChatRef.key,
+            'matchId': newUserMatch.key,
+            'chatId': newChatRef.key,
           });
         } else {
           snackMessage = 'Please check back later!';

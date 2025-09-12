@@ -1,7 +1,9 @@
+import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
 
 class SingleChat extends StatefulWidget {
-  const SingleChat({super.key});
+  const SingleChat({super.key, this.chatId = ''});
+  final String chatId;
 
   @override
   State<StatefulWidget> createState() {
@@ -10,6 +12,34 @@ class SingleChat extends StatefulWidget {
 }
 
 class _SingleChatState extends State<SingleChat> {
+  bool _isLoading = false;
+  Map<String, dynamic> messages = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  /// load all chat messages of the current chat
+  _loadMessages() async {
+    try {
+      DatabaseReference chatsRef = FirebaseDatabase.instance.ref();
+      DataSnapshot snapshot = await chatsRef
+          .child('chats/${widget.chatId}/messages')
+          .get();
+      if (!snapshot.exists) {
+        throw Error();
+        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Server error. Please try again later.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
