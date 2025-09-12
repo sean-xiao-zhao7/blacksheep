@@ -125,6 +125,7 @@ class _ChatListState extends State<ChatList> {
           DatabaseReference newChatRef = chatstRef.push();
           await newChatRef.set({'uid': widget.userData['uid']});
           newChatRef.child('messages').push().set({
+            'mentee': true,
             'message': _menteeInitialMessageController.text,
           });
 
@@ -141,10 +142,11 @@ class _ChatListState extends State<ChatList> {
           _isLoading = false;
         });
       } catch (error) {
+        print(error);
         setState(() {
           _isLoading = false;
         });
-        snackMessage = 'Please check back later!';
+        snackMessage = 'Error, please try again later.';
       }
     }
 
