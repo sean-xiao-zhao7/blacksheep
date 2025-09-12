@@ -268,7 +268,9 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
         height: MediaQuery.of(context).size.height,
-        child: userType == 'mentee'
+        child:
+            userType ==
+                'mentee' // user is mentee
             ? (_isLoading
                   ? Center(
                       heightFactor: 20,
@@ -356,15 +358,9 @@ class _ChatListState extends State<ChatList> {
                           )
                         : Column(
                             spacing: 10,
-                            children: [
-                              NowHeader(
-                                'Welcome $firstName! Chatting with mentor',
-                                fontSize: 18,
-                              ),
-                              Expanded(child: SingleChat()),
-                            ],
+                            children: [Expanded(child: SingleChat())],
                           )))
-            : (_isLoading
+            : (_isLoading // user is mentor
                   ? Center(
                       heightFactor: 20,
                       child: CircularProgressIndicator(
