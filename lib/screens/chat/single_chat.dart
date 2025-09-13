@@ -1,5 +1,7 @@
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
+import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
+import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class SingleChat extends StatefulWidget {
   const SingleChat({super.key, this.chatId = ''});
@@ -18,6 +20,7 @@ class _SingleChatState extends State<SingleChat> {
   @override
   void initState() {
     super.initState();
+    _loadMessages();
   }
 
   /// load all chat messages of the current chat
@@ -25,30 +28,30 @@ class _SingleChatState extends State<SingleChat> {
     setState(() {
       _isLoading = true;
     });
-
+    String snackMessage = '';
     try {
       DatabaseReference chatsRef = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await chatsRef
           .child('chats/${widget.chatId}')
           .get();
-      print(snapshot.value);
-      // DataSnapshot snapshot = await chatsRef.get();
-      // .child('chats/${widget.chatId}/messages')
-      // .get();
-      // if (!snapshot.exists) {
-      //   throw Error();
-      //   // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
-      // }
-    } catch (error) {
-      print(error);
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server error. Please try again later.')),
-        );
+      if (!snapshot.exists) {
+        snackMessage = 'Data doesn\'t exist in database.';
+      } else {
+        Map<dynamic, dynamic> chatData =
+            snapshot.value as Map<dynamic, dynamic>;
+        print(chatData);
       }
+    } catch (error) {
+      // print error
+      snackMessage = 'Server error, please try again later';
     }
 
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
     setState(() {
       _isLoading = false;
     });
@@ -56,7 +59,6 @@ class _SingleChatState extends State<SingleChat> {
 
   @override
   Widget build(BuildContext context) {
-    _loadMessages();
     return Container(
       decoration: BoxDecoration(
         color: const Color.fromARGB(240, 255, 255, 255),
@@ -66,6 +68,36 @@ class _SingleChatState extends State<SingleChat> {
       margin: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NowHeader(
+                'Chatting with Sean',
+                fontSize: 16,
+                color: Color(0xff32a2c0),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    iconSize: 26,
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      // ...
+                    },
+                    padding: EdgeInsets.all(0),
+                  ),
+                  IconButton(
+                    iconSize: 26,
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () {
+                      // ...
+                    },
+                    padding: EdgeInsets.all(0),
+                  ),
+                ],
+              ),
+            ],
+          ),
           Expanded(
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
