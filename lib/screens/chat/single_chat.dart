@@ -64,62 +64,78 @@ class _SingleChatState extends State<SingleChat> {
         color: const Color.fromARGB(240, 255, 255, 255),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              NowHeader(
-                'Chatting with Sean',
-                fontSize: 16,
-                color: Color(0xff32a2c0),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              Row(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      // ...
-                    },
-                    padding: EdgeInsets.all(0),
-                  ),
-                  IconButton(
-                    iconSize: 26,
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {
-                      // ...
-                    },
-                    padding: EdgeInsets.all(0),
-                  ),
-                ],
-              ),
-            ],
+            ),
+            padding: EdgeInsets.only(top: 5, left: 15, bottom: 3),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                NowHeader(
+                  'Chatting with David',
+                  fontSize: 14,
+                  color: Color(0xff32a2c0),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      iconSize: 26,
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () {
+                        // ...
+                      },
+                      padding: EdgeInsets.all(0),
+                    ),
+                    IconButton(
+                      iconSize: 26,
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () {
+                        // ...
+                      },
+                      padding: EdgeInsets.all(0),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
-                : ListView(children: [Text('Hello!')]),
+                : Container(
+                    padding: EdgeInsets.all(10),
+                    child: ListView(children: [Text('Hello!')]),
+                  ),
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              hintText: 'Enter chat message',
-              suffixIcon: Icon(Icons.send, color: Color(0xff32a2c0)),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Enter chat message',
+                suffixIcon: Icon(Icons.send, color: Color(0xff32a2c0)),
+              ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'First name is required.';
+                }
+                return null;
+              },
+              autocorrect: false,
+              textCapitalization: TextCapitalization.sentences,
+              maxLines: 3,
+              minLines: 1,
             ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'First name is required.';
-              }
-              return null;
-            },
-            autocorrect: false,
-            textCapitalization: TextCapitalization.sentences,
-            maxLines: 3,
-            minLines: 1,
           ),
         ],
       ),
