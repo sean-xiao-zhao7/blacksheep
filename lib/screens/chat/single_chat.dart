@@ -18,30 +18,45 @@ class _SingleChatState extends State<SingleChat> {
   @override
   void initState() {
     super.initState();
-    _loadMessages();
   }
 
   /// load all chat messages of the current chat
   _loadMessages() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       DatabaseReference chatsRef = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await chatsRef
-          .child('chats/${widget.chatId}/messages')
+          .child('chats/${widget.chatId}')
           .get();
-      if (!snapshot.exists) {
-        throw Error();
-        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
-      }
+      print(snapshot.value);
+      // DataSnapshot snapshot = await chatsRef.get();
+      // .child('chats/${widget.chatId}/messages')
+      // .get();
+      // if (!snapshot.exists) {
+      //   throw Error();
+      //   // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
+      // }
     } catch (error) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Server error. Please try again later.')),
-      );
+      print(error);
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server error. Please try again later.')),
+        );
+      }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _loadMessages();
     return Container(
       decoration: BoxDecoration(
         color: const Color.fromARGB(240, 255, 255, 255),
@@ -51,7 +66,11 @@ class _SingleChatState extends State<SingleChat> {
       margin: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          Expanded(child: ListView(children: [Text('Hello!')])),
+          Expanded(
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ListView(children: [Text('Hello!')]),
+          ),
           TextFormField(
             decoration: const InputDecoration(
               fillColor: Colors.white,

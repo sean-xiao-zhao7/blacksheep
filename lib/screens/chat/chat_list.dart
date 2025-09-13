@@ -66,7 +66,12 @@ class _ChatListState extends State<ChatList> {
         matches = myMatches;
       });
     } catch (error) {
-      // print(error);
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server error getting matches.')),
+        );
+      }
     }
   }
 
@@ -142,7 +147,7 @@ class _ChatListState extends State<ChatList> {
           _isLoading = false;
         });
       } catch (error) {
-        print(error);
+        // print(error);
         setState(() {
           _isLoading = false;
         });
