@@ -1,7 +1,6 @@
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
 import "package:sheepfold/screens/chat/chat_bubble.dart";
-import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class SingleChat extends StatefulWidget {
@@ -113,7 +112,7 @@ class _SingleChatState extends State<SingleChat> {
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.only(left: 10, right: 10),
                     child: ListView(children: [ChatBubble()]),
                   ),
           ),
@@ -125,6 +124,9 @@ class _SingleChatState extends State<SingleChat> {
                 filled: true,
                 hintText: 'Enter chat message',
                 suffixIcon: Icon(Icons.send, color: Color(0xff32a2c0)),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff32a2c0), width: 1),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -134,7 +136,7 @@ class _SingleChatState extends State<SingleChat> {
               },
               autocorrect: false,
               textCapitalization: TextCapitalization.sentences,
-              maxLines: 3,
+              maxLines: 5,
               minLines: 1,
             ),
           ),
