@@ -390,7 +390,7 @@ class _ChatListState extends State<ChatList> {
                                     ),
                                   ]),
                           )
-                        : Expanded(child: SingleChat())))
+                        : SingleChat()))
             : (_isLoading // user is mentor
                   ? Center(
                       heightFactor: 20,

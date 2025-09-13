@@ -36,6 +36,12 @@ class _SingleChatState extends State<SingleChat> {
           .get();
       if (!snapshot.exists) {
         snackMessage = 'Data doesn\'t exist in database.';
+        if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(snackMessage)));
+        }
       } else {
         Map<dynamic, dynamic> chatData =
             snapshot.value as Map<dynamic, dynamic>;
@@ -44,14 +50,14 @@ class _SingleChatState extends State<SingleChat> {
     } catch (error) {
       // print error
       snackMessage = 'Server error, please try again later';
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(snackMessage)));
+      }
     }
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
-    }
     setState(() {
       _isLoading = false;
     });
@@ -91,7 +97,7 @@ class _SingleChatState extends State<SingleChat> {
                       iconSize: 26,
                       icon: const Icon(Icons.refresh),
                       onPressed: () {
-                        // ...
+                        _loadMessages();
                       },
                       padding: EdgeInsets.all(0),
                     ),
@@ -113,7 +119,9 @@ class _SingleChatState extends State<SingleChat> {
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListView(children: [ChatBubble()]),
+                    child: ListView(
+                      children: [ChatBubble(), ChatBubble(), ChatBubble()],
+                    ),
                   ),
           ),
           Container(
