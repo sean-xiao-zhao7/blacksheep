@@ -279,7 +279,7 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: userType == 'mentee' ? EdgeInsets.all(10) : EdgeInsets.all(20),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),

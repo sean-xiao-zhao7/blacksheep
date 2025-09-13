@@ -1,5 +1,6 @@
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
+import "package:sheepfold/screens/chat/chat_bubble.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
@@ -64,7 +65,7 @@ class _SingleChatState extends State<SingleChat> {
         color: const Color.fromARGB(240, 255, 255, 255),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      padding: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: 15),
       margin: EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
@@ -76,7 +77,7 @@ class _SingleChatState extends State<SingleChat> {
                 topRight: Radius.circular(20),
               ),
             ),
-            padding: EdgeInsets.only(top: 5, left: 15, bottom: 3),
+            padding: EdgeInsets.only(top: 5, left: 15, bottom: 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -113,7 +114,7 @@ class _SingleChatState extends State<SingleChat> {
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.all(10),
-                    child: ListView(children: [Text('Hello!')]),
+                    child: ListView(children: [ChatBubble()]),
                   ),
           ),
           Container(
