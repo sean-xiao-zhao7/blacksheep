@@ -390,10 +390,7 @@ class _ChatListState extends State<ChatList> {
                                     ),
                                   ]),
                           )
-                        : Column(
-                            spacing: 10,
-                            children: [Expanded(child: SingleChat())],
-                          )))
+                        : Expanded(child: SingleChat())))
             : (_isLoading // user is mentor
                   ? Center(
                       heightFactor: 20,

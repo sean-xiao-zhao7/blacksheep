@@ -64,7 +64,7 @@ class _SingleChatState extends State<SingleChat> {
         color: const Color.fromARGB(240, 255, 255, 255),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      padding: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.only(bottom: 10),
       margin: EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
@@ -117,7 +117,7 @@ class _SingleChatState extends State<SingleChat> {
                   ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10, right: 10, bottom: 0),
             child: TextFormField(
               decoration: const InputDecoration(
                 fillColor: Colors.white,
@@ -130,7 +130,7 @@ class _SingleChatState extends State<SingleChat> {
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'First name is required.';
+                  return 'Message is required.';
                 }
                 return null;
               },
