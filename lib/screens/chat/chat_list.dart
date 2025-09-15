@@ -38,13 +38,15 @@ class _ChatListState extends State<ChatList> {
       });
   }
 
-  /// get all matches belonging to current mentor (only mentor)
+  /// get all matches belonging to current user
   void _getMatches() async {
+    String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("users-matches").get();
       if (!snapshot.exists) {
-        throw Error();
+        snackMessage = 'No matches available for mentor';
+        return;
       }
       Map<dynamic, dynamic> allMatches =
           snapshot.value as Map<dynamic, dynamic>;
@@ -60,6 +62,7 @@ class _ChatListState extends State<ChatList> {
             currentMatch['mentee'] == widget.userData['uid']) {
           currentMatch['matchId'] = key;
           myMatches.add(currentMatch);
+          break;
         }
       }
       setState(() {
@@ -68,9 +71,9 @@ class _ChatListState extends State<ChatList> {
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server error getting matches.')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(snackMessage)));
       }
     }
   }
@@ -128,7 +131,10 @@ class _ChatListState extends State<ChatList> {
           // add initial mentee message as first message of a new chat thread
           DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
           DatabaseReference newChatRef = chatstRef.push();
-          await newChatRef.set({'uid': widget.userData['uid']});
+          await newChatRef.set({
+            'menteeUid': widget.userData['uid'],
+            'mentorUid': closestUid,
+          });
           newChatRef.child('messages').push().set({
             'mentee': true,
             'message': _menteeInitialMessageController.text,
