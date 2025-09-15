@@ -71,7 +71,7 @@ class _SingleChatState extends State<SingleChat> {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       padding: EdgeInsets.only(bottom: 10),
-      margin: EdgeInsets.only(bottom: 15),
+      // margin: EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
           Container(
@@ -122,8 +122,11 @@ class _SingleChatState extends State<SingleChat> {
                     child: ListView(
                       children: [
                         ChatBubble(),
-                        ChatBubble(message: 'asdfasdfasdfasdf'),
-                        ChatBubble(message: 'asdfasdfasdfsaffdas'),
+                        ChatBubble(
+                          message: 'This is foolisheness.',
+                          currentUser: true,
+                        ),
+                        ChatBubble(message: 'What do you think?'),
                       ],
                     ),
                   ),

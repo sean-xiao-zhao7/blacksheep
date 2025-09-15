@@ -279,7 +279,9 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       body: Container(
-        padding: userType == 'mentee' ? EdgeInsets.all(10) : EdgeInsets.all(20),
+        padding: userType == 'mentee'
+            ? EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30)
+            : EdgeInsets.all(20),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
@@ -306,7 +308,7 @@ class _ChatListState extends State<ChatList> {
                             children: (_showInitialMessage
                                 ? [
                                     Container(
-                                      padding: EdgeInsets.all(20),
+                                      padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         color: Color(0xffa06181).withAlpha(230),
                                         borderRadius: BorderRadius.all(
