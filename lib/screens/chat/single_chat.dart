@@ -118,10 +118,10 @@ class _SingleChatState extends State<SingleChat> {
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.only(left: 10, right: 10),
                     child: ListView(
                       children: [
-                        ChatBubble(), 
+                        ChatBubble(),
                         ChatBubble(message: 'asdfasdfasdfasdf'),
                         ChatBubble(message: 'asdfasdfasdfsaffdas'),
                       ],

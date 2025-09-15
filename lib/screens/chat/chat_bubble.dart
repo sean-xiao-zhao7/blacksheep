@@ -16,6 +16,14 @@ class ChatBubble extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       child: Column(
         children: [
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('David', style: TextStyle(fontSize: 10, fontFamily: 'Now')),
+            ],
+          ),
+          SizedBox(height: 5),
           Container(
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(bottom: 5),
@@ -24,9 +32,7 @@ class ChatBubble extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Row(
-              mainAxisAlignment: direction == 'right'
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Column(
@@ -34,6 +40,9 @@ class ChatBubble extends StatelessWidget {
                       Text(
                         message,
                         style: TextStyle(fontSize: 16, fontFamily: 'Now'),
+                        textDirection: direction == 'left'
+                            ? TextDirection.ltr
+                            : TextDirection.rtl,
                       ),
                     ],
                   ),
