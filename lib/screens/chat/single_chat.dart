@@ -67,7 +67,7 @@ class _SingleChatState extends State<SingleChat> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromARGB(240, 255, 255, 255),
+        color: const Color.fromARGB(200, 255, 255, 255),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       padding: EdgeInsets.only(bottom: 10),
@@ -78,8 +78,8 @@ class _SingleChatState extends State<SingleChat> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
             ),
             padding: EdgeInsets.only(top: 5, left: 15, bottom: 0),
@@ -118,9 +118,13 @@ class _SingleChatState extends State<SingleChat> {
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
+                    padding: EdgeInsets.all(10),
                     child: ListView(
-                      children: [ChatBubble(), ChatBubble(), ChatBubble()],
+                      children: [
+                        ChatBubble(), 
+                        ChatBubble(message: 'asdfasdfasdfasdf'),
+                        ChatBubble(message: 'asdfasdfasdfsaffdas'),
+                      ],
                     ),
                   ),
           ),
