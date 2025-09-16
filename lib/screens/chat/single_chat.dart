@@ -4,8 +4,9 @@ import "package:sheepfold/screens/chat/chat_bubble.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class SingleChat extends StatefulWidget {
-  const SingleChat({super.key, this.chatId = ''});
+  const SingleChat({super.key, this.chatId = '', this.messages = const {}});
   final String chatId;
+  final Map<dynamic, dynamic> messages;
 
   @override
   State<StatefulWidget> createState() {
@@ -15,16 +16,15 @@ class SingleChat extends StatefulWidget {
 
 class _SingleChatState extends State<SingleChat> {
   bool _isLoading = false;
-  Map<String, dynamic> messages = {};
+  List messagesList = [];
 
   @override
   void initState() {
     super.initState();
-    _loadMessages();
   }
 
   /// load all chat messages of the current chat
-  _loadMessages() async {
+  _loadMessagesAsync() async {
     setState(() {
       _isLoading = true;
     });
@@ -43,9 +43,8 @@ class _SingleChatState extends State<SingleChat> {
           ).showSnackBar(SnackBar(content: Text(snackMessage)));
         }
       } else {
-        Map<dynamic, dynamic> chatData =
-            snapshot.value as Map<dynamic, dynamic>;
-        print(chatData);
+        // Map<dynamic, dynamic> chatData =
+        //     snapshot.value as Map<dynamic, dynamic>;
       }
     } catch (error) {
       // print error
@@ -61,6 +60,18 @@ class _SingleChatState extends State<SingleChat> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  List<Widget> _makeMessagesBubbles() {
+    List<Widget> chatBubbles = [];
+    for (String key in widget.messages.keys) {
+      Widget currentBubble = ChatBubble(
+        message: widget.messages[key]['message'],
+        currentUser: widget.messages[key]['mentee'],
+      );
+      chatBubbles.add(currentBubble);
+    }
+    return chatBubbles;
   }
 
   @override
@@ -96,9 +107,7 @@ class _SingleChatState extends State<SingleChat> {
                     IconButton(
                       iconSize: 26,
                       icon: const Icon(Icons.refresh),
-                      onPressed: () {
-                        _loadMessages();
-                      },
+                      onPressed: () {},
                       padding: EdgeInsets.all(0),
                     ),
                     IconButton(
@@ -119,16 +128,7 @@ class _SingleChatState extends State<SingleChat> {
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListView(
-                      children: [
-                        ChatBubble(),
-                        ChatBubble(
-                          message: 'This is foolisheness.',
-                          currentUser: true,
-                        ),
-                        ChatBubble(message: 'What do you think?'),
-                      ],
-                    ),
+                    child: ListView(children: _makeMessagesBubbles()),
                   ),
           ),
           Container(

@@ -23,7 +23,7 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
-  List matches = [];
+  List myChats = [];
   late VideoPlayerController _controller;
   final _menteeInitialMessageController = TextEditingController();
 
@@ -43,30 +43,27 @@ class _ChatListState extends State<ChatList> {
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
-      DataSnapshot snapshot = await ref.child("users-matches").get();
+      DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
         snackMessage = 'No matches available for mentor';
         return;
       }
-      Map<dynamic, dynamic> allMatches =
-          snapshot.value as Map<dynamic, dynamic>;
+      Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
-      List myMatches = [];
-      for (final String key in allMatches.keys) {
-        var currentMatch = allMatches[key];
+      List tempChats = [];
+      for (final String key in allChats.keys) {
+        var currentChat = allChats[key];
         if (widget.userData['type'] == 'mentor' &&
-            currentMatch['mentor'] == widget.userData['uid']) {
-          currentMatch['matchId'] = key;
-          myMatches.add(currentMatch);
+            currentChat['mentorUid'] == widget.userData['uid']) {
+          tempChats.add(currentChat);
         } else if (widget.userData['type'] == 'mentee' &&
-            currentMatch['mentee'] == widget.userData['uid']) {
-          currentMatch['matchId'] = key;
-          myMatches.add(currentMatch);
+            currentChat['menteeUid'] == widget.userData['uid']) {
+          tempChats.add(currentChat);
           break;
         }
       }
       setState(() {
-        matches = myMatches;
+        myChats = tempChats;
       });
     } catch (error) {
       if (mounted) {
@@ -308,7 +305,7 @@ class _ChatListState extends State<ChatList> {
                         strokeCap: StrokeCap.round,
                       ),
                     )
-                  : (matches.isEmpty
+                  : (myChats.isEmpty
                         ? Column(
                             spacing: 10,
                             children: (_showInitialMessage
@@ -398,7 +395,7 @@ class _ChatListState extends State<ChatList> {
                                     ),
                                   ]),
                           )
-                        : SingleChat()))
+                        : SingleChat(messages: myChats[0]['messages'])))
             : (_isLoading // user is mentor
                   ? Center(
                       heightFactor: 20,
