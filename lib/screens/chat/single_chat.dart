@@ -16,11 +16,13 @@ class SingleChat extends StatefulWidget {
 
 class _SingleChatState extends State<SingleChat> {
   bool _isLoading = false;
-  List messagesList = [];
+  List<Widget> chatBubbles = [];
+  TextEditingController newMessageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _makeMessagesBubbles();
   }
 
   /// load all chat messages of the current chat
@@ -62,16 +64,48 @@ class _SingleChatState extends State<SingleChat> {
     });
   }
 
-  List<Widget> _makeMessagesBubbles() {
-    List<Widget> chatBubbles = [];
+  void _makeMessagesBubbles() {
+    List<Widget> tempBubbles = [];
     for (String key in widget.messages.keys) {
       Widget currentBubble = ChatBubble(
         message: widget.messages[key]['message'],
         currentUser: widget.messages[key]['mentee'],
       );
-      chatBubbles.add(currentBubble);
+      tempBubbles.add(currentBubble);
     }
-    return chatBubbles;
+    setState(() {
+      chatBubbles = tempBubbles;
+    });
+  }
+
+  _sendNewMessage() async {
+    String snackMessage = '';
+    try {
+      DatabaseReference chatstRef = FirebaseDatabase.instance.ref(
+        "chats/${widget.chatId}/messages",
+      );
+      DatabaseReference newMessageRef = chatstRef.push();
+      await newMessageRef.set({
+        'mentee': true,
+        'message': newMessageController.text,
+      });
+      Widget newChatBubble = ChatBubble(
+        message: newMessageController.text,
+        currentUser: true,
+      );
+      setState(() {
+        chatBubbles = [...chatBubbles, newChatBubble];
+        newMessageController.clear();
+      });
+    } catch (error) {
+      snackMessage = 'Unable to send message, please try again later';
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(snackMessage)));
+      }
+    }
   }
 
   @override
@@ -82,7 +116,6 @@ class _SingleChatState extends State<SingleChat> {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       padding: EdgeInsets.only(bottom: 10),
-      // margin: EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
           Container(
@@ -128,17 +161,22 @@ class _SingleChatState extends State<SingleChat> {
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListView(children: _makeMessagesBubbles()),
+                    child: ListView(children: chatBubbles),
                   ),
           ),
           Container(
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 0),
             child: TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
                 hintText: 'Enter chat message',
-                suffixIcon: Icon(Icons.send, color: Color(0xff32a2c0)),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send, color: Color(0xff32a2c0)),
+                  onPressed: () {
+                    _sendNewMessage();
+                  },
+                ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff32a2c0), width: 1),
                 ),
@@ -153,6 +191,7 @@ class _SingleChatState extends State<SingleChat> {
               textCapitalization: TextCapitalization.sentences,
               maxLines: 5,
               minLines: 1,
+              controller: newMessageController,
             ),
           ),
         ],

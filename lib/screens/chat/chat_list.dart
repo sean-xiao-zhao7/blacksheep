@@ -30,7 +30,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-    _getMatches();
+    _getChats();
     _controller = VideoPlayerController.asset('assets/videos/video2.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
@@ -39,7 +39,7 @@ class _ChatListState extends State<ChatList> {
   }
 
   /// get all matches belonging to current user
-  void _getMatches() async {
+  void _getChats() async {
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -53,6 +53,7 @@ class _ChatListState extends State<ChatList> {
       List tempChats = [];
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
+        currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           tempChats.add(currentChat);
@@ -395,7 +396,10 @@ class _ChatListState extends State<ChatList> {
                                     ),
                                   ]),
                           )
-                        : SingleChat(messages: myChats[0]['messages'])))
+                        : SingleChat(
+                            messages: myChats[0]['messages'],
+                            chatId: myChats[0]['chatId'],
+                          )))
             : (_isLoading // user is mentor
                   ? Center(
                       heightFactor: 20,
