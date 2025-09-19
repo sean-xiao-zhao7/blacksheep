@@ -4,9 +4,15 @@ import "package:sheepfold/screens/chat/chat_bubble.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 class SingleChat extends StatefulWidget {
-  const SingleChat({super.key, this.chatId = '', this.messages = const {}});
+  const SingleChat({
+    super.key,
+    this.chatId = '',
+    this.messages = const {},
+    this.isMentor = false,
+  });
   final String chatId;
   final Map<dynamic, dynamic> messages;
+  final bool isMentor;
 
   @override
   State<StatefulWidget> createState() {
@@ -15,9 +21,10 @@ class SingleChat extends StatefulWidget {
 }
 
 class _SingleChatState extends State<SingleChat> {
-  bool _isLoading = false;
+  bool _isLoading = true;
   List<Widget> chatBubbles = [];
   TextEditingController newMessageController = TextEditingController();
+  final ScrollController _listViewController = ScrollController();
 
   @override
   void initState() {
@@ -25,57 +32,20 @@ class _SingleChatState extends State<SingleChat> {
     _makeMessagesBubbles();
   }
 
-  /// load all chat messages of the current chat
-  _loadMessagesAsync() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String snackMessage = '';
-    try {
-      DatabaseReference chatsRef = FirebaseDatabase.instance.ref();
-      DataSnapshot snapshot = await chatsRef
-          .child('chats/${widget.chatId}')
-          .get();
-      if (!snapshot.exists) {
-        snackMessage = 'Data doesn\'t exist in database.';
-        if (mounted) {
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(snackMessage)));
-        }
-      } else {
-        // Map<dynamic, dynamic> chatData =
-        //     snapshot.value as Map<dynamic, dynamic>;
-      }
-    } catch (error) {
-      // print error
-      snackMessage = 'Server error, please try again later';
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(snackMessage)));
-      }
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   void _makeMessagesBubbles() {
     List<Widget> tempBubbles = [];
     for (String key in widget.messages.keys) {
       Widget currentBubble = ChatBubble(
         message: widget.messages[key]['message'],
-        currentUser: widget.messages[key]['mentee'],
+        currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
       );
       tempBubbles.add(currentBubble);
     }
     setState(() {
       chatBubbles = tempBubbles;
+      _isLoading = false;
     });
+    _scrollDown(animated: false);
   }
 
   _sendNewMessage() async {
@@ -86,7 +56,7 @@ class _SingleChatState extends State<SingleChat> {
       );
       DatabaseReference newMessageRef = chatstRef.push();
       await newMessageRef.set({
-        'mentee': true,
+        'mentee': !widget.isMentor,
         'message': newMessageController.text,
       });
       Widget newChatBubble = ChatBubble(
@@ -97,6 +67,7 @@ class _SingleChatState extends State<SingleChat> {
         chatBubbles = [...chatBubbles, newChatBubble];
         newMessageController.clear();
       });
+      _scrollDown();
     } catch (error) {
       snackMessage = 'Unable to send message, please try again later';
       if (mounted) {
@@ -105,6 +76,18 @@ class _SingleChatState extends State<SingleChat> {
           context,
         ).showSnackBar(SnackBar(content: Text(snackMessage)));
       }
+    }
+  }
+
+  void _scrollDown({bool animated = true}) {
+    if (animated) {
+      _listViewController.animateTo(
+        _listViewController.position.maxScrollExtent + 100,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    } else {
+      _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
     }
   }
 
@@ -161,7 +144,10 @@ class _SingleChatState extends State<SingleChat> {
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListView(children: chatBubbles),
+                    child: ListView(
+                      controller: _listViewController,
+                      children: chatBubbles,
+                    ),
                   ),
           ),
           Container(

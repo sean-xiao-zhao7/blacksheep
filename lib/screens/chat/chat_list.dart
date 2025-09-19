@@ -56,9 +56,11 @@ class _ChatListState extends State<ChatList> {
         currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
+          currentChat['isMentor'] = true;
           tempChats.add(currentChat);
         } else if (widget.userData['type'] == 'mentee' &&
             currentChat['menteeUid'] == widget.userData['uid']) {
+          currentChat['isMentor'] = false;
           tempChats.add(currentChat);
           break;
         }
@@ -282,9 +284,9 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       body: Container(
-        padding: userType == 'mentee'
-            ? EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30)
-            : EdgeInsets.all(20),
+        padding: myChats.isEmpty
+            ? EdgeInsets.all(20)
+            : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
@@ -398,6 +400,7 @@ class _ChatListState extends State<ChatList> {
                         : SingleChat(
                             messages: myChats[0]['messages'],
                             chatId: myChats[0]['chatId'],
+                            isMentor: myChats[0]['isMentor'],
                           )))
             : (_isLoading // user is mentor
                   ? Center(
@@ -431,6 +434,7 @@ class _ChatListState extends State<ChatList> {
                   : SingleChat(
                       messages: myChats[0]['messages'],
                       chatId: myChats[0]['chatId'],
+                      isMentor: myChats[0]['isMentor'],
                     )),
       ),
     );
