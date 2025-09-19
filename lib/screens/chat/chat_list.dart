@@ -184,7 +184,6 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     final firstName = widget.userData['firstName'];
     final userType = widget.userData['type'];
-    final menteeCount = 0;
 
     if (firstName != null) {
       setState(() {
@@ -410,25 +409,28 @@ class _ChatListState extends State<ChatList> {
                         strokeCap: StrokeCap.round,
                       ),
                     )
-                  : Column(
+                  : myChats.isEmpty
+                  ? Column(
                       spacing: 20,
                       children: [
                         NowHeader('Welcome $firstName!', fontSize: 26),
-                        menteeCount == 0
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xff32a2c0).withAlpha(210),
-                                ),
-                                padding: EdgeInsets.all(20),
-                                margin: EdgeInsets.only(top: 150),
-                                child: NowHeader(
-                                  'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : ListView(children: []),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xff32a2c0).withAlpha(210),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.only(top: 150),
+                          child: NowHeader(
+                            'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
+                    )
+                  : SingleChat(
+                      messages: myChats[0]['messages'],
+                      chatId: myChats[0]['chatId'],
                     )),
       ),
     );
