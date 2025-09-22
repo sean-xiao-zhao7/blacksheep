@@ -23,19 +23,27 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
+  bool _waitingForConnection = false;
   List myChats = [];
-  late VideoPlayerController _controller;
+  late VideoPlayerController _menteeConnectVideoController;
+  late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _getChats();
-    _controller = VideoPlayerController.asset('assets/videos/video2.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+    _menteeConnectVideoController =
+        VideoPlayerController.asset('assets/videos/video2.mp4')
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
+    _menteeWaitVideoController =
+        VideoPlayerController.asset('assets/videos/video3.mp4')
+          ..initialize().then((_) {
+            setState(() {});
+          });
   }
 
   /// get all matches belonging to current user
@@ -126,7 +134,6 @@ class _ChatListState extends State<ChatList> {
           );
           DatabaseReference newUserMatch = matchesRef.push();
           await newUserMatch.set(matchData);
-          snackMessage = "We will notify you once a matchup becomes available!";
 
           // add initial mentee message as first message of a new chat thread
           DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
@@ -138,6 +145,7 @@ class _ChatListState extends State<ChatList> {
           newChatRef.child('messages').push().set({
             'mentee': true,
             'message': _menteeInitialMessageController.text,
+            'datetime': DateTime.now().millisecondsSinceEpoch,
           });
 
           // update current user with new match id and chat id
@@ -146,22 +154,23 @@ class _ChatListState extends State<ChatList> {
             'chatId': newChatRef.key,
           });
         } else {
-          snackMessage = 'Please check back later!';
+          snackMessage = 'Server error. Please check back later!';
         }
 
         setState(() {
           _isLoading = false;
+          _waitingForConnection = true;
         });
       } catch (error) {
         // print(error);
         setState(() {
           _isLoading = false;
         });
-        snackMessage = 'Error, please try again later.';
+        snackMessage = 'Server error. Please check back later!';
       }
     }
 
-    if (mounted) {
+    if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(
         context,
@@ -193,7 +202,12 @@ class _ChatListState extends State<ChatList> {
       });
     }
 
-    _controller.play();
+    if (myChats.isEmpty) {
+      _menteeConnectVideoController.play();
+    }
+    if (_waitingForConnection) {
+      _menteeWaitVideoController.play();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -311,55 +325,87 @@ class _ChatListState extends State<ChatList> {
                         ? Column(
                             spacing: 10,
                             children: (_showInitialMessage
-                                ? [
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffa06181).withAlpha(230),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: NowHeader(
-                                        'In a few words, tell us what you\'re looking for?',
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        hintText: 'Enter initial message',
-                                        prefixIcon: Icon(
-                                          Icons.message,
-                                          color: Color(0xff32a2c0),
-                                        ),
-                                      ),
-                                      autocorrect: false,
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      maxLines: 5,
-                                      minLines: 5,
-                                      maxLength: 2000,
-                                      controller:
-                                          _menteeInitialMessageController,
-                                    ),
-                                    MainButton(
-                                      'Finish',
-                                      () => {_connectToMentor('chat')},
-                                      size: 400,
-                                    ),
-                                    MainButton(
-                                      'Cancel',
-                                      () => {
-                                        setState(() {
-                                          _showInitialMessage = false;
-                                        }),
-                                      },
-                                      size: 400,
-                                    ),
-                                  ]
+                                ? (_waitingForConnection
+                                      ? [
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Color(
+                                                0xffa06181,
+                                              ).withAlpha(230),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: NowHeader(
+                                              'Someone will be in touch with you shortly',
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(height: 100),
+                                          _menteeWaitVideoController
+                                                  .value
+                                                  .isInitialized
+                                              ? SizedBox(
+                                                  height: 400,
+                                                  child: VideoPlayer(
+                                                    _menteeWaitVideoController,
+                                                  ),
+                                                )
+                                              : CircularProgressIndicator(),
+                                        ]
+                                      : [
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Color(
+                                                0xffa06181,
+                                              ).withAlpha(230),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: NowHeader(
+                                              'In a few words, tell us what you\'re looking for?',
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          TextFormField(
+                                            decoration: const InputDecoration(
+                                              fillColor: Colors.white,
+                                              filled: true,
+                                              hintText: 'Enter initial message',
+                                              prefixIcon: Icon(
+                                                Icons.message,
+                                                color: Color(0xff32a2c0),
+                                              ),
+                                            ),
+                                            autocorrect: false,
+                                            textCapitalization:
+                                                TextCapitalization.sentences,
+                                            maxLines: 5,
+                                            minLines: 5,
+                                            maxLength: 2000,
+                                            controller:
+                                                _menteeInitialMessageController,
+                                          ),
+                                          MainButton(
+                                            'Finish',
+                                            () => {_connectToMentor('chat')},
+                                            size: 400,
+                                          ),
+                                          MainButton(
+                                            'Cancel',
+                                            () => {
+                                              setState(() {
+                                                _showInitialMessage = false;
+                                              }),
+                                            },
+                                            size: 400,
+                                          ),
+                                        ])
                                 : [
                                     Container(
                                       padding: EdgeInsets.all(20),
@@ -375,10 +421,14 @@ class _ChatListState extends State<ChatList> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    _controller.value.isInitialized
+                                    _menteeConnectVideoController
+                                            .value
+                                            .isInitialized
                                         ? SizedBox(
                                             height: 360,
-                                            child: VideoPlayer(_controller),
+                                            child: VideoPlayer(
+                                              _menteeConnectVideoController,
+                                            ),
                                           )
                                         : CircularProgressIndicator(),
                                     MainButton(

@@ -45,7 +45,6 @@ class _SingleChatState extends State<SingleChat> {
       chatBubbles = tempBubbles;
       _isLoading = false;
     });
-    _scrollDown(animated: false);
   }
 
   _sendNewMessage() async {
@@ -58,6 +57,7 @@ class _SingleChatState extends State<SingleChat> {
       await newMessageRef.set({
         'mentee': !widget.isMentor,
         'message': newMessageController.text,
+        'datetime': DateTime.now().millisecondsSinceEpoch,
       });
       Widget newChatBubble = ChatBubble(
         message: newMessageController.text,
