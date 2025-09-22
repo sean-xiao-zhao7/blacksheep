@@ -38,6 +38,7 @@ class _SingleChatState extends State<SingleChat> {
       Widget currentBubble = ChatBubble(
         message: widget.messages[key]['message'],
         currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
+        datetime: widget.messages[key]['datetime'],
       );
       tempBubbles.add(currentBubble);
     }

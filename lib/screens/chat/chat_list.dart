@@ -53,7 +53,7 @@ class _ChatListState extends State<ChatList> {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
-        snackMessage = 'No matches available for mentor';
+        // print('No matches/chats in database.');
         return;
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
