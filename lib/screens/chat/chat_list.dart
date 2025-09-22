@@ -145,7 +145,7 @@ class _ChatListState extends State<ChatList> {
           newChatRef.child('messages').push().set({
             'mentee': true,
             'message': _menteeInitialMessageController.text,
-            'datetime': DateTime.now().millisecondsSinceEpoch,
+            'timestamp': DateTime.now().millisecondsSinceEpoch,
           });
 
           // update current user with new match id and chat id
