@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:sheepfold/screens/chat/chat_list.dart';
+import 'package:sheepfold/screens/chat/chat_list_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';

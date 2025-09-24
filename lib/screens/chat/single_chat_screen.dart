@@ -1,9 +1,10 @@
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
-import "package:sheepfold/screens/chat/chat_bubble.dart";
+import "package:sheepfold/screens/chat/chat_bubble_widget.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
+/// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
   const SingleChat({
     super.key,

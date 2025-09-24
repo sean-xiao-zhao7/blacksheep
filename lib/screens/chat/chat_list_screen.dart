@@ -5,12 +5,18 @@ import 'dart:math';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
-import "package:sheepfold/screens/chat/single_chat.dart";
+import "package:sheepfold/screens/chat/single_chat_screen.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
+/// The main chat screen after logging in.
+///
+/// For both mentee and mentor. Switches elements based on user type.
+/// Also manages states regarding matched or not matched.
+///
+/// TODO separate this file into smaller widgets.
 class ChatList extends StatefulWidget {
   const ChatList(this.userData, {super.key});
   final Map<String, dynamic> userData;

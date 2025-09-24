@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A widget that shows a container with a message and its metadata.
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     super.key,
