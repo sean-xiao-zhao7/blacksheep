@@ -14,21 +14,6 @@ class ChatBubble extends StatelessWidget {
   final bool currentUser;
   final int timestamp;
 
-  _convertTimestampToDateTime() {
-    // var timestamp = 230523110326;
-
-    // var components = <int>[];
-    // for (var i = 0; i < 6; i += 1) {
-    //   components.add(timestamp % 100);
-    //   timestamp = timestamp ~/ 100;
-    // }
-
-    // var [seconds, minutes, hour, twoDigitYear, month, day] = components;
-    // var year = fromTwoDigitYear(twoDigitYear); // See below.
-
-    // var dateTime = DateTime(year, month, day, hour, minutes, seconds);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -2,6 +2,7 @@ import "package:firebase_database/firebase_database.dart";
 import "package:flutter/material.dart";
 import "package:sheepfold/screens/chat/chat_bubble.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class SingleChat extends StatefulWidget {
   const SingleChat({
@@ -30,6 +31,26 @@ class _SingleChatState extends State<SingleChat> {
   void initState() {
     super.initState();
     _makeMessagesBubbles();
+  }
+
+  sendEmail() async {
+    final Email email = Email(
+      body: "Test body",
+      subject: "Test subject",
+      recipients: ["john316rocks@gmail.com"],
+      isHTML: false,
+    );
+    String platformResponse;
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(platformResponse)));
   }
 
   void _makeMessagesBubbles() {
@@ -129,6 +150,14 @@ class _SingleChatState extends State<SingleChat> {
                 ),
                 Row(
                   children: [
+                    IconButton(
+                      iconSize: 26,
+                      icon: const Icon(Icons.email),
+                      onPressed: () {
+                        sendEmail();
+                      },
+                      padding: EdgeInsets.all(0),
+                    ),
                     IconButton(
                       iconSize: 26,
                       icon: const Icon(Icons.refresh),

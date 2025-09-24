@@ -3,6 +3,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'dart:math';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import "package:sheepfold/screens/chat/single_chat.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
@@ -157,6 +158,8 @@ class _ChatListState extends State<ChatList> {
           snackMessage = 'Server error. Please check back later!';
         }
 
+        // send email and push note
+
         setState(() {
           _isLoading = false;
           _waitingForConnection = true;
@@ -176,6 +179,25 @@ class _ChatListState extends State<ChatList> {
         context,
       ).showSnackBar(SnackBar(content: Text(snackMessage)));
     }
+  }
+
+  sendEmail() async {
+    final Email email = Email(
+      body: "Test",
+      subject: "Test",
+      recipients: ["john316rocks@gmail.com"],
+    );
+    String platformResponse;
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(platformResponse)));
   }
 
   /// Calculate distance between two coordinates.
