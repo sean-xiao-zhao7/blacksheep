@@ -33,7 +33,7 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   void _makeMessagesBubbles() {
-    List<Widget> tempBubbles = [];
+    List<ChatBubble> tempBubbles = [];
     for (String key in widget.messages.keys) {
       int timestamp;
       if (widget.messages[key]['timestamp'] is String) {
@@ -42,7 +42,7 @@ class _SingleChatState extends State<SingleChat> {
         timestamp = widget.messages[key]['timestamp'];
       }
 
-      Widget currentBubble = ChatBubble(
+      ChatBubble currentBubble = ChatBubble(
         message: widget.messages[key]['message'],
         currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
         timestamp: timestamp,
@@ -50,6 +50,7 @@ class _SingleChatState extends State<SingleChat> {
       tempBubbles.add(currentBubble);
     }
     setState(() {
+      tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
       chatBubbles = tempBubbles;
       _isLoading = false;
     });
@@ -67,7 +68,7 @@ class _SingleChatState extends State<SingleChat> {
         'message': newMessageController.text,
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       });
-      Widget newChatBubble = ChatBubble(
+      ChatBubble newChatBubble = ChatBubble(
         message: newMessageController.text,
         currentUser: true,
       );
