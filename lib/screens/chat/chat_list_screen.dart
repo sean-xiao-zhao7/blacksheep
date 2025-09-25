@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
+import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
 import 'dart:math';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -509,11 +510,7 @@ class _ChatListState extends State<ChatList> {
                         ),
                       ],
                     )
-                  : SingleChat(
-                      messages: myChats[0]['messages'],
-                      chatId: myChats[0]['chatId'],
-                      isMentor: myChats[0]['isMentor'],
-                    )),
+                  : MentorChatMatches()),
       ),
     );
   }

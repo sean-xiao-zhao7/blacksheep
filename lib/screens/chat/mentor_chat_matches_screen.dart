@@ -12,6 +12,8 @@ class MentorChatMatches extends StatefulWidget {
 }
 
 class _MentorChatMatchesState extends State<MentorChatMatches> {
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -19,6 +21,13 @@ class _MentorChatMatchesState extends State<MentorChatMatches> {
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    return Expanded(
+      child: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: ListView(children: []),
+            ),
+    );
   }
 }
