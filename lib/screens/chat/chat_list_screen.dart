@@ -486,7 +486,8 @@ class _ChatListState extends State<ChatList> {
                         : SingleChat(
                             messages: myChats[0]['messages'],
                             chatId: myChats[0]['chatId'],
-                            isMentor: myChats[0]['isMentor'],
+                            isMentor: false,
+                            mentorFirstName: myChats[0]['mentorFirstName'],
                           )))
             : (_isLoading // user is mentor
                   ? Center(

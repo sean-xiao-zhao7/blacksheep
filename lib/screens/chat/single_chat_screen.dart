@@ -12,10 +12,12 @@ class SingleChat extends StatefulWidget {
     this.chatId = '',
     this.messages = const {},
     this.isMentor = false,
+    this.mentorFirstName = '',
   });
   final String chatId;
   final Map<dynamic, dynamic> messages;
   final bool isMentor;
+  final String mentorFirstName;
 
   @override
   State<StatefulWidget> createState() {
@@ -146,7 +148,7 @@ class _SingleChatState extends State<SingleChat> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 NowHeader(
-                  'Chatting with David',
+                  'Chatting with ${widget.mentorFirstName}',
                   fontSize: 14,
                   color: Color(0xff32a2c0),
                 ),
