@@ -1,23 +1,22 @@
+import 'dart:math';
 import "package:flutter/material.dart";
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
-import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
-import 'dart:math';
 import 'package:video_player/video_player.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import "package:sheepfold/screens/chat/single_chat_screen.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
 
 /// The main chat screen after logging in.
 ///
 /// For both mentee and mentor. Switches elements based on user type.
 /// Also manages states regarding matched or not matched.
 ///
-/// TODO separate this file into smaller widgets.
 class ChatList extends StatefulWidget {
   const ChatList(this.userData, {super.key});
   final Map<String, dynamic> userData;
@@ -103,7 +102,7 @@ class _ChatListState extends State<ChatList> {
 
     if (_menteeInitialMessageController.text.isEmpty ||
         _menteeInitialMessageController.text.length < 10) {
-      snackMessage = 'Please enter a short message.';
+      snackMessage = 'Please enter a message longer than 10 characters.';
     } else {
       try {
         final usersRef = FirebaseDatabase.instance.ref().child('users');
@@ -114,7 +113,9 @@ class _ChatListState extends State<ChatList> {
               snapshot.value as Map<dynamic, dynamic>;
 
           // find closest mentor
-          String closestUid = '';
+          String closestMentorUid = '';
+          String closestMentorFirstName = '';
+          String closestMentorLastName = '';
           double closestDistance = 100000000;
           for (String key in allUsers.keys) {
             Map<dynamic, dynamic> currentUser = allUsers[key];
@@ -127,28 +128,35 @@ class _ChatListState extends State<ChatList> {
               );
               if (newDistance < closestDistance) {
                 closestDistance = newDistance;
-                closestUid = key;
+                closestMentorUid = key;
+                closestMentorFirstName = currentUser['firstName'];
+                closestMentorLastName = currentUser['lastName'];
               }
             }
           }
 
-          Map<String, dynamic> matchData = {
-            'mentor': closestUid,
-            'mentee': widget.userData['uid'],
-            'type': type,
-          };
-          DatabaseReference matchesRef = FirebaseDatabase.instance.ref(
-            "users-matches",
-          );
-          DatabaseReference newUserMatch = matchesRef.push();
-          await newUserMatch.set(matchData);
+          // Map<String, dynamic> matchData = {
+          //   'mentor': closestUid,
+          //   'mentee': widget.userData['uid'],
+          //   'type': type,
+          // };
+          // DatabaseReference matchesRef = FirebaseDatabase.instance.ref(
+          //   "users-matches",
+          // );
+          // DatabaseReference newUserMatch = matchesRef.push();
+          // await newUserMatch.set(matchData);
 
           // add initial mentee message as first message of a new chat thread
           DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
           DatabaseReference newChatRef = chatstRef.push();
           await newChatRef.set({
             'menteeUid': widget.userData['uid'],
-            'mentorUid': closestUid,
+            'mentorUid': closestMentorUid,
+            'type': type,
+            'menteeFirstName': widget.userData['firstName'],
+            'menteeLastName': widget.userData['LastName'],
+            'mentorFirstName': closestMentorFirstName,
+            'mentorLastName': closestMentorLastName,
           });
           newChatRef.child('messages').push().set({
             'mentee': true,
@@ -158,7 +166,6 @@ class _ChatListState extends State<ChatList> {
 
           // update current user with new match id and chat id
           usersRef.child(widget.userData['uid']).update({
-            'matchId': newUserMatch.key,
             'chatId': newChatRef.key,
           });
         } else {
@@ -367,7 +374,7 @@ class _ChatListState extends State<ChatList> {
                                               ),
                                             ),
                                             child: NowHeader(
-                                              'Someone will be in touch with you shortly',
+                                              'Someone will be in touch with you shortly!',
                                               fontSize: 20,
                                               color: Colors.white,
                                             ),
@@ -510,7 +517,7 @@ class _ChatListState extends State<ChatList> {
                         ),
                       ],
                     )
-                  : MentorChatMatches()),
+                  : MentorChatMatchesScreen(myChats: myChats)),
       ),
     );
   }

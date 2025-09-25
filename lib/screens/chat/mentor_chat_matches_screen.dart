@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
+
 /// A screen with list of chat previews. Tap on each leads to the single chat screen
-class MentorChatMatches extends StatefulWidget {
-  const MentorChatMatches({super.key, this.myChats = const {}});
-  final Map<dynamic, dynamic> myChats;
+class MentorChatMatchesScreen extends StatefulWidget {
+  const MentorChatMatchesScreen({super.key, this.myChats = const []});
+  final List<dynamic> myChats;
 
   @override
   State<StatefulWidget> createState() {
@@ -11,23 +13,38 @@ class MentorChatMatches extends StatefulWidget {
   }
 }
 
-class _MentorChatMatchesState extends State<MentorChatMatches> {
+class _MentorChatMatchesState extends State<MentorChatMatchesScreen> {
   bool _isLoading = false;
+  List<MentorChatPreviewWidget> _chatList = [];
 
   @override
   void initState() {
     super.initState();
+    _makeMentorChatPreviews();
+  }
+
+  void _makeMentorChatPreviews() {
+    print('here');
+    List<MentorChatPreviewWidget> newChatList = [];
+    for (Map<dynamic, dynamic> currentChat in widget.myChats) {
+      print(currentChat);
+      MentorChatPreviewWidget currentBubble = MentorChatPreviewWidget(
+        currentChat,
+      );
+      newChatList.add(currentBubble);
+    }
+    setState(() {
+      // newChatList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      _chatList = newChatList;
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: ListView(children: []),
-            ),
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: ListView(children: []),
     );
   }
 }
