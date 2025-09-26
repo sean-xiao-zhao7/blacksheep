@@ -22,6 +22,14 @@ class _SplashScreenState extends State<SplashScreen> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
+    _timer = Timer(Duration(seconds: 6), () {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (ctx) => HomeScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -32,14 +40,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _timer = Timer(Duration(seconds: 6), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (ctx) => HomeScreen()),
-        );
-      }
-    });
     _controller.play();
 
     return Scaffold(
