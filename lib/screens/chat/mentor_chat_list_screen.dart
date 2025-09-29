@@ -5,9 +5,9 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
 import "package:sheepfold/screens/login/login_screen.dart";
-import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
 
 /// The main chat screen for mentor after logging in.
 ///
@@ -25,7 +25,7 @@ class MentorChatListScreen extends StatefulWidget {
 
 class _MentorChatListScreen extends State<MentorChatListScreen> {
   bool _isLoading = true;
-  List myChats = [];
+  List<MentorChatPreviewWidget> _chatsPreviewList = [];
 
   @override
   void initState() {
@@ -45,23 +45,22 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
-      List tempChats = [];
+      List<MentorChatPreviewWidget> newChatPreviewsList = [];
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           currentChat['isMentor'] = true;
-          tempChats.add(currentChat);
-        } else if (widget.userData['type'] == 'mentee' &&
-            currentChat['menteeUid'] == widget.userData['uid']) {
-          currentChat['isMentor'] = false;
-          tempChats.add(currentChat);
-          break;
         }
+
+        MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
+          chatInfo: currentChat,
+        );
+        newChatPreviewsList.add(currentChatPreview);
       }
       setState(() {
-        myChats = tempChats;
+        _chatsPreviewList = newChatPreviewsList;
       });
     } catch (error) {
       if (mounted) {
@@ -147,6 +146,13 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                               fontSize: 20,
                             ),
                           ),
+                          // Text(
+                          //   'Type: ${widget.userData['type']!}',
+                          //   style: TextStyle(
+                          //     color: Color(0xff32a2c0),
+                          //     fontSize: 20,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -191,7 +197,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         ),
       ),
       body: Container(
-        padding: myChats.isEmpty
+        padding: _chatsPreviewList.isEmpty
             ? EdgeInsets.all(20)
             : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
         decoration: const BoxDecoration(
@@ -212,7 +218,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                   strokeCap: StrokeCap.round,
                 ),
               )
-            : myChats.isEmpty
+            : _chatsPreviewList.isEmpty
             ? Column(
                 spacing: 20,
                 children: [
@@ -231,7 +237,10 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                   ),
                 ],
               )
-            : MentorChatMatchesScreen(myChats: myChats)),
+            : Container(
+                padding: EdgeInsets.all(10),
+                child: ListView(children: _chatsPreviewList),
+              )),
       ),
     );
   }
