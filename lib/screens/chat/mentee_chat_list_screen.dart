@@ -1,8 +1,11 @@
 import 'dart:math';
+
 import "package:flutter/material.dart";
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
+
 import 'package:video_player/video_player.dart';
 
 import "package:sheepfold/screens/chat/single_chat_screen.dart";
@@ -10,12 +13,10 @@ import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/buttons/main_button.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
-import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
 
-/// The main chat screen after logging in.
+/// The main chat screen for mentee after logging in.
 ///
-/// For both mentee and mentor. Switches elements based on user type.
-/// Also manages states regarding matched or not matched.
+/// Manages states regarding matched or not matched.
 ///
 class MenteeChatListScreen extends StatefulWidget {
   const MenteeChatListScreen(this.userData, {super.key});
@@ -230,7 +231,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   @override
   Widget build(BuildContext context) {
     final firstName = widget.userData['firstName'];
-    final userType = widget.userData['type'];
 
     if (firstName != null) {
       setState(() {
@@ -344,107 +344,24 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           ),
         ),
         height: MediaQuery.of(context).size.height,
-        child:
-            userType ==
-                'mentee' // user is mentee
-            ? (_isLoading
-                  ? Center(
-                      heightFactor: 20,
-                      child: CircularProgressIndicator(
-                        color: Color(0xff32a2c0),
-                        strokeWidth: 10,
-                        strokeAlign: 5,
-                        strokeCap: StrokeCap.round,
-                      ),
-                    )
-                  : (myChats.isEmpty
-                        ? Column(
-                            spacing: 10,
-                            children: (_showInitialMessage
-                                ? (_waitingForConnection
-                                      ? [
-                                          Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Color(
-                                                0xffa06181,
-                                              ).withAlpha(230),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: NowHeader(
-                                              'Someone will be in touch with you shortly!',
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          SizedBox(height: 100),
-                                          _menteeWaitVideoController
-                                                  .value
-                                                  .isInitialized
-                                              ? SizedBox(
-                                                  height: 400,
-                                                  child: VideoPlayer(
-                                                    _menteeWaitVideoController,
-                                                  ),
-                                                )
-                                              : CircularProgressIndicator(),
-                                        ]
-                                      : [
-                                          Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Color(
-                                                0xffa06181,
-                                              ).withAlpha(230),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: NowHeader(
-                                              'In a few words, tell us what you\'re looking for?',
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          TextFormField(
-                                            decoration: const InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              hintText: 'Enter initial message',
-                                              prefixIcon: Icon(
-                                                Icons.message,
-                                                color: Color(0xff32a2c0),
-                                              ),
-                                            ),
-                                            autocorrect: false,
-                                            textCapitalization:
-                                                TextCapitalization.sentences,
-                                            maxLines: 5,
-                                            minLines: 5,
-                                            maxLength: 2000,
-                                            controller:
-                                                _menteeInitialMessageController,
-                                          ),
-                                          MainButton(
-                                            'Finish',
-                                            () => {_connectToMentor('chat')},
-                                            size: 400,
-                                          ),
-                                          MainButton(
-                                            'Cancel',
-                                            () => {
-                                              setState(() {
-                                                _showInitialMessage = false;
-                                              }),
-                                            },
-                                            size: 400,
-                                          ),
-                                        ])
-                                : [
+        child: (_isLoading
+            ? Center(
+                heightFactor: 20,
+                child: CircularProgressIndicator(
+                  color: Color(0xff32a2c0),
+                  strokeWidth: 10,
+                  strokeAlign: 5,
+                  strokeCap: StrokeCap.round,
+                ),
+              )
+            : (myChats.isEmpty
+                  ? Column(
+                      spacing: 10,
+                      children: (_showInitialMessage
+                          ? (_waitingForConnection
+                                ? [
                                     Container(
-                                      padding: EdgeInsets.all(20),
+                                      padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         color: Color(0xffa06181).withAlpha(230),
                                         borderRadius: BorderRadius.all(
@@ -452,73 +369,117 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                         ),
                                       ),
                                       child: NowHeader(
-                                        'Find your place in your community!\nPlease select how you\'d prefer to connect:',
+                                        'Someone will be in touch with you shortly!',
                                         fontSize: 20,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    _menteeConnectVideoController
+                                    SizedBox(height: 100),
+                                    _menteeWaitVideoController
                                             .value
                                             .isInitialized
                                         ? SizedBox(
-                                            height: 360,
+                                            height: 400,
                                             child: VideoPlayer(
-                                              _menteeConnectVideoController,
+                                              _menteeWaitVideoController,
                                             ),
                                           )
                                         : CircularProgressIndicator(),
+                                  ]
+                                : [
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffa06181).withAlpha(230),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: NowHeader(
+                                        'In a few words, tell us what you\'re looking for?',
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        hintText: 'Enter initial message',
+                                        prefixIcon: Icon(
+                                          Icons.message,
+                                          color: Color(0xff32a2c0),
+                                        ),
+                                      ),
+                                      autocorrect: false,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      maxLines: 5,
+                                      minLines: 5,
+                                      maxLength: 2000,
+                                      controller:
+                                          _menteeInitialMessageController,
+                                    ),
                                     MainButton(
-                                      'In app text',
+                                      'Finish',
+                                      () => {_connectToMentor('chat')},
+                                      size: 400,
+                                    ),
+                                    MainButton(
+                                      'Cancel',
                                       () => {
                                         setState(() {
-                                          _showInitialMessage = true;
+                                          _showInitialMessage = false;
                                         }),
                                       },
                                       size: 400,
                                     ),
-                                    MainButton(
-                                      'Phone',
-                                      () => {_connectToMentor('phone')},
-                                      size: 400,
-                                    ),
-                                  ]),
-                          )
-                        : SingleChat(
-                            messages: myChats[0]['messages'],
-                            chatId: myChats[0]['chatId'],
-                            isMentor: false,
-                            mentorFirstName: myChats[0]['mentorFirstName'],
-                          )))
-            : (_isLoading // user is mentor
-                  ? Center(
-                      heightFactor: 20,
-                      child: CircularProgressIndicator(
-                        color: Color(0xff32a2c0),
-                        strokeWidth: 10,
-                        strokeAlign: 5,
-                        strokeCap: StrokeCap.round,
-                      ),
+                                  ])
+                          : [
+                              Container(
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffa06181).withAlpha(230),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: NowHeader(
+                                  'Find your place in your community!\nPlease select how you\'d prefer to connect:',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              _menteeConnectVideoController.value.isInitialized
+                                  ? SizedBox(
+                                      height: 360,
+                                      child: VideoPlayer(
+                                        _menteeConnectVideoController,
+                                      ),
+                                    )
+                                  : CircularProgressIndicator(),
+                              MainButton(
+                                'In app text',
+                                () => {
+                                  setState(() {
+                                    _showInitialMessage = true;
+                                  }),
+                                },
+                                size: 400,
+                              ),
+                              MainButton(
+                                'Phone',
+                                () => {_connectToMentor('phone')},
+                                size: 400,
+                              ),
+                            ]),
                     )
-                  : myChats.isEmpty
-                  ? Column(
-                      spacing: 20,
-                      children: [
-                        NowHeader('Welcome $firstName!', fontSize: 26),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xff32a2c0).withAlpha(210),
-                          ),
-                          padding: EdgeInsets.all(20),
-                          margin: EdgeInsets.only(top: 150),
-                          child: NowHeader(
-                            'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    )
-                  : MentorChatMatchesScreen(myChats: myChats)),
+                  : SingleChat(
+                      messages: myChats[0]['messages'],
+                      chatId: myChats[0]['chatId'],
+                      isMentor: false,
+                      mentorFirstName: myChats[0]['mentorFirstName'],
+                    ))),
       ),
     );
   }
