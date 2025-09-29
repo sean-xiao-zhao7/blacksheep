@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:sheepfold/screens/chat/chat_list_screen.dart';
+
+import 'package:sheepfold/screens/chat/mentee_chat_list_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_3.dart';
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
@@ -81,9 +83,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
       );
       await firebaseDatabaseRef.set(userData);
       if (mounted) {
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (ctx) => ChatList(userData)));
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (ctx) => MenteeChatListScreen(userData)),
+        );
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;

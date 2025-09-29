@@ -11,10 +11,10 @@ class MentorChatPreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withAlpha(240),
+        color: Colors.yellow.withAlpha(240),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(20),
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -28,7 +28,11 @@ class MentorChatPreviewWidget extends StatelessWidget {
             ),
           );
         },
-        child: NowHeader("Test 2", color: Colors.black, fontSize: 20),
+        child: NowHeader(
+          "Chat with ${chatInfo['mentorFirstName']}",
+          color: Colors.black,
+          fontSize: 20,
+        ),
       ),
     );
   }

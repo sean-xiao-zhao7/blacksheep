@@ -17,17 +17,17 @@ import "package:sheepfold/screens/chat/mentor_chat_matches_screen.dart";
 /// For both mentee and mentor. Switches elements based on user type.
 /// Also manages states regarding matched or not matched.
 ///
-class ChatList extends StatefulWidget {
-  const ChatList(this.userData, {super.key});
+class MenteeChatListScreen extends StatefulWidget {
+  const MenteeChatListScreen(this.userData, {super.key});
   final Map<String, dynamic> userData;
 
   @override
   State<StatefulWidget> createState() {
-    return _ChatListState();
+    return _MenteeChatListScreen();
   }
 }
 
-class _ChatListState extends State<ChatList> {
+class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
   bool _waitingForConnection = false;

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:sheepfold/screens/chat/chat_list_screen.dart';
+
+import 'package:sheepfold/screens/chat/mentee_chat_list_screen.dart';
+import 'package:sheepfold/screens/chat/mentor_chat_list_screen.dart';
 import 'package:sheepfold/screens/register/register_screen_initial.dart';
+
 import 'package:sheepfold/widgets/buttons/small_button.dart';
 import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
 import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
@@ -75,9 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['longitude'] = userData['longitude']!;
 
       if (mounted) {
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (ctx) => ChatList(sessionData)));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => userData['type'] == 'mentor'
+                ? MentorChatListScreen(sessionData)
+                : MenteeChatListScreen(sessionData),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
