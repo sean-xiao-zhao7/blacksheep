@@ -14,7 +14,6 @@ class MentorChatMatchesScreen extends StatefulWidget {
 }
 
 class _MentorChatMatchesState extends State<MentorChatMatchesScreen> {
-  bool _isLoading = false;
   List<MentorChatPreviewWidget> _chatList = [];
 
   @override
@@ -24,19 +23,15 @@ class _MentorChatMatchesState extends State<MentorChatMatchesScreen> {
   }
 
   void _makeMentorChatPreviews() {
-    print('here');
     List<MentorChatPreviewWidget> newChatList = [];
     for (Map<dynamic, dynamic> currentChat in widget.myChats) {
-      print(currentChat);
-      MentorChatPreviewWidget currentBubble = MentorChatPreviewWidget(
-        currentChat,
+      MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
+        chatInfo: currentChat,
       );
-      newChatList.add(currentBubble);
+      newChatList.add(currentChatPreview);
     }
     setState(() {
-      // newChatList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
       _chatList = newChatList;
-      _isLoading = false;
     });
   }
 
@@ -44,7 +39,7 @@ class _MentorChatMatchesState extends State<MentorChatMatchesScreen> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      child: ListView(children: []),
+      child: ListView(children: _chatList),
     );
   }
 }
