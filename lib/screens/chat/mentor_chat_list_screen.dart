@@ -26,11 +26,18 @@ class MentorChatListScreen extends StatefulWidget {
 class _MentorChatListScreen extends State<MentorChatListScreen> {
   bool _isLoading = true;
   List<MentorChatPreviewWidget> _chatsPreviewList = [];
+  int _currentChatKey = -1;
 
   @override
   void initState() {
     super.initState();
     _getChats();
+  }
+
+  void setCurrentChatKey(int newKey) {
+    setState(() {
+      _currentChatKey = newKey;
+    });
   }
 
   /// get all matches belonging to current user
@@ -55,6 +62,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         }
 
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
+          setCurrentChatKey,
           chatInfo: currentChat,
         );
         newChatPreviewsList.add(currentChatPreview);
@@ -100,6 +108,8 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         _isLoading = false;
       });
     }
+
+    print(_currentChatKey);
 
     return Scaffold(
       appBar: AppBar(
@@ -237,10 +247,12 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                   ),
                 ],
               )
-            : Container(
+            : _currentChatKey == -1
+            ? Container(
                 padding: EdgeInsets.all(10),
                 child: ListView(children: _chatsPreviewList),
-              )),
+              )
+            : Text('')),
       ),
     );
   }
