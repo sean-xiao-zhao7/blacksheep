@@ -4,6 +4,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
+import "package:sheepfold/screens/chat/single_chat_screen.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
@@ -35,7 +36,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
   }
 
   void setCurrentChatKey(int newKey) {
-    print('here');
     setState(() {
       _currentChatKey = newKey;
     });
@@ -54,6 +54,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
       List<MentorChatPreviewWidget> newChatPreviewsList = [];
+      int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
@@ -63,7 +64,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         }
 
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-          setChatListKey: setCurrentChatKey,
+          setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
           chatInfo: currentChat,
         );
         newChatPreviewsList.add(currentChatPreview);
@@ -109,8 +110,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         _isLoading = false;
       });
     }
-
-    print(_currentChatKey);
 
     return Scaffold(
       appBar: AppBar(
@@ -253,7 +252,14 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 padding: EdgeInsets.all(10),
                 child: ListView(children: _chatsPreviewList),
               )
-            : Text('')),
+            : SingleChat(
+                messages:
+                    _chatsPreviewList[_currentChatKey].chatInfo['messages'],
+                chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
+                isMentor: true,
+                mentorFirstName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['mentorFirstName'],
+              )),
       ),
     );
   }
