@@ -35,6 +35,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
   }
 
   void setCurrentChatKey(int newKey) {
+    print('here');
     setState(() {
       _currentChatKey = newKey;
     });
@@ -62,7 +63,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         }
 
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-          setCurrentChatKey,
+          setChatListKey: setCurrentChatKey,
           chatInfo: currentChat,
         );
         newChatPreviewsList.add(currentChatPreview);

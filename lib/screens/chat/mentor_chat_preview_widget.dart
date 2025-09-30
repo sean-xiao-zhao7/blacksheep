@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sheepfold/widgets/buttons/main_button.dart';
 
 class MentorChatPreviewWidget extends StatelessWidget {
-  MentorChatPreviewWidget(
-    setChatListKey, {
+  const MentorChatPreviewWidget({
     super.key,
-    this.chatInfo = const {},
+    required this.chatInfo,
+    required this.setChatListKey,
   });
   final Map<dynamic, dynamic> chatInfo;
-  final ValueChanged<int> setChatListKey = (value) {};
+  final Function(int) setChatListKey;
 
   @override
   Widget build(BuildContext context) {
