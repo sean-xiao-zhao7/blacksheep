@@ -191,6 +191,15 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
+              title: const Text('All Contacts'),
+              onTap: () {
+                setState(() {
+                  _currentChatKey = -1;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text('Logout'),
               onTap: () {
                 FirebaseAuth.instance.signOut();

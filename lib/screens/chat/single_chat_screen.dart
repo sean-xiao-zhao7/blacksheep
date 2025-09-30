@@ -155,14 +155,14 @@ class _SingleChatState extends State<SingleChat> {
                 ),
                 Row(
                   children: [
-                    IconButton(
-                      iconSize: 26,
-                      icon: const Icon(Icons.email),
-                      onPressed: () {
-                        sendEmail();
-                      },
-                      padding: EdgeInsets.all(0),
-                    ),
+                    // IconButton(
+                    //   iconSize: 26,
+                    //   icon: const Icon(Icons.email),
+                    //   onPressed: () {
+                    //     sendEmail();
+                    //   },
+                    //   padding: EdgeInsets.all(0),
+                    // ),
                     IconButton(
                       iconSize: 26,
                       icon: const Icon(Icons.refresh),
