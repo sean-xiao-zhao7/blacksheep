@@ -71,6 +71,7 @@ class _SingleChatState extends State<SingleChat> {
         message: widget.messages[key]['message'],
         currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
         timestamp: timestamp,
+        userName: widget.isMentor ? widget.mentorFirstName : '',
       );
       tempBubbles.add(currentBubble);
     }
