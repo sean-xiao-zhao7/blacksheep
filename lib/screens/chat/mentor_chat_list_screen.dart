@@ -191,7 +191,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
-              title: const Text('All Contacts'),
+              title: const Text('All Matches'),
               onTap: () {
                 setState(() {
                   _currentChatKey = -1;
