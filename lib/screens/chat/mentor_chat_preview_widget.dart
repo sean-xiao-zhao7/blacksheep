@@ -6,13 +6,20 @@ class MentorChatPreviewWidget extends StatelessWidget {
     super.key,
     required this.chatInfo,
     required this.setChatListKey,
+    this.showBothNames = false,
   });
   final Map<dynamic, dynamic> chatInfo;
   final Function setChatListKey;
+  final bool showBothNames;
 
   @override
   Widget build(BuildContext context) {
-    return MainButton("Chat with ${chatInfo['mentorFirstName']}", () {
+    String finalText = "Chat with ${chatInfo['mentorFirstName']}";
+    if (showBothNames) {
+      finalText =
+          "${chatInfo['mentorFirstName']} with ${chatInfo['menteeFirstName']}";
+    }
+    return MainButton(finalText, () {
       setChatListKey();
     });
   }

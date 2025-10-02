@@ -8,6 +8,7 @@ import "package:sheepfold/screens/chat/single_chat_screen.dart";
 
 import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
+import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 /// Screen for managing all matches across entire system
 ///
@@ -50,13 +51,14 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
       List<MentorChatPreviewWidget> newChatPreviewsList = [];
-      int chatPreviewIndex = 0; 
+      int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
           setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
           chatInfo: currentChat,
+          showBothNames: true,
         );
         newChatPreviewsList.add(currentChatPreview);
       }
@@ -179,7 +181,13 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
         child: _currentChatKey == -1
             ? Container(
                 padding: EdgeInsets.all(10),
-                child: ListView(children: _chatsPreviewList),
+                child: ListView(
+                  children: [
+                    NowHeader('Admin console - All matches', fontSize: 20),
+                    SizedBox(height: 15),
+                    ..._chatsPreviewList,
+                  ],
+                ),
               )
             : SingleChat(
                 messages:
