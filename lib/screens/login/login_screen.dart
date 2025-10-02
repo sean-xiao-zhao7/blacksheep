@@ -99,6 +99,22 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
+      if (mounted && errorCode != '') {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        if (errorCode == 'invalid-credential') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid email(username) or password.')),
+          );
+        } else if (errorCode == 'invalid-email') {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Email format invalid.')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid login. Please try again later.')),
+          );
+        }
+      }
       setState(() {
         _isLoading = false;
       });
@@ -186,32 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         : SmallButton('Login', () {
                             if (submit()) {
                               loginAsyncAction();
-                              if (errorCode != '') {
-                                ScaffoldMessenger.of(context).clearSnackBars();
-                                if (errorCode == 'invalid-credential') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Email or password invalid.',
-                                      ),
-                                    ),
-                                  );
-                                } else if (errorCode == 'invalid-email') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Email format invalid.'),
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Invalid login. Please try again later.',
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
                             }
                           }, 0xff32a2c0),
                     SmallButton('Register', () {

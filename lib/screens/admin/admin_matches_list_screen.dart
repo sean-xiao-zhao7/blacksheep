@@ -9,6 +9,8 @@ import "package:sheepfold/screens/chat/single_chat_screen.dart";
 import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 
+/// Screen for managing all matches across entire system
+///
 class AdminMatchesListScreen extends StatefulWidget {
   const AdminMatchesListScreen({super.key, this.userData = const {}});
   final Map<String, dynamic> userData;
@@ -48,15 +50,10 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
       List<MentorChatPreviewWidget> newChatPreviewsList = [];
-      int chatPreviewIndex = 0;
+      int chatPreviewIndex = 0; 
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
-        if (widget.userData['type'] == 'mentor' &&
-            currentChat['mentorUid'] == widget.userData['uid']) {
-          currentChat['isMentor'] = true;
-        }
-
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
           setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
           chatInfo: currentChat,
