@@ -31,9 +31,11 @@ class SingleChat extends StatefulWidget {
 
 class _SingleChatState extends State<SingleChat> {
   bool _isLoading = true;
-  List<Widget> chatBubbles = [];
   TextEditingController newMessageController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
+  List<Widget> chatBubbles = [];
+  List<String> mentorsList = <String>['test'];
+  String newMentor = '';
 
   @override
   void initState() {
@@ -143,7 +145,46 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  showChangeMatch() {}
+  void _getAllMentors() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String snackMessage = '';
+
+    try {
+      final usersRef = FirebaseDatabase.instance.ref().child('users');
+      final snapshot = await usersRef.get();
+
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> allUsers =
+            snapshot.value as Map<dynamic, dynamic>;
+
+        for (String key in allUsers.keys) {
+          Map<dynamic, dynamic> currentUser = allUsers[key];
+          if (currentUser['type'] == 'mentor') {}
+        }
+      } else {
+        snackMessage = 'No mentors. Please check back later!';
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      // print(error);
+      setState(() {
+        _isLoading = false;
+      });
+      snackMessage = 'Server error. Please check back later!';
+    }
+
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +259,38 @@ class _SingleChatState extends State<SingleChat> {
                                                   color: Color(0xff32a2c0),
                                                   fontSize: 20,
                                                 ),
+                                              ),
+                                              DropdownButton<String>(
+                                                value: mentorsList.first,
+                                                icon: const Icon(
+                                                  Icons.arrow_downward,
+                                                ),
+                                                elevation: 16,
+                                                style: const TextStyle(
+                                                  color: Colors.deepPurple,
+                                                ),
+                                                underline: Container(
+                                                  height: 2,
+                                                  color:
+                                                      Colors.deepPurpleAccent,
+                                                ),
+                                                onChanged: (String? value) {
+                                                  setState(() {
+                                                    newMentor = value!;
+                                                  });
+                                                },
+                                                items: mentorsList
+                                                    .map<
+                                                      DropdownMenuItem<String>
+                                                    >((String value) {
+                                                      return DropdownMenuItem<
+                                                        String
+                                                      >(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    })
+                                                    .toList(),
                                               ),
                                             ],
                                           ),
