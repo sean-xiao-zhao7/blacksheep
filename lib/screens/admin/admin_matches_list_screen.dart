@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AdminMatchesListScreen extends StatefulWidget {
-  const AdminMatchesListScreen({super.key});
+  const AdminMatchesListScreen({super.key, this.userData = const {}});
+  final Map<String, dynamic> userData;
 
   @override
   State<StatefulWidget> createState() {
@@ -12,7 +13,6 @@ class AdminMatchesListScreen extends StatefulWidget {
 class _AdminMatchesListScreenState<AdminMatchesListScreen> extends State {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

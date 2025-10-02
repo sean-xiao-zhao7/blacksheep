@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sheepfold/screens/admin/admin_matches_list_screen.dart';
 
 import 'package:sheepfold/screens/chat/mentee_chat_list_screen.dart';
 import 'package:sheepfold/screens/chat/mentor_chat_list_screen.dart';
@@ -81,9 +82,18 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (ctx) => userData['type'] == 'mentor'
-                ? MentorChatListScreen(sessionData)
-                : MenteeChatListScreen(sessionData),
+            builder: (ctx) {
+              switch (userData['type']) {
+                case 'mentor':
+                  return MentorChatListScreen(sessionData);
+                case 'mentee':
+                  return MenteeChatListScreen(sessionData);
+                case 'admin':
+                  return AdminMatchesListScreen(userData: sessionData);
+                default:
+                  return MentorChatListScreen(sessionData);
+              }
+            },
           ),
         );
       }
