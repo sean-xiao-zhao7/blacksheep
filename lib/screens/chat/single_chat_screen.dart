@@ -34,7 +34,6 @@ class _SingleChatState extends State<SingleChat> {
   List<Widget> chatBubbles = [];
   TextEditingController newMessageController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
-  final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
 
   @override
   void initState() {
@@ -194,12 +193,74 @@ class _SingleChatState extends State<SingleChat> {
                       padding: EdgeInsets.all(0),
                     ),
                     MenuAnchor(
-                      childFocusNode: _buttonFocusNode,
                       menuChildren: <Widget>[
-                        MenuItemButton(
-                          child: Text('Change match'),
-                          onPressed: () => showChangeMatch(),
-                        ),
+                        widget.isAdmin
+                            ? MenuItemButton(
+                                onPressed: () => {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FractionallySizedBox(
+                                        widthFactor: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(40),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Choose new mentor for ${widget.menteeFirstName}:',
+                                                style: TextStyle(
+                                                  color: Color(0xff32a2c0),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                },
+                                child: Text('Change matched mentor'),
+                              )
+                            : MenuItemButton(
+                                onPressed: () => {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FractionallySizedBox(
+                                        widthFactor: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(40),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Report mentor',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                },
+                                child: Text('Report mentor'),
+                              ),
                       ],
                       builder:
                           (
@@ -210,7 +271,6 @@ class _SingleChatState extends State<SingleChat> {
                             return IconButton(
                               iconSize: 26,
                               icon: const Icon(Icons.more_vert),
-                              focusNode: _buttonFocusNode,
                               onPressed: () {
                                 if (controller.isOpen) {
                                   controller.close();
