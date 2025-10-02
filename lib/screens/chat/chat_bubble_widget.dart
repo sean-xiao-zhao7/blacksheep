@@ -9,11 +9,13 @@ class ChatBubble extends StatelessWidget {
     this.currentUser = false,
     this.userName = 'David',
     this.timestamp = 0,
+    this.isAdmin = false,
   });
   final String message;
   final String userName;
   final bool currentUser;
   final int timestamp;
+  final bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ChatBubble extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             Text(
-              currentUser ? 'Me' : userName,
+              currentUser && !isAdmin ? 'Me' : userName,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: 'Now',

@@ -13,11 +13,15 @@ class SingleChat extends StatefulWidget {
     this.messages = const {},
     this.isMentor = false,
     this.mentorFirstName = '',
+    this.menteeFirstName = '',
+    this.isAdmin = false,
   });
   final String chatId;
   final Map<dynamic, dynamic> messages;
   final bool isMentor;
   final String mentorFirstName;
+  final String menteeFirstName;
+  final bool isAdmin;
 
   @override
   State<StatefulWidget> createState() {
@@ -67,12 +71,25 @@ class _SingleChatState extends State<SingleChat> {
         timestamp = widget.messages[key]['timestamp'];
       }
 
-      ChatBubble currentBubble = ChatBubble(
-        message: widget.messages[key]['message'],
-        currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
-        timestamp: timestamp,
-        userName: widget.isMentor ? widget.mentorFirstName : '',
-      );
+      ChatBubble currentBubble;
+      if (widget.isAdmin) {
+        currentBubble = ChatBubble(
+          message: widget.messages[key]['message'],
+          currentUser: widget.messages[key]['mentee'] ? true : false,
+          timestamp: timestamp,
+          userName: widget.messages[key]['mentee']
+              ? widget.menteeFirstName
+              : widget.mentorFirstName,
+          isAdmin: true,
+        );
+      } else {
+        currentBubble = ChatBubble(
+          message: widget.messages[key]['message'],
+          currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
+          timestamp: timestamp,
+          userName: widget.isMentor ? widget.mentorFirstName : '',
+        );
+      }
       tempBubbles.add(currentBubble);
     }
     setState(() {
@@ -149,7 +166,9 @@ class _SingleChatState extends State<SingleChat> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 NowHeader(
-                  'Chatting with ${widget.mentorFirstName}',
+                  widget.menteeFirstName.isEmpty
+                      ? 'Chatting with ${widget.mentorFirstName}'
+                      : '${widget.mentorFirstName} with ${widget.menteeFirstName}',
                   fontSize: 14,
                   color: Color(0xff32a2c0),
                 ),
