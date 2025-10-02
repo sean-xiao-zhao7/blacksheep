@@ -34,6 +34,7 @@ class _SingleChatState extends State<SingleChat> {
   List<Widget> chatBubbles = [];
   TextEditingController newMessageController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
+  final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
 
   @override
   void initState() {
@@ -143,6 +144,8 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  showChangeMatch() {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,7 +171,7 @@ class _SingleChatState extends State<SingleChat> {
                 NowHeader(
                   widget.menteeFirstName.isEmpty
                       ? 'Chatting with ${widget.mentorFirstName}'
-                      : '${widget.mentorFirstName} with ${widget.menteeFirstName}',
+                      : '${widget.mentorFirstName} / ${widget.menteeFirstName}',
                   fontSize: 14,
                   color: Color(0xff32a2c0),
                 ),
@@ -190,13 +193,33 @@ class _SingleChatState extends State<SingleChat> {
                       },
                       padding: EdgeInsets.all(0),
                     ),
-                    IconButton(
-                      iconSize: 26,
-                      icon: const Icon(Icons.more_vert),
-                      onPressed: () {
-                        // ...
-                      },
-                      padding: EdgeInsets.all(0),
+                    MenuAnchor(
+                      childFocusNode: _buttonFocusNode,
+                      menuChildren: <Widget>[
+                        MenuItemButton(
+                          child: Text('Change match'),
+                          onPressed: () => showChangeMatch(),
+                        ),
+                      ],
+                      builder:
+                          (
+                            BuildContext context,
+                            MenuController controller,
+                            Widget? child,
+                          ) {
+                            return IconButton(
+                              iconSize: 26,
+                              icon: const Icon(Icons.more_vert),
+                              focusNode: _buttonFocusNode,
+                              onPressed: () {
+                                if (controller.isOpen) {
+                                  controller.close();
+                                } else {
+                                  controller.open();
+                                }
+                              },
+                            );
+                          },
                     ),
                   ],
                 ),

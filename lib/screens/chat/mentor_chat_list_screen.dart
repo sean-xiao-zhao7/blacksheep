@@ -61,13 +61,12 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           currentChat['isMentor'] = true;
+          MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
+            setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
+            chatInfo: currentChat,
+          );
+          newChatPreviewsList.add(currentChatPreview);
         }
-
-        MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-          setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
-          chatInfo: currentChat,
-        );
-        newChatPreviewsList.add(currentChatPreview);
       }
       setState(() {
         _chatsPreviewList = newChatPreviewsList;
