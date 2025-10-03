@@ -101,8 +101,9 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     });
     String snackMessage = '';
 
-    if (_menteeInitialMessageController.text.isEmpty ||
-        _menteeInitialMessageController.text.length < 10) {
+    if (type == 'chat' &&
+        (_menteeInitialMessageController.text.isEmpty ||
+            _menteeInitialMessageController.text.length < 10)) {
       snackMessage = 'Please enter a message longer than 10 characters.';
     } else {
       try {
@@ -136,17 +137,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             }
           }
 
-          // Map<String, dynamic> matchData = {
-          //   'mentor': closestUid,
-          //   'mentee': widget.userData['uid'],
-          //   'type': type,
-          // };
-          // DatabaseReference matchesRef = FirebaseDatabase.instance.ref(
-          //   "users-matches",
-          // );
-          // DatabaseReference newUserMatch = matchesRef.push();
-          // await newUserMatch.set(matchData);
-
           // add initial mentee message as first message of a new chat thread
           DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
           DatabaseReference newChatRef = chatstRef.push();
@@ -159,9 +149,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'mentorFirstName': closestMentorFirstName,
             'mentorLastName': closestMentorLastName,
           });
+
           newChatRef.child('messages').push().set({
             'mentee': true,
-            'message': _menteeInitialMessageController.text,
+            'message': type == 'chat'
+                ? _menteeInitialMessageController.text
+                : "${widget.userData['firstName']} is in search of community.\n\nPlease contact:\nFirstname: ${widget.userData['firstName']}\nLastname:${widget.userData['lastName']}\nPhone: ${widget.userData['phone']}\nAge: ${widget.userData['age']}\n\nPlease contact them within 48 hours of receiving this message.\nif you have any question, email: contact.us.blacksheep@gmail.com",
             'timestamp': DateTime.now().millisecondsSinceEpoch,
           });
 
@@ -177,6 +170,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
         setState(() {
           _isLoading = false;
+          _showInitialMessage = true;
           _waitingForConnection = true;
         });
       } catch (error) {
