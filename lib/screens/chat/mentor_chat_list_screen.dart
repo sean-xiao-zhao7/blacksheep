@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
@@ -79,25 +78,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         ).showSnackBar(SnackBar(content: Text(snackMessage)));
       }
     }
-  }
-
-  sendEmail() async {
-    final Email email = Email(
-      body: "Test",
-      subject: "Test",
-      recipients: ["john316rocks@gmail.com"],
-    );
-    String platformResponse;
-    try {
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      platformResponse = error.toString();
-    }
-    if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(platformResponse)));
   }
 
   @override

@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import "package:firebase_database/firebase_database.dart";
 
 import "package:sheepfold/screens/chat/chat_bubble_widget.dart";
@@ -41,26 +40,6 @@ class _SingleChatState extends State<SingleChat> {
   void initState() {
     super.initState();
     _makeMessagesBubbles();
-  }
-
-  sendEmail() async {
-    final Email email = Email(
-      body: "Test body",
-      subject: "Test subject",
-      recipients: ["john316rocks@gmail.com"],
-      isHTML: false,
-    );
-    String platformResponse;
-    try {
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      platformResponse = error.toString();
-    }
-    if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(platformResponse)));
   }
 
   void _makeMessagesBubbles() {
