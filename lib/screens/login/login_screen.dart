@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     errorCode = '';
     try {
       final userInfo = await _firebase.signInWithEmailAndPassword(
-        email: _emailController.text,
+        email: _emailController.text.trim(),
         password: _passwordController.text,
       );
 

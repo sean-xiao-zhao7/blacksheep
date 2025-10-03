@@ -89,11 +89,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
 
     if (isValid) {
       _formKey.currentState!.save();
-      newData['firstName'] = _firstNameController.text;
-      newData['lastName'] = _lastNameController.text;
-      newData['age'] = _ageController.text;
-      newData['gender'] = _genderController.text;
-      newData['phone'] = _phoneController.text;
+      newData['firstName'] = _firstNameController.text.trim();
+      newData['lastName'] = _lastNameController.text.trim();
+      newData['age'] = _ageController.text.trim();
+      newData['gender'] = _genderController.text.trim();
+      newData['phone'] = _phoneController.text.trim();
       newData['latitude'] = latitude;
       newData['longitude'] = longitude;
       return true;

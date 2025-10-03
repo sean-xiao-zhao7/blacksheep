@@ -55,9 +55,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      newData['name'] = _nameController.text;
-      newData['address'] = _addressController.text;
-      newData['long'] = _longController.text;
+      newData['name'] = _nameController.text.trim();
+      newData['address'] = _addressController.text.trim();
+      newData['long'] = _longController.text.trim();
       return true;
     } else {
       return false;

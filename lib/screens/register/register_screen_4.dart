@@ -52,7 +52,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      newData['email'] = _emailController.text;
+      newData['email'] = _emailController.text.trim();
       return true;
     } else {
       return false;
@@ -63,7 +63,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     errorCode = '';
     try {
       final userInfo = await _firebase.createUserWithEmailAndPassword(
-        email: _emailController.text,
+        email: _emailController.text.trim(),
         password: _passwordController.text,
       );
       userData = {
