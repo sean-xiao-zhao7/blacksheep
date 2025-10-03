@@ -32,6 +32,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
   bool _waitingForConnection = false;
+  bool _isPhoneConnectionMentee = false;
   List myChats = [];
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
@@ -67,6 +68,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
       List tempChats = [];
+      bool isPhoneMentee = false;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
@@ -78,11 +80,20 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             currentChat['menteeUid'] == widget.userData['uid']) {
           currentChat['isMentor'] = false;
           tempChats.add(currentChat);
+          if (currentChat['type'] == 'phone') {
+            isPhoneMentee = true;
+          }
           break;
         }
       }
       setState(() {
-        myChats = tempChats;
+        if (isPhoneMentee) {
+          _showInitialMessage = true;
+          _waitingForConnection = true;
+          _isPhoneConnectionMentee = true;
+        } else {
+          myChats = tempChats;
+        }
       });
     } catch (error) {
       if (mounted) {
@@ -154,7 +165,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'mentee': true,
             'message': type == 'chat'
                 ? _menteeInitialMessageController.text
-                : "${widget.userData['firstName']} is in search of community.\n\nPlease contact:\nFirstname: ${widget.userData['firstName']}\nLastname:${widget.userData['lastName']}\nPhone: ${widget.userData['phone']}\nAge: ${widget.userData['age']}\n\nPlease contact them within 48 hours of receiving this message.\nif you have any question, email: contact.us.blacksheep@gmail.com",
+                : "New Matchup Available\n\n${widget.userData['firstName']} is in search of community.\n\nPlease contact:\n\nFirstname: ${widget.userData['firstName']}\nLastname: ${widget.userData['lastName']}\nPhone: ${widget.userData['phone']}\nAge: ${widget.userData['age']}\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com",
             'timestamp': DateTime.now().millisecondsSinceEpoch,
           });
 
@@ -363,7 +374,9 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                         ),
                                       ),
                                       child: NowHeader(
-                                        'Someone will be in touch with you shortly!',
+                                        _isPhoneConnectionMentee
+                                            ? 'Someone will be in touch with you on the phone shortly!'
+                                            : 'Someone will be in touch with you shortly!',
                                         fontSize: 20,
                                         color: Colors.white,
                                       ),
