@@ -74,6 +74,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         'lastName': widget.registerData['lastName']!,
         'age': widget.registerData['age']!,
         'gender': widget.registerData['gender']!,
+        'phone': widget.registerData['phone']!,
         'latitude': widget.registerData['latitude']!,
         'longitude': widget.registerData['longitude']!,
         'type': 'mentee',
@@ -89,6 +90,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(errorCode)));
+      }
     }
   }
 

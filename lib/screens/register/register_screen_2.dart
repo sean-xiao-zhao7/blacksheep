@@ -21,6 +21,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   final _lastNameController = TextEditingController();
   final _ageController = TextEditingController();
   final _genderController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   // form
   final _formKey = GlobalKey<FormState>();
@@ -51,6 +52,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
             widget.registerData['gender']!.isEmpty
         ? ""
         : widget.registerData['gender']!;
+    _phoneController.text =
+        widget.registerData['phone'] == null ||
+            widget.registerData['phone']!.isEmpty
+        ? ""
+        : widget.registerData['phone']!;
     latitude = widget.registerData['latitude'] == null
         ? 0
         : widget.registerData['latitude']! as double;
@@ -67,6 +73,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
     _lastNameController.dispose();
     _ageController.dispose();
     _genderController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -86,6 +93,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
       newData['lastName'] = _lastNameController.text;
       newData['age'] = _ageController.text;
       newData['gender'] = _genderController.text;
+      newData['phone'] = _phoneController.text;
       newData['latitude'] = latitude;
       newData['longitude'] = longitude;
       return true;
@@ -218,6 +226,30 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Age is required.';
+                        }
+                        return null;
+                      },
+                      autocorrect: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'PHONE',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _phoneController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Phone is required.';
                         }
                         return null;
                       },
