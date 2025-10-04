@@ -23,7 +23,7 @@ class MentorChatPreviewWidget extends StatelessWidget {
     return LargeInfoButton(
       headerText: headerText,
       secondaryText:
-          'Age ${chatInfo['age']} ${chatInfo['gender']}, ${chatInfo['phone']}',
+          'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})',
       () {
         setChatListKey();
       },

@@ -7,11 +7,13 @@ class LargeInfoButton extends StatelessWidget {
     this.size = 300,
     this.headerText = '',
     this.secondaryText = '',
+    this.iconType = 'message',
   });
   final String headerText;
   final String secondaryText;
   final Function handler;
   final double size;
+  final String iconType;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,9 @@ class LargeInfoButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        padding: EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
+        padding: EdgeInsets.all(20),
         fixedSize: Size.fromWidth(size),
+        backgroundColor: Colors.white.withAlpha(245),
       ),
       onPressed: () {
         handler();
@@ -28,26 +31,37 @@ class LargeInfoButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            spacing: 10,
             children: [
-              Text(
-                headerText,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 43, 141, 168),
-                  fontFamily: 'Now',
-                ),
+              Icon(
+                iconType == 'phone' ? Icons.phone : Icons.message,
+                size: 30,
+                color: Color.fromARGB(255, 43, 141, 168),
               ),
-              Text(
-                secondaryText,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontFamily: 'Now',
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    headerText,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 43, 141, 168),
+                      fontFamily: 'Now',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    secondaryText,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: 'Now',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

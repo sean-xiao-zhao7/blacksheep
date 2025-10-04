@@ -47,8 +47,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
-        // print('No matches/chats in database.');
-        return;
+        throw Exception('Database could not return chats info');
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
@@ -60,6 +59,23 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           currentChat['isMentor'] = true;
+
+          // find user info from users collection
+          DataSnapshot userSnapshot = await ref
+              .child("users/${currentChat['menteeUid']}")
+              .get();
+          if (!userSnapshot.exists) {
+            throw Exception(
+              'Database could not return user info for users/${currentChat['menteeUid']}',
+            );
+          }
+          Map<dynamic, dynamic> menteeInfo =
+              userSnapshot.value as Map<dynamic, dynamic>;
+
+          currentChat['menteeLastname'] = menteeInfo['lastName'];
+          currentChat['age'] = menteeInfo['age'];
+          currentChat['phone'] = menteeInfo['phone'];
+          currentChat['gender'] = menteeInfo['gender'];
           MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
             setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
             chatInfo: currentChat,
