@@ -222,7 +222,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       body: Container(
         padding: _chatsPreviewList.isEmpty
             ? EdgeInsets.all(20)
-            : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
+            : EdgeInsets.only(top: 10, right: 5, left: 5, bottom: 30),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
