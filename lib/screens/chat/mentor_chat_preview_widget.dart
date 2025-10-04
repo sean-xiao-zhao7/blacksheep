@@ -27,6 +27,7 @@ class MentorChatPreviewWidget extends StatelessWidget {
       () {
         setChatListKey();
       },
+      iconType: chatInfo['type'],
     );
   }
 }

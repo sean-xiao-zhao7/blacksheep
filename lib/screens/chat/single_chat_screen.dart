@@ -14,6 +14,7 @@ class SingleChat extends StatefulWidget {
     this.mentorFirstName = '',
     this.menteeFirstName = '',
     this.isAdmin = false,
+    this.isPhone = false,
   });
   final String chatId;
   final Map<dynamic, dynamic> messages;
@@ -21,6 +22,7 @@ class SingleChat extends StatefulWidget {
   final String mentorFirstName;
   final String menteeFirstName;
   final bool isAdmin;
+  final bool isPhone;
 
   @override
   State<StatefulWidget> createState() {
@@ -316,7 +318,9 @@ class _SingleChatState extends State<SingleChat> {
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
-                hintText: 'Enter chat message',
+                hintText: widget.isPhone
+                    ? 'Please contact by phone'
+                    : 'Enter chat message',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.send, color: Color(0xff32a2c0)),
                   onPressed: () {
@@ -338,6 +342,7 @@ class _SingleChatState extends State<SingleChat> {
               maxLines: 5,
               minLines: 1,
               controller: newMessageController,
+              enabled: !widget.isPhone,
             ),
           ),
         ],
