@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: _controller.value.isInitialized
               ? FractionallySizedBox(
                   widthFactor: 1.25,
-                  heightFactor: 0.65,
+                  heightFactor: 0.55,
                   child: VideoPlayer(_controller),
                 )
               : CircularProgressIndicator(),

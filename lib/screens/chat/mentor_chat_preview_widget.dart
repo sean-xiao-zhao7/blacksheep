@@ -14,7 +14,7 @@ class MentorChatPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String finalText = "Chat with ${chatInfo['mentorFirstName']}";
+    String finalText = "Connected with ${chatInfo['menteeFirstName']}";
     if (showBothNames) {
       finalText =
           "${chatInfo['mentorFirstName']} with ${chatInfo['menteeFirstName']}";

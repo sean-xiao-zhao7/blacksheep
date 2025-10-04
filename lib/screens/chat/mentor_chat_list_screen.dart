@@ -247,6 +247,8 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 isMentor: true,
                 mentorFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['mentorFirstName'],
+                menteeFirstName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['menteeFirstName'],
               )),
       ),
     );

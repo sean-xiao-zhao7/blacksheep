@@ -56,7 +56,7 @@ class _SingleChatState extends State<SingleChat> {
       if (widget.isAdmin) {
         currentBubble = ChatBubble(
           message: widget.messages[key]['message'],
-          currentUser: widget.messages[key]['mentee'] ? true : false,
+          isCurrentUser: widget.messages[key]['mentee'] ? true : false,
           timestamp: timestamp,
           userName: widget.messages[key]['mentee']
               ? widget.menteeFirstName
@@ -66,9 +66,11 @@ class _SingleChatState extends State<SingleChat> {
       } else {
         currentBubble = ChatBubble(
           message: widget.messages[key]['message'],
-          currentUser: widget.messages[key]['mentee'] == !widget.isMentor,
+          isCurrentUser: widget.messages[key]['mentee'] == !widget.isMentor,
           timestamp: timestamp,
-          userName: widget.isMentor ? widget.mentorFirstName : '',
+          userName: widget.messages[key]['mentee']
+              ? widget.menteeFirstName
+              : widget.mentorFirstName,
         );
       }
       tempBubbles.add(currentBubble);
@@ -94,7 +96,7 @@ class _SingleChatState extends State<SingleChat> {
       });
       ChatBubble newChatBubble = ChatBubble(
         message: newMessageController.text,
-        currentUser: true,
+        isCurrentUser: true,
       );
       setState(() {
         chatBubbles = [...chatBubbles, newChatBubble];
@@ -124,47 +126,6 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  void _getAllMentors() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String snackMessage = '';
-
-    try {
-      final usersRef = FirebaseDatabase.instance.ref().child('users');
-      final snapshot = await usersRef.get();
-
-      if (snapshot.exists) {
-        Map<dynamic, dynamic> allUsers =
-            snapshot.value as Map<dynamic, dynamic>;
-
-        for (String key in allUsers.keys) {
-          Map<dynamic, dynamic> currentUser = allUsers[key];
-          if (currentUser['type'] == 'mentor') {}
-        }
-      } else {
-        snackMessage = 'No mentors. Please check back later!';
-      }
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (error) {
-      // print(error);
-      setState(() {
-        _isLoading = false;
-      });
-      snackMessage = 'Server error. Please check back later!';
-    }
-
-    if (mounted && snackMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -190,7 +151,7 @@ class _SingleChatState extends State<SingleChat> {
                 NowHeader(
                   widget.menteeFirstName.isEmpty
                       ? 'Chatting with ${widget.mentorFirstName}'
-                      : '${widget.mentorFirstName} / ${widget.menteeFirstName}',
+                      : '${widget.mentorFirstName} | ${widget.menteeFirstName}',
                   fontSize: 14,
                   color: Color(0xff32a2c0),
                 ),
