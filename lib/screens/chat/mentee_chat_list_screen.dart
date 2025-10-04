@@ -262,16 +262,24 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Name: ${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                            'Your info',
                             style: TextStyle(
-                              color: Color(0xff32a2c0),
+                              color: Color.fromARGB(255, 43, 141, 168),
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 43, 141, 168),
                               fontSize: 20,
                             ),
                           ),
                           Text(
-                            'Email: ${widget.userData['email']!}',
+                            '${widget.userData['email']!}',
                             style: TextStyle(
-                              color: Color(0xff32a2c0),
+                              color: Color.fromARGB(255, 43, 141, 168),
                               fontSize: 20,
                             ),
                           ),

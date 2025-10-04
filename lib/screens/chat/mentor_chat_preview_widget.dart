@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheepfold/widgets/buttons/main_button.dart';
+import 'package:sheepfold/widgets/buttons/large_info_button.dart';
 
 class MentorChatPreviewWidget extends StatelessWidget {
   const MentorChatPreviewWidget({
@@ -14,13 +14,19 @@ class MentorChatPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String finalText = "Connected with ${chatInfo['menteeFirstName']}";
+    String headerText =
+        "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
     if (showBothNames) {
-      finalText =
+      headerText =
           "${chatInfo['mentorFirstName']} with ${chatInfo['menteeFirstName']}";
     }
-    return MainButton(finalText, () {
-      setChatListKey();
-    });
+    return LargeInfoButton(
+      headerText: headerText,
+      secondaryText:
+          'Age ${chatInfo['age']} ${chatInfo['gender']}, ${chatInfo['phone']}',
+      () {
+        setChatListKey();
+      },
+    );
   }
 }
