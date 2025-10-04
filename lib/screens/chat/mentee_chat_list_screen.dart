@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
@@ -36,6 +37,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
+  var _fcmToken;
 
   @override
   void initState() {
@@ -52,6 +54,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           ..initialize().then((_) {
             setState(() {});
           });
+    _initPushNotifications();
+  }
+
+  _initPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    final fcmInfo = await fcm.requestPermission();
+    _fcmToken = await fcm.getToken();
+    print(_fcmToken);
   }
 
   /// get all matches belonging to current user
