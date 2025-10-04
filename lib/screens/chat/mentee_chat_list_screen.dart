@@ -303,7 +303,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
-              title: const Text('Logout'),
+              title: const Text('Sign out'),
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).push(

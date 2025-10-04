@@ -118,20 +118,29 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
-                      padding: EdgeInsets.all(40),
+                      padding: EdgeInsets.all(30),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Name: ${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                            'Your info',
                             style: TextStyle(
-                              color: Color(0xff32a2c0),
+                              color: Color.fromARGB(255, 43, 141, 168),
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 43, 141, 168),
                               fontSize: 20,
                             ),
                           ),
                           Text(
-                            'Email: ${widget.userData['email']!}',
+                            '${widget.userData['email']!}',
                             style: TextStyle(
-                              color: Color(0xff32a2c0),
+                              color: Color.fromARGB(255, 43, 141, 168),
                               fontSize: 20,
                             ),
                           ),
@@ -170,7 +179,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
-              title: const Text('All Matches'),
+              title: const Text('View All Connections'),
               onTap: () {
                 setState(() {
                   _currentChatKey = -1;
@@ -179,7 +188,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               },
             ),
             ListTile(
-              title: const Text('Logout'),
+              title: const Text('Sign out'),
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).push(
@@ -238,7 +247,13 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
             : _currentChatKey == -1
             ? Container(
                 padding: EdgeInsets.all(10),
-                child: ListView(children: _chatsPreviewList),
+                child: ListView(
+                  children: [
+                    NowHeader('People you are connected with', fontSize: 20),
+                    SizedBox(height: 10),
+                    ..._chatsPreviewList,
+                  ],
+                ),
               )
             : SingleChat(
                 messages:
