@@ -7,7 +7,7 @@ import "package:sheepfold/screens/chat/single_chat_screen.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
-import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
+import 'package:sheepfold/widgets/chat/mentor_chat_preview_widget.dart';
 
 /// The main chat screen for mentor after logging in.
 ///

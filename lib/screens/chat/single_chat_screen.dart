@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:firebase_database/firebase_database.dart";
 
-import "package:sheepfold/screens/chat/chat_bubble_widget.dart";
+import "package:sheepfold/widgets/chat/chat_bubble_widget.dart";
 import "package:sheepfold/services/email_service.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 

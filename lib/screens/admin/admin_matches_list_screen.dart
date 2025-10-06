@@ -6,11 +6,11 @@ import "package:firebase_database/firebase_database.dart";
 import "package:sheepfold/screens/login/login_screen.dart";
 import "package:sheepfold/screens/chat/single_chat_screen.dart";
 
-import 'package:sheepfold/screens/chat/mentor_chat_preview_widget.dart';
+import 'package:sheepfold/widgets/chat/mentor_chat_preview_widget.dart';
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
-/// Screen for managing all matches across entire system
+/// Screen for managing all matches across entire system 
 ///
 class AdminMatchesListScreen extends StatefulWidget {
   const AdminMatchesListScreen({super.key, this.userData = const {}});
