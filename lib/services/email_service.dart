@@ -19,11 +19,11 @@ class EmailService {
       await send(message, smtpServer);
       // print('Message sent: ${sendReport.toString()}');
     } on MailerException catch (error) {
-      // print(error);
+      print(error);
     }
   }
 
-  static sendNewMatchEmail({
+  static sendNewMatchEmailAdmin({
     newMenteeName = 'Test mentee name',
     newMentorName = 'Test mentor name',
   }) {
@@ -32,6 +32,22 @@ class EmailService {
       [dotenv.env['EMAIL_ADMIN_SEAN']],
       'New Match in Blacksheep',
       'A new match has been made in Blacksheep between the following 2 people:\n\nMentor:$newMentorName\nMentee:$newMenteeName\n\nIf this is ok, nothing needs to be done. If not, you may sign into Blacksheep as Admin to change this match.',
+    );
+  }
+
+  static sendNewMatchPhoneMentor({
+    newMenteeName = 'Asif Sajid (Test mentee)',
+    phone = '416 123 1234',
+    age = 42,
+    mentorEmail = '',
+  }) {
+    sendEmail(
+      // [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
+      mentorEmail == ''
+          ? [dotenv.env['EMAIL_ADMIN_SEAN'], dotenv.env['EMAIL_ADMIN_RAY']]
+          : [mentorEmail],
+      'Someone near you is in search of community',
+      'Please contact:\n\n- $newMenteeName\n- $phone\n- $age\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com',
     );
   }
 }

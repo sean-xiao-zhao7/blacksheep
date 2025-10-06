@@ -10,7 +10,7 @@ import 'package:sheepfold/widgets/chat/mentor_chat_preview_widget.dart';
 import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
-/// Screen for managing all matches across entire system 
+/// Screen for managing all matches across entire system
 ///
 class AdminMatchesListScreen extends StatefulWidget {
   const AdminMatchesListScreen({super.key, this.userData = const {}});
@@ -45,7 +45,6 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
-        // print('No matches/chats in database.');
         return;
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;

@@ -139,6 +139,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           String closestMentorUid = '';
           String closestMentorFirstName = '';
           String closestMentorLastName = '';
+          String closestMentorEmail = '';
           double closestDistance = 100000000;
           for (String key in allUsers.keys) {
             Map<dynamic, dynamic> currentUser = allUsers[key];
@@ -154,6 +155,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 closestMentorUid = key;
                 closestMentorFirstName = currentUser['firstName'];
                 closestMentorLastName = currentUser['lastName'];
+                closestMentorEmail = currentUser['email'];
               }
             }
           }
@@ -166,7 +168,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'mentorUid': closestMentorUid,
             'type': type,
             'menteeFirstName': widget.userData['firstName'],
-            'menteeLastName': widget.userData['LastName'],
+            'menteeLastName': widget.userData['lastName'],
             'mentorFirstName': closestMentorFirstName,
             'mentorLastName': closestMentorLastName,
           });
@@ -185,11 +187,16 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           });
 
           // email admin about the new match
+          EmailService.sendNewMatchEmailAdmin();
+
+          // email mentor if type is phone
           if (type == 'phone') {
-            EmailService.sendNewMatchEmail(
+            EmailService.sendNewMatchPhoneMentor(
               newMenteeName:
-                  "${widget.userData['firstName']} ${widget.userData['lasstName']}",
-              newMentorName: "$closestMentorFirstName $closestMentorLastName",
+                  "${widget.userData['firstName']} ${widget.userData['lastName']}",
+              phone: widget.userData['phone'],
+              age: widget.userData['age'],
+              // mentorEmail: closestMentorEmail,
             );
           }
         } else {
@@ -344,7 +351,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             ListTile(
               title: const Text('Test email'),
               onTap: () {
-                EmailService.sendNewMatchEmail();
+                EmailService.sendNewMatchPhoneMentor();
               },
             ),
           ],

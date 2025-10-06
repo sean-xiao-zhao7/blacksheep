@@ -47,7 +47,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
-        throw Exception('Database could not return chats info');
+        return;
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
