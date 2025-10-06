@@ -187,15 +187,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           // email admin about the new match
           if (type == 'phone') {
             EmailService.sendNewMatchEmail(
-              "${widget.userData['firstName']} ${widget.userData['lasstName']}",
-              "$closestMentorFirstName $closestMentorLastName",
+              newMenteeName:
+                  "${widget.userData['firstName']} ${widget.userData['lasstName']}",
+              newMentorName: "$closestMentorFirstName $closestMentorLastName",
             );
           }
         } else {
           snackMessage = 'Server error. Please check back later!';
         }
-
-        // send email and push note
 
         setState(() {
           _isLoading = false;
@@ -340,6 +339,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                     },
                   ),
                 );
+              },
+            ),
+            ListTile(
+              title: const Text('Test email'),
+              onTap: () {
+                EmailService.sendNewMatchEmail();
               },
             ),
           ],
