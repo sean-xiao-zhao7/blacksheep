@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:firebase_database/firebase_database.dart";
 
 import "package:sheepfold/screens/chat/chat_bubble_widget.dart";
+import "package:sheepfold/services/email_service.dart";
 import "package:sheepfold/widgets/layouts/headers/now_header.dart";
 
 /// A single chat between 2 parties.
@@ -134,6 +135,7 @@ class _SingleChatState extends State<SingleChat> {
     final subject = 'Mentor reported by mentee';
     final emailBody =
         'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${reportMessageController.text}';
+    EmailService.sendEmail(recipient, subject, emailBody);
   }
 
   @override
@@ -167,14 +169,6 @@ class _SingleChatState extends State<SingleChat> {
                 ),
                 Row(
                   children: [
-                    // IconButton(
-                    //   iconSize: 26,
-                    //   icon: const Icon(Icons.email),
-                    //   onPressed: () {
-                    //     sendEmail();
-                    //   },
-                    //   padding: EdgeInsets.all(0),
-                    // ),
                     IconButton(
                       iconSize: 26,
                       icon: const Icon(Icons.refresh),
