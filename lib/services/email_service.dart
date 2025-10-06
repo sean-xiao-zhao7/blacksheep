@@ -9,10 +9,13 @@ class EmailService {
       ..recipients.add(recipients[0])
       ..subject = subject
       ..text = body;
+    print(
+      dotenv.env['EMAIL_FROM_MAILGUN']! + " " + dotenv.env['EMAIL_PW_MAILGUN']!,
+    );
 
-    final smtpServer = gmail(
-      dotenv.env['EMAIL_FROM']!,
-      dotenv.env['EMAIL_PW']!,
+    final smtpServer = mailgun(
+      dotenv.env['EMAIL_FROM_MAILGUN']!,
+      dotenv.env['EMAIL_PW_MAILGUN']!,
     );
 
     try {
