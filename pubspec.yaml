@@ -41,6 +41,7 @@ dependencies:
   location: ^5.0.0
   firebase_messaging: ^16.0.2
   mailer: ^6.5.0
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   assets:
     - assets/images/
     - assets/videos/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

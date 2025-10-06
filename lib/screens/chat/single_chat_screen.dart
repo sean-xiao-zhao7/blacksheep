@@ -131,11 +131,20 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   _reportMentor() {
+    setState(() {
+      _isLoading = true;
+    });
     final recipient = ['contact.us.blacksheep@gmail.com'];
     final subject = 'Mentor reported by mentee';
     final emailBody =
         'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${reportMessageController.text}';
-    EmailService.sendEmail(recipient, subject, emailBody);
+    EmailService.sendEmail(recipient, subject, emailBody).then(
+      (value) => {
+        setState(() {
+          _isLoading = false;
+        }),
+      },
+    );
   }
 
   @override
@@ -309,6 +318,7 @@ class _SingleChatState extends State<SingleChat> {
                                                 minLines: 5,
                                                 controller:
                                                     reportMessageController,
+                                                enabled: !_isLoading,
                                               ),
                                             ],
                                           ),

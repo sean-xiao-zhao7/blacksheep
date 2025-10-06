@@ -1,22 +1,25 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EmailService {
-  static sendEmail(recipients, subject, body) async {
+  static Future sendEmail(recipients, subject, body) async {
     final message = Message()
       ..from = 'contact.us.blacksheep@gmail.com'
       ..recipients.add(recipients[0])
       ..subject = subject
       ..text = body;
 
+    final smtpServer = gmail(
+      dotenv.env['EMAIL_FROM']!,
+      dotenv.env['EMAIL_PW']!,
+    );
+
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
     } on MailerException catch (error) {
-      print('Message not sent.');
-      for (var p in error.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
-      }
+      print(error);
     }
   }
 }
