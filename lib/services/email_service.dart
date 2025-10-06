@@ -9,9 +9,6 @@ class EmailService {
       ..recipients.add(recipients[0])
       ..subject = subject
       ..text = body;
-    print(
-      dotenv.env['EMAIL_FROM_MAILGUN']! + " " + dotenv.env['EMAIL_PW_MAILGUN']!,
-    );
 
     final smtpServer = mailgun(
       dotenv.env['EMAIL_FROM_MAILGUN']!,
@@ -24,5 +21,13 @@ class EmailService {
     } on MailerException catch (error) {
       print(error);
     }
+  }
+
+  static sendNewMatchEmail(newMenteeName, newMentorName) {
+    sendEmail(
+      [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
+      'New Match in Blacksheep',
+      'A new match has been made in Blacksheep between the following 2 people:\n\nMentor:$newMentorName\nMentee:$newMenteeName\n\nIf this is ok, nothing needs to be done. If not, you may sign into Blacksheep as Admin to change this match.',
+    );
   }
 }

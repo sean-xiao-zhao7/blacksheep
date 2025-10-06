@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
+import "package:sheepfold/services/email_service.dart";
 
 import 'package:video_player/video_player.dart';
 
@@ -182,6 +183,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           usersRef.child(widget.userData['uid']).update({
             'chatId': newChatRef.key,
           });
+
+          // email admin about the new match
+          if (type == 'phone') {
+            EmailService.sendNewMatchEmail(
+              "${widget.userData['firstName']} ${widget.userData['lasstName']}",
+              "$closestMentorFirstName $closestMentorLastName",
+            );
+          }
         } else {
           snackMessage = 'Server error. Please check back later!';
         }
