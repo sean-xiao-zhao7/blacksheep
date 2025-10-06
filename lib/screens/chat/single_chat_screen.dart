@@ -130,9 +130,9 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   _reportMentor() {
-    final String recipient = 'contact.us.blacksheep@gmail.com';
-    final String title = 'Mentor reported by mentee';
-    final String message =
+    final recipient = ['contact.us.blacksheep@gmail.com'];
+    final subject = 'Mentor reported by mentee';
+    final emailBody =
         'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${reportMessageController.text}';
   }
 
