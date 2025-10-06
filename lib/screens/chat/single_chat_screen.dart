@@ -128,6 +128,8 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  _reportMentor() {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -266,6 +268,48 @@ class _SingleChatState extends State<SingleChat> {
                                                   color: Colors.red,
                                                   fontSize: 20,
                                                 ),
+                                              ),
+                                              TextFormField(
+                                                decoration: InputDecoration(
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                  hintText:
+                                                      'Please explain reason for reporting.',
+                                                  suffixIcon: IconButton(
+                                                    icon: Icon(
+                                                      Icons.send,
+                                                      color: Color(0xff32a2c0),
+                                                    ),
+                                                    onPressed: () {
+                                                      _reportMentor();
+                                                    },
+                                                  ),
+                                                  focusedBorder:
+                                                      UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color: Color(
+                                                            0xff32a2c0,
+                                                          ),
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.trim().isEmpty) {
+                                                    return 'Message is required.';
+                                                  }
+                                                  return null;
+                                                },
+                                                autocorrect: false,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                maxLines: 5,
+                                                minLines: 5,
+                                                controller:
+                                                    newMessageController,
+                                                enabled: !widget.isPhone,
                                               ),
                                             ],
                                           ),
