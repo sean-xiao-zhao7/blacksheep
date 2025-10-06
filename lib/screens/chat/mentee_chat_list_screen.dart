@@ -61,7 +61,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     final fcm = FirebaseMessaging.instance;
     final fcmInfo = await fcm.requestPermission();
     _fcmToken = await fcm.getToken();
-    print(_fcmToken);
+    // print(_fcmToken);
   }
 
   /// get all matches belonging to current user

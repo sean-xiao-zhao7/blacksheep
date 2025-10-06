@@ -284,15 +284,19 @@ class _SingleChatState extends State<SingleChat> {
                                                   filled: true,
                                                   hintText:
                                                       'Please explain reason for reporting.',
-                                                  suffixIcon: IconButton(
-                                                    icon: Icon(
-                                                      Icons.send,
-                                                      color: Color(0xff32a2c0),
-                                                    ),
-                                                    onPressed: () {
-                                                      _reportMentor();
-                                                    },
-                                                  ),
+                                                  suffixIcon: !_isLoading
+                                                      ? IconButton(
+                                                          icon: Icon(
+                                                            Icons.send,
+                                                            color: Color(
+                                                              0xff32a2c0,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            _reportMentor();
+                                                          },
+                                                        )
+                                                      : CircularProgressIndicator(),
                                                   focusedBorder:
                                                       UnderlineInputBorder(
                                                         borderSide: BorderSide(

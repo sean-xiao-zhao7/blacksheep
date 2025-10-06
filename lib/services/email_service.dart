@@ -17,7 +17,7 @@ class EmailService {
 
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
+      print('Message sent: ${sendReport.toString()}');
     } on MailerException catch (error) {
       print(error);
     }
