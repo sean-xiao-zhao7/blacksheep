@@ -65,7 +65,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               .child("users/${currentChat['menteeUid']}")
               .get();
           if (!userSnapshot.exists) {
-            throw Exception(
+            print(
               'Database could not return user info for users/${currentChat['menteeUid']}',
             );
           }
@@ -81,6 +81,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
             chatInfo: currentChat,
           );
           newChatPreviewsList.add(currentChatPreview);
+          chatPreviewIndex++;
         }
       }
       setState(() {
