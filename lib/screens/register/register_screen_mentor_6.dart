@@ -82,6 +82,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
         'long': widget.registerData['long']!,
         'longitude': widget.registerData['longitude']!,
         'latitude': widget.registerData['latitude']!,
+        'phone': widget.registerData['phone']!,
         'type': 'mentor',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
