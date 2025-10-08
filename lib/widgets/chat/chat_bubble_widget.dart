@@ -19,6 +19,8 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
     return Column(
       children: [
         SizedBox(height: 10),
@@ -69,7 +71,7 @@ class ChatBubble extends StatelessWidget {
             Text(
               timestamp == 0
                   ? 'Date not available.'
-                  : DateTime.fromMillisecondsSinceEpoch(timestamp).toString(),
+                  : "${date.month}/${date.day}/${date.year} ${date.hour}:${date.minute}",
               style: TextStyle(fontSize: 10, fontFamily: 'Now'),
             ),
           ],
