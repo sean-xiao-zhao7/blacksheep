@@ -6,11 +6,13 @@ class MentorChatPreviewWidget extends StatelessWidget {
     super.key,
     required this.chatInfo,
     required this.setChatListKey,
+    required this.chatPreviewIndex,
     this.showBothNames = false,
   });
   final Map<dynamic, dynamic> chatInfo;
   final Function setChatListKey;
   final bool showBothNames;
+  final int chatPreviewIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class MentorChatPreviewWidget extends StatelessWidget {
       secondaryText:
           'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})',
       () {
-        setChatListKey();
+        setChatListKey(chatPreviewIndex);
       },
       iconType: chatInfo['type'],
     );

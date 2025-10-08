@@ -77,7 +77,8 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
           currentChat['phone'] = menteeInfo['phone'];
           currentChat['gender'] = menteeInfo['gender'];
           MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-            setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
+            setChatListKey: setCurrentChatKey,
+            chatPreviewIndex: chatPreviewIndex,
             chatInfo: currentChat,
           );
           newChatPreviewsList.add(currentChatPreview);

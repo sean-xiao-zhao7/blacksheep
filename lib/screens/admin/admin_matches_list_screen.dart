@@ -52,14 +52,16 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       List<MentorChatPreviewWidget> newChatPreviewsList = [];
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
-        var currentChat = allChats[key];
+        var currentChat = allChats[key]; 
         currentChat['chatId'] = key;
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-          setChatListKey: () => setCurrentChatKey(chatPreviewIndex),
+          setChatListKey: setCurrentChatKey,
+          chatPreviewIndex: chatPreviewIndex,
           chatInfo: currentChat,
           showBothNames: true,
         );
         newChatPreviewsList.add(currentChatPreview);
+        chatPreviewIndex++;
       }
       setState(() {
         _chatsPreviewList = newChatPreviewsList;
