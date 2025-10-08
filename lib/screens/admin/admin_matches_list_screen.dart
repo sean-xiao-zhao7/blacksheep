@@ -52,7 +52,7 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       List<MentorChatPreviewWidget> newChatPreviewsList = [];
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
-        var currentChat = allChats[key]; 
+        var currentChat = allChats[key];
         currentChat['chatId'] = key;
         MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
           setChatListKey: setCurrentChatKey,
@@ -144,7 +144,7 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
-              title: const Text('All Matches'),
+              title: const Text('View All Connections'),
               onTap: () {
                 setState(() {
                   _currentChatKey = -1;
@@ -184,7 +184,7 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
                 padding: EdgeInsets.all(10),
                 child: ListView(
                   children: [
-                    NowHeader('Admin console - All matches', fontSize: 20),
+                    NowHeader('Admin - All connections', fontSize: 18),
                     SizedBox(height: 15),
                     ..._chatsPreviewList,
                   ],

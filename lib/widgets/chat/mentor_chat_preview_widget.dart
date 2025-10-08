@@ -20,12 +20,13 @@ class MentorChatPreviewWidget extends StatelessWidget {
         "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
     if (showBothNames) {
       headerText =
-          "${chatInfo['mentorFirstName']} with ${chatInfo['menteeFirstName']}";
+          "${chatInfo['mentorFirstName']} | ${chatInfo['menteeFirstName']}";
     }
     return LargeInfoButton(
       headerText: headerText,
-      secondaryText:
-          'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})',
+      secondaryText: showBothNames
+          ? ""
+          : 'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})',
       () {
         setChatListKey(chatPreviewIndex);
       },

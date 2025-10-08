@@ -45,27 +45,37 @@ class LargeInfoButton extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      headerText,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 43, 141, 168),
-                        fontFamily: 'Now',
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      secondaryText,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontFamily: 'Now',
-                      ),
-                    ),
-                  ],
+                  children: secondaryText == ''
+                      ? [
+                          Text(
+                            headerText,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontFamily: 'Now',
+                            ),
+                          ),
+                        ]
+                      : [
+                          Text(
+                            headerText,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontFamily: 'Now',
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            secondaryText,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontFamily: 'Now',
+                            ),
+                          ),
+                        ],
                 ),
               ],
             ),
