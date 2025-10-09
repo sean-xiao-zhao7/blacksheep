@@ -164,6 +164,34 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  _changeMentor(String newMentorUid) async {
+    String snackMessage = '';
+    try {
+      DatabaseReference chatstRef = FirebaseDatabase.instance.ref(
+        "chats/${widget.chatId}",
+      );
+      var newMentor = _mentorsSelectionList.firstWhere(
+        (mentor) => mentor['uid'] == newMentorUid,
+      );
+      // print(newMentor);
+      await chatstRef.update({
+        'mentorFirstName': newMentor['firstName'],
+        'mentorLastName': newMentor['lastName'],
+        'mentorUid': newMentorUid,
+      });
+      snackMessage = 'Updated mentor successfully.';
+    } catch (error) {
+      snackMessage = 'Unable to change mentor, please try again later';
+    }
+
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
+
   void _scrollDown({bool animated = true}) {
     if (animated) {
       _listViewController.animateTo(
@@ -279,6 +307,7 @@ class _SingleChatState extends State<SingleChat> {
                                                       setState(() {
                                                         _newMentorUid = value!;
                                                       });
+                                                      _changeMentor(value!);
                                                     },
                                                     items: _mentorsSelectionList.map((
                                                       currentMentor,
