@@ -14,6 +14,7 @@ class SingleChat extends StatefulWidget {
     this.messages = const {},
     this.isMentor = false,
     this.mentorFirstName = '',
+    this.mentorUid = '',
     this.menteeFirstName = '',
     this.isAdmin = false,
     this.isPhone = false,
@@ -22,6 +23,7 @@ class SingleChat extends StatefulWidget {
   final Map<dynamic, dynamic> messages;
   final bool isMentor;
   final String mentorFirstName;
+  final String mentorUid;
   final String menteeFirstName;
   final bool isAdmin;
   final bool isPhone;
@@ -39,7 +41,7 @@ class _SingleChatState extends State<SingleChat> {
   final ScrollController _listViewController = ScrollController();
   List<Widget> chatBubbles = [];
   List<dynamic> _mentorsSelectionList = [];
-  Map<dynamic, String> _newMentor = {};
+  String _newMentorUid = '';
 
   @override
   void initState() {
@@ -69,6 +71,12 @@ class _SingleChatState extends State<SingleChat> {
             'firstName': currentUser['firstName'],
             'lastName': currentUser['lastName'],
           });
+
+          if (key == widget.mentorUid) {
+            setState(() {
+              _newMentorUid = key;
+            });
+          }
         }
       }
       setState(() {
@@ -251,8 +259,8 @@ class _SingleChatState extends State<SingleChat> {
                                                   fontSize: 20,
                                                 ),
                                               ),
-                                              DropdownButton<dynamic>(
-                                                // value: widget.mentorFirstName,
+                                              DropdownButton<String>(
+                                                value: _newMentorUid,
                                                 icon: const Icon(
                                                   Icons.arrow_downward,
                                                 ),
@@ -265,12 +273,16 @@ class _SingleChatState extends State<SingleChat> {
                                                   color:
                                                       Colors.deepPurpleAccent,
                                                 ),
-                                                onChanged: (dynamic value) {},
+                                                onChanged: (String? value) {
+                                                  setState(() {
+                                                    _newMentorUid = value!;
+                                                  });
+                                                },
                                                 items: _mentorsSelectionList.map((
                                                   currentMentor,
                                                 ) {
                                                   return DropdownMenuItem<
-                                                    dynamic
+                                                    String
                                                   >(
                                                     value: currentMentor['uid'],
                                                     child: Text(

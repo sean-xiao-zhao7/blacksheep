@@ -197,6 +197,8 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
                 isMentor: true,
                 mentorFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['mentorFirstName'],
+                mentorUid:
+                    _chatsPreviewList[_currentChatKey].chatInfo['mentorUid'],
                 menteeFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['menteeFirstName'],
                 isAdmin: true,
