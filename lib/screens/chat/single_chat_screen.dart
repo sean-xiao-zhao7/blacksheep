@@ -259,37 +259,42 @@ class _SingleChatState extends State<SingleChat> {
                                                   fontSize: 20,
                                                 ),
                                               ),
-                                              DropdownButton<String>(
-                                                value: _newMentorUid,
-                                                icon: const Icon(
-                                                  Icons.arrow_downward,
-                                                ),
-                                                elevation: 16,
-                                                style: const TextStyle(
-                                                  color: Colors.deepPurple,
-                                                ),
-                                                underline: Container(
-                                                  height: 2,
-                                                  color:
-                                                      Colors.deepPurpleAccent,
-                                                ),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    _newMentorUid = value!;
-                                                  });
-                                                },
-                                                items: _mentorsSelectionList.map((
-                                                  currentMentor,
-                                                ) {
-                                                  return DropdownMenuItem<
-                                                    String
-                                                  >(
-                                                    value: currentMentor['uid'],
-                                                    child: Text(
-                                                      "${currentMentor['firstName']} ${currentMentor['lastName']}",
+                                              StatefulBuilder(
+                                                builder: (BuildContext context, setState) {
+                                                  return DropdownButton<String>(
+                                                    value: _newMentorUid,
+                                                    icon: const Icon(
+                                                      Icons.arrow_downward,
                                                     ),
+                                                    elevation: 16,
+                                                    style: const TextStyle(
+                                                      color: Colors.deepPurple,
+                                                    ),
+                                                    underline: Container(
+                                                      height: 2,
+                                                      color: Colors
+                                                          .deepPurpleAccent,
+                                                    ),
+                                                    onChanged: (String? value) {
+                                                      setState(() {
+                                                        _newMentorUid = value!;
+                                                      });
+                                                    },
+                                                    items: _mentorsSelectionList.map((
+                                                      currentMentor,
+                                                    ) {
+                                                      return DropdownMenuItem<
+                                                        String
+                                                      >(
+                                                        value:
+                                                            currentMentor['uid'],
+                                                        child: Text(
+                                                          "${currentMentor['firstName']} ${currentMentor['lastName']}",
+                                                        ),
+                                                      );
+                                                    }).toList(),
                                                   );
-                                                }).toList(),
+                                                },
                                               ),
                                             ],
                                           ),
