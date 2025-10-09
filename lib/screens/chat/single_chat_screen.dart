@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+
 import "package:firebase_database/firebase_database.dart";
 
 import "package:sheepfold/widgets/chat/chat_bubble_widget.dart";
@@ -37,13 +38,50 @@ class _SingleChatState extends State<SingleChat> {
   TextEditingController reportMessageController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
   List<Widget> chatBubbles = [];
-  List<String> mentorsList = <String>['test'];
-  String newMentor = '';
+  List<dynamic> _mentorsSelectionList = [];
+  Map<dynamic, String> _newMentor = {};
 
   @override
   void initState() {
     super.initState();
     _makeMessagesBubbles();
+    if (widget.isAdmin) {
+      _getAllMentors();
+    }
+  }
+
+  _getAllMentors() async {
+    String snackMessage = 'Server error while getting mentors for admin.';
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance.ref();
+      DataSnapshot snapshot = await ref.child("users").get();
+      if (!snapshot.exists) {
+        return;
+      }
+      Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
+
+      List<dynamic> newMentorsSelectionList = [];
+      for (final String key in allUsers.keys) {
+        var currentUser = allUsers[key];
+        if (currentUser['type'] == 'mentor') {
+          newMentorsSelectionList.add({
+            'uid': key,
+            'firstName': currentUser['firstName'],
+            'lastName': currentUser['lastName'],
+          });
+        }
+      }
+      setState(() {
+        _mentorsSelectionList = newMentorsSelectionList;
+      });
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(snackMessage)));
+      }
+    }
   }
 
   void _makeMessagesBubbles() {
@@ -213,8 +251,8 @@ class _SingleChatState extends State<SingleChat> {
                                                   fontSize: 20,
                                                 ),
                                               ),
-                                              DropdownButton<String>(
-                                                value: mentorsList.first,
+                                              DropdownButton<dynamic>(
+                                                // value: widget.mentorFirstName,
                                                 icon: const Icon(
                                                   Icons.arrow_downward,
                                                 ),
@@ -227,23 +265,19 @@ class _SingleChatState extends State<SingleChat> {
                                                   color:
                                                       Colors.deepPurpleAccent,
                                                 ),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    newMentor = value!;
-                                                  });
-                                                },
-                                                items: mentorsList
-                                                    .map<
-                                                      DropdownMenuItem<String>
-                                                    >((String value) {
-                                                      return DropdownMenuItem<
-                                                        String
-                                                      >(
-                                                        value: value,
-                                                        child: Text(value),
-                                                      );
-                                                    })
-                                                    .toList(),
+                                                onChanged: (dynamic value) {},
+                                                items: _mentorsSelectionList.map((
+                                                  currentMentor,
+                                                ) {
+                                                  return DropdownMenuItem<
+                                                    dynamic
+                                                  >(
+                                                    value: currentMentor['uid'],
+                                                    child: Text(
+                                                      "${currentMentor['firstName']} ${currentMentor['lastName']}",
+                                                    ),
+                                                  );
+                                                }).toList(),
                                               ),
                                             ],
                                           ),
