@@ -348,12 +348,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 );
               },
             ),
-            ListTile(
-              title: const Text('Test email'),
-              onTap: () {
-                EmailService.sendNewMatchPhoneMentor();
-              },
-            ),
+            // ListTile(
+            //   title: const Text('Test email'),
+            //   onTap: () {
+            //     EmailService.sendNewMatchPhoneMentor();
+            //   },
+            // ),
           ],
         ),
       ),
