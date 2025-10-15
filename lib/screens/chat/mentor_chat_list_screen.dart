@@ -65,24 +65,25 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               .child("users/${currentChat['menteeUid']}")
               .get();
           if (!userSnapshot.exists) {
-            print(
-              'Database could not return user info for users/${currentChat['menteeUid']}',
-            );
-          }
-          Map<dynamic, dynamic> menteeInfo =
-              userSnapshot.value as Map<dynamic, dynamic>;
+            // user doesn't exist
+            continue;
+          } else {
+            Map<dynamic, dynamic> menteeInfo =
+                userSnapshot.value as Map<dynamic, dynamic>;
 
-          currentChat['menteeLastname'] = menteeInfo['lastName'];
-          currentChat['age'] = menteeInfo['age'];
-          currentChat['phone'] = menteeInfo['phone'];
-          currentChat['gender'] = menteeInfo['gender'];
-          MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
-            setChatListKey: setCurrentChatKey,
-            chatPreviewIndex: chatPreviewIndex,
-            chatInfo: currentChat,
-          );
-          newChatPreviewsList.add(currentChatPreview);
-          chatPreviewIndex++;
+            currentChat['menteeLastname'] = menteeInfo['lastName'];
+            currentChat['age'] = menteeInfo['age'];
+            currentChat['phone'] = menteeInfo['phone'];
+            currentChat['gender'] = menteeInfo['gender'];
+            MentorChatPreviewWidget currentChatPreview =
+                MentorChatPreviewWidget(
+                  setChatListKey: setCurrentChatKey,
+                  chatPreviewIndex: chatPreviewIndex,
+                  chatInfo: currentChat,
+                );
+            newChatPreviewsList.add(currentChatPreview);
+            chatPreviewIndex++;
+          }
         }
       }
       setState(() {

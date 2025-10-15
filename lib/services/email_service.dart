@@ -5,7 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class EmailService {
   static Future sendEmail(recipients, subject, body) async {
     final message = Message()
-      ..from = Address('info@blacksheep01.com', 'BlackSheep')
+      ..from = Address(
+        dotenv.env['EMAIL_FROM_MAILGUN']!,
+        'BlackSheep Customer Support',
+      )
       ..recipients.addAll(recipients)
       ..subject = subject
       ..text = body;
