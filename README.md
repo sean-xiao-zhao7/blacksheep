@@ -1,3 +1,3 @@
 # BlackSheep
 
-An app for connecting mentees with mentors.
+An app for connecting people.
