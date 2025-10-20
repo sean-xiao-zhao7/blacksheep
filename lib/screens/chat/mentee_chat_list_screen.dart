@@ -5,15 +5,15 @@ import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
-import "package:sheepfold/services/email_service.dart";
+import "package:blacksheep/services/email_service.dart";
 
 import 'package:video_player/video_player.dart';
 
-import "package:sheepfold/screens/chat/single_chat_screen.dart";
-import "package:sheepfold/screens/login/login_screen.dart";
-import "package:sheepfold/widgets/buttons/main_button.dart";
-import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
-import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import "package:blacksheep/screens/chat/single_chat_screen.dart";
+import "package:blacksheep/screens/login/login_screen.dart";
+import "package:blacksheep/widgets/buttons/main_button.dart";
+import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
+import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// The main chat screen for mentee after logging in.
 ///

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sheepfold/screens/register/register_screen_2.dart';
-import 'package:sheepfold/screens/register/register_screen_4.dart';
-import 'package:sheepfold/widgets/buttons/small_button.dart';
-import 'package:sheepfold/widgets/layouts/headers/now_header.dart';
+import 'package:blacksheep/screens/register/register_screen_2.dart';
+import 'package:blacksheep/screens/register/register_screen_4.dart';
+import 'package:blacksheep/widgets/buttons/small_button.dart';
+import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 class RegisterScreen3 extends StatefulWidget {
   const RegisterScreen3({this.registerData = const {}, super.key});

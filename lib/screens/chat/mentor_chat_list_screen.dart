@@ -3,11 +3,11 @@ import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
-import "package:sheepfold/screens/chat/single_chat_screen.dart";
-import "package:sheepfold/screens/login/login_screen.dart";
-import "package:sheepfold/widgets/layouts/headers/genty_header.dart";
-import "package:sheepfold/widgets/layouts/headers/now_header.dart";
-import 'package:sheepfold/widgets/chat/mentor_chat_preview_widget.dart';
+import "package:blacksheep/screens/chat/single_chat_screen.dart";
+import "package:blacksheep/screens/login/login_screen.dart";
+import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
+import "package:blacksheep/widgets/layouts/headers/now_header.dart";
+import 'package:blacksheep/widgets/chat/mentor_chat_preview_widget.dart';
 
 /// The main chat screen for mentor after logging in.
 ///

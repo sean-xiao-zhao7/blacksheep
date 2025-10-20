@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sheepfold/screens/login/login_screen.dart';
-import 'package:sheepfold/screens/register/register_screen_initial.dart';
+import 'package:blacksheep/screens/login/login_screen.dart';
+import 'package:blacksheep/screens/register/register_screen_initial.dart';
 
-import 'package:sheepfold/widgets/buttons/main_button.dart';
-import 'package:sheepfold/widgets/layouts/headers/genty_header.dart';
+import 'package:blacksheep/widgets/buttons/main_button.dart';
+import 'package:blacksheep/widgets/layouts/headers/genty_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

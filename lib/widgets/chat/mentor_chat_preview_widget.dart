@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheepfold/widgets/buttons/large_info_button.dart';
+import 'package:blacksheep/widgets/buttons/large_info_button.dart';
 
 class MentorChatPreviewWidget extends StatelessWidget {
   const MentorChatPreviewWidget({

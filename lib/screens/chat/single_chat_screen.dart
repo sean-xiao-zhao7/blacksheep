@@ -2,9 +2,9 @@ import "package:flutter/material.dart";
 
 import "package:firebase_database/firebase_database.dart";
 
-import "package:sheepfold/widgets/chat/chat_bubble_widget.dart";
-import "package:sheepfold/services/email_service.dart";
-import "package:sheepfold/widgets/layouts/headers/now_header.dart";
+import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
+import "package:blacksheep/services/email_service.dart";
+import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
