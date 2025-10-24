@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>black.sheep.app</string>
+	<string>com.blacksheep.app</string>
 	<key>PROJECT_ID</key>
 	<string>blacksheep-dff33</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,7 +25,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:745015994572:ios:bdcfa7ee0705ba8afbfa69</string>
+	<string>1:745015994572:ios:e94bd1a856b92143fbfa69</string>
 	<key>DATABASE_URL</key>
 	<string>https://blacksheep-dff33-default-rtdb.firebaseio.com</string>
 </dict>
