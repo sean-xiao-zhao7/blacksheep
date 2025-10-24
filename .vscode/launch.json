@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "sheepfold",
+            "name": "blacksheep",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "sheepfold (profile mode)",
+            "name": "blacksheep (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "sheepfold (release mode)",
+            "name": "blacksheep (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
