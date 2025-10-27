@@ -38,7 +38,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
-  var _fcmToken;
+  var _token;
 
   @override
   void initState() {
@@ -55,14 +55,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           ..initialize().then((_) {
             setState(() {});
           });
-    _initPushNotifications();
+    _setupFCM();
   }
 
-  _initPushNotifications() async {
+  void _setupFCM() async {
     final fcm = FirebaseMessaging.instance;
-    final fcmInfo = await fcm.requestPermission();
-    _fcmToken = await fcm.getToken();
-    // print(_fcmToken);
+    await fcm.requestPermission();
+    _token = await fcm.getToken();
+    // print(_token);
   }
 
   /// get all matches belonging to current user
@@ -189,6 +189,10 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           // email admin about the new match
           EmailService.sendNewMatchEmailAdmin();
 
+          // set up push notification for this device for this connection
+          final fcm = FirebaseMessaging.instance;
+          fcm.subscribeToTopic('chat');
+
           // email mentor if type is phone
           if (type == 'phone') {
             EmailService.sendNewMatchPhoneMentor(
@@ -198,7 +202,13 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
               age: widget.userData['age'],
               // mentorEmail: closestMentorEmail,
             );
+
+            // phone option push notification
+            // App Alert - New Matchup Available - Check your Emails
           }
+
+          // chat option push notification
+          // App Alert - New Matchup Available - Please Login
         } else {
           snackMessage = 'Server error. Please check back later!';
         }
