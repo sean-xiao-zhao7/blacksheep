@@ -20,7 +20,7 @@ class MentorChatPreviewWidget extends StatelessWidget {
         "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
     if (showBothNames) {
       headerText =
-          "${chatInfo['mentorFirstName']} | ${chatInfo['menteeFirstName']}";
+          "${chatInfo['mentorFirstName']} / ${chatInfo['menteeFirstName']}";
     }
     return LargeInfoButton(
       headerText: headerText,
