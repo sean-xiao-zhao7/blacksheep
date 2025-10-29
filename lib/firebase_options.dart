@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     projectId: 'blacksheep-dff33',
     databaseURL: 'https://blacksheep-dff33-default-rtdb.firebaseio.com',
     storageBucket: 'blacksheep-dff33.firebasestorage.app',
-    iosBundleId: 'black.sheep.app',
+    iosBundleId: 'com.blacksheep.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
     projectId: 'blacksheep-dff33',
     databaseURL: 'https://blacksheep-dff33-default-rtdb.firebaseio.com',
     storageBucket: 'blacksheep-dff33.firebasestorage.app',
-    iosBundleId: 'black.sheep.app',
+    iosBundleId: 'com.blacksheep.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -88,5 +88,4 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://blacksheep-dff33-default-rtdb.firebaseio.com',
     storageBucket: 'blacksheep-dff33.firebasestorage.app',
   );
-
 }

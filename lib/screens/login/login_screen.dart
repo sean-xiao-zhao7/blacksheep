@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
       sessionData = {};
       sessionData['uid'] = userInfo.user!.uid;
-      sessionData['refreshToken'] = userInfo.user!.refreshToken!;
+      sessionData['refreshToken'] = userInfo.user!.refreshToken;
       sessionData['firstName'] = userData['firstName']!;
       sessionData['lastName'] = userData['lastName']!;
       sessionData['email'] = userData['email']!;

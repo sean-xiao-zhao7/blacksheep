@@ -40,13 +40,29 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
     final token = await fcm.getToken();
-    print(token);
+    if (token != null) {
+      updateFCMMentor(token);
+    }
+    // fVk8p_e73EGAkMN35-3amJ:APA91bGA9oanSyLWcv9jwwHnwxwJxhmamAxuY7PwJlGj9-ny9589GpyImoNwQjPeaccAGj9NjbiT1B9gvVYtHdn1y4s3cOhhtgeDiQV08aaXHtKPxT3bHmk
+    // fVk8p_e73EGAkMN35-3amJ:APA91bGA9oanSyLWcv9jwwHnwxwJxhmamAxuY7PwJlGj9-ny9589GpyImoNwQjPeaccAGj9NjbiT1B9gvVYtHdn1y4s3cOhhtgeDiQV08aaXHtKPxT3bHmk
   }
 
   void setCurrentChatKey(int newKey) {
     setState(() {
       _currentChatKey = newKey;
     });
+  }
+
+  // on every mentor login we add new FCM token (if any) to database
+  void updateFCMMentor(String token) async {
+    try {
+      final mentorRef = FirebaseDatabase.instance.ref().child(
+        'users/${widget.userData['uid']}',
+      );
+      await mentorRef.update({'fcmToken': token});
+    } catch (error) {
+      // unable to update FCM to DB.
+    }
   }
 
   /// get all matches belonging to current user

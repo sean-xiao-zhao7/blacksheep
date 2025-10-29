@@ -1,4 +1,4 @@
-package black.sheep.app
+package com.blacksheep.app
 
 import io.flutter.embedding.android.FlutterActivity
 
