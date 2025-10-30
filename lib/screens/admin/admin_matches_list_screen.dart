@@ -110,7 +110,7 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Blacksheep Administrator',
+                            'BlackSheep Administrator',
                             style: TextStyle(
                               color: Color(0xff32a2c0),
                               fontSize: 20,

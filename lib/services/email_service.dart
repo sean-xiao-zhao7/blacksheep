@@ -33,8 +33,8 @@ class EmailService {
     sendEmail(
       // [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
       [dotenv.env['EMAIL_ADMIN_SEAN']],
-      'New Connection in Blacksheep',
-      'A new connection has been made in Blacksheep:\n\nMentor:$newMentorName\nMentee:$newMenteeName\n\nIf this is ok, nothing needs to be done. If not, you may sign into Blacksheep as Admin to change this connection.',
+      'New Connection in BlackSheep',
+      'A new connection has been made in BlackSheep:\n\nMentor:$newMentorName\nMentee:$newMenteeName\n\nIf this is ok, nothing needs to be done. If not, you may sign into BlackSheep as Admin to change this connection.',
     );
   }
 

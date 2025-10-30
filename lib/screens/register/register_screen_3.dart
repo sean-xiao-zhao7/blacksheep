@@ -70,7 +70,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'Therefore, as a Mentee, you agree that you will not at any time disclose or disseminate in an unauthorized manner information pertaining to the communities you are involved in through the BlackSheep app, their families, or contact information, or any other information you may encounter as it relates to using the BlackSheep or meeting someone from the Blacksheep app.',
+                            'Therefore, as a Mentee, you agree that you will not at any time disclose or disseminate in an unauthorized manner information pertaining to the communities you are involved in through the BlackSheep app, their families, or contact information, or any other information you may encounter as it relates to using the BlackSheep or meeting someone from the BlackSheep app.',
                           ),
                           SizedBox(height: 20),
                           Text('An authorized manner is as follows:'),
@@ -88,7 +88,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'This requires strict adherence by you to the express recorded or written permissions and implied consent given (or not given) by community connections via the BlackSheep App regarding all information provided; for example, express consent must be given on the Blacksheep App. You also agree to the principles of confidentiality in this agreement entitled “Confidentiality of the Community Seeker” (see below).',
+                            'This requires strict adherence by you to the express recorded or written permissions and implied consent given (or not given) by community connections via the BlackSheep App regarding all information provided; for example, express consent must be given on the BlackSheep App. You also agree to the principles of confidentiality in this agreement entitled “Confidentiality of the Community Seeker” (see below).',
                           ),
                           SizedBox(height: 20),
                           Text(
