@@ -78,13 +78,13 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
-        if (!currentChat['approved']) {
-          continue;
-        }
-
         currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
+          if (!currentChat['approved']) {
+            return;
+          }
+
           currentChat['isMentor'] = true;
 
           // find user info from users collection

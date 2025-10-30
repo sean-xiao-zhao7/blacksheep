@@ -79,12 +79,9 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
       List tempChats = [];
       bool isPhoneMentee = false;
+      bool isApproved = false;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
-        if (!currentChat['approved']) {
-          continue;
-        }
-
         currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentee' &&
             currentChat['menteeUid'] == widget.userData['uid']) {
@@ -93,14 +90,19 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           if (currentChat['type'] == 'phone') {
             isPhoneMentee = true;
           }
+          isApproved = currentChat['approved'];
+
           break;
         }
       }
+
       setState(() {
-        if (isPhoneMentee) {
+        if (!isApproved) {
           _showInitialMessage = true;
           _waitingForConnection = true;
-          _isPhoneConnectionMentee = true;
+          if (isPhoneMentee) {
+            _isPhoneConnectionMentee = true;
+          }
         } else {
           myChats = tempChats;
         }
@@ -260,10 +262,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
 
     if (myChats.isEmpty) {
-      _menteeConnectVideoController.play();
-    }
-    if (_waitingForConnection) {
-      _menteeWaitVideoController.play();
+      if (_waitingForConnection) {
+        _menteeWaitVideoController.play();
+      } else {
+        _menteeConnectVideoController.play();
+      }
     }
 
     return Scaffold(
