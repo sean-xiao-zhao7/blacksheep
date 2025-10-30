@@ -7,10 +7,12 @@ class LargeInfoButton extends StatelessWidget {
     this.size = 300,
     this.headerText = '',
     this.secondaryText = '',
+    this.secondaryTextColor = const Color.fromARGB(255, 43, 141, 168),
     this.iconType = 'message',
   });
   final String headerText;
   final String secondaryText;
+  final Color secondaryTextColor;
   final Function handler;
   final double size;
   final String iconType;
@@ -67,11 +69,11 @@ class LargeInfoButton extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            secondaryText,
+                            secondaryText.toUpperCase(),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: secondaryTextColor,
                               fontFamily: 'Now',
                             ),
                           ),

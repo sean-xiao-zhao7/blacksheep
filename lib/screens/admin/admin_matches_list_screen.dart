@@ -49,7 +49,7 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
-      List<ChatPreviewWidget> newChatPreviewsList = [];
+      List<ChatPreviewWidget> chatPreviewsListTemp = [];
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
@@ -60,11 +60,11 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
           chatInfo: currentChat,
           showBothNames: true,
         );
-        newChatPreviewsList.add(currentChatPreview);
+        chatPreviewsListTemp.add(currentChatPreview);
         chatPreviewIndex++;
       }
       setState(() {
-        _chatsPreviewList = newChatPreviewsList;
+        _chatsPreviewList = chatPreviewsListTemp;
       });
     } catch (error) {
       if (mounted) {

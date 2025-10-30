@@ -18,15 +18,22 @@ class ChatPreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String headerText =
         "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
+    String secondaryText =
+        'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})';
+
     if (showBothNames) {
       headerText =
           "${chatInfo['mentorFirstName']} / ${chatInfo['menteeFirstName']}";
+      secondaryText = '';
+      if (!chatInfo['approved']) {
+        secondaryText = 'PENDING APPROVAL';
+      }
     }
+
     return LargeInfoButton(
       headerText: headerText,
-      secondaryText: showBothNames
-          ? ""
-          : 'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})',
+      secondaryText: secondaryText,
+      secondaryTextColor: Colors.red,
       () {
         setChatListKey(chatPreviewIndex);
       },
