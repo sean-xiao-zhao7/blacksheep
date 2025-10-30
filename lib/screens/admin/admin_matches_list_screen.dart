@@ -6,7 +6,7 @@ import "package:firebase_database/firebase_database.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 
-import 'package:blacksheep/widgets/chat/mentor_chat_preview_widget.dart';
+import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
@@ -23,7 +23,7 @@ class AdminMatchesListScreen extends StatefulWidget {
 }
 
 class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
-  List<MentorChatPreviewWidget> _chatsPreviewList = [];
+  List<ChatPreviewWidget> _chatsPreviewList = [];
   int _currentChatKey = -1;
 
   @override
@@ -49,12 +49,12 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
-      List<MentorChatPreviewWidget> newChatPreviewsList = [];
+      List<ChatPreviewWidget> newChatPreviewsList = [];
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
-        MentorChatPreviewWidget currentChatPreview = MentorChatPreviewWidget(
+        ChatPreviewWidget currentChatPreview = ChatPreviewWidget(
           setChatListKey: setCurrentChatKey,
           chatPreviewIndex: chatPreviewIndex,
           chatInfo: currentChat,

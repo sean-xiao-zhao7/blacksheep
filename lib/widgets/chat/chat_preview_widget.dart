@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:blacksheep/widgets/buttons/large_info_button.dart';
 
-class MentorChatPreviewWidget extends StatelessWidget {
-  const MentorChatPreviewWidget({
+class ChatPreviewWidget extends StatelessWidget {
+  const ChatPreviewWidget({
     super.key,
     required this.chatInfo,
     required this.setChatListKey,

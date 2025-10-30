@@ -8,7 +8,7 @@ import "package:blacksheep/screens/chat/single_chat_screen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
-import 'package:blacksheep/widgets/chat/mentor_chat_preview_widget.dart';
+import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 
 /// The main chat screen for mentor after logging in.
 ///
@@ -26,7 +26,7 @@ class MentorChatListScreen extends StatefulWidget {
 
 class _MentorChatListScreen extends State<MentorChatListScreen> {
   bool _isLoading = true;
-  List<MentorChatPreviewWidget> _chatsPreviewList = [];
+  List<ChatPreviewWidget> _chatsPreviewList = [];
   int _currentChatKey = -1;
 
   @override
@@ -74,7 +74,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
-      List<MentorChatPreviewWidget> newChatPreviewsList = [];
+      List<ChatPreviewWidget> newChatPreviewsList = [];
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
@@ -102,12 +102,11 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
             currentChat['age'] = menteeInfo['age'];
             currentChat['phone'] = menteeInfo['phone'];
             currentChat['gender'] = menteeInfo['gender'];
-            MentorChatPreviewWidget currentChatPreview =
-                MentorChatPreviewWidget(
-                  setChatListKey: setCurrentChatKey,
-                  chatPreviewIndex: chatPreviewIndex,
-                  chatInfo: currentChat,
-                );
+            ChatPreviewWidget currentChatPreview = ChatPreviewWidget(
+              setChatListKey: setCurrentChatKey,
+              chatPreviewIndex: chatPreviewIndex,
+              chatInfo: currentChat,
+            );
             newChatPreviewsList.add(currentChatPreview);
             chatPreviewIndex++;
           }
