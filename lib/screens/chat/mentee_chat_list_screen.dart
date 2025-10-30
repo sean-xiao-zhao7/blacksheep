@@ -81,12 +81,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       bool isPhoneMentee = false;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
+        if (!currentChat['approved']) {
+          continue;
+        }
+
         currentChat['chatId'] = key;
-        if (widget.userData['type'] == 'mentor' &&
-            currentChat['mentorUid'] == widget.userData['uid']) {
-          currentChat['isMentor'] = true;
-          tempChats.add(currentChat);
-        } else if (widget.userData['type'] == 'mentee' &&
+        if (widget.userData['type'] == 'mentee' &&
             currentChat['menteeUid'] == widget.userData['uid']) {
           currentChat['isMentor'] = false;
           tempChats.add(currentChat);
@@ -171,6 +171,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'menteeLastName': widget.userData['lastName'],
             'mentorFirstName': closestMentorFirstName,
             'mentorLastName': closestMentorLastName,
+            'approved': false,
           });
 
           newChatRef.child('messages').push().set({

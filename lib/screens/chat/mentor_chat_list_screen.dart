@@ -43,8 +43,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     if (token != null) {
       updateFCMMentor(token);
     }
-    // fVk8p_e73EGAkMN35-3amJ:APA91bGA9oanSyLWcv9jwwHnwxwJxhmamAxuY7PwJlGj9-ny9589GpyImoNwQjPeaccAGj9NjbiT1B9gvVYtHdn1y4s3cOhhtgeDiQV08aaXHtKPxT3bHmk
-    // fVk8p_e73EGAkMN35-3amJ:APA91bGA9oanSyLWcv9jwwHnwxwJxhmamAxuY7PwJlGj9-ny9589GpyImoNwQjPeaccAGj9NjbiT1B9gvVYtHdn1y4s3cOhhtgeDiQV08aaXHtKPxT3bHmk
   }
 
   void setCurrentChatKey(int newKey) {
@@ -80,6 +78,10 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       int chatPreviewIndex = 0;
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
+        if (!currentChat['approved']) {
+          continue;
+        }
+
         currentChat['chatId'] = key;
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
@@ -115,6 +117,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         _chatsPreviewList = newChatPreviewsList;
       });
     } catch (error) {
+      // print(error);
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(
