@@ -313,7 +313,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 isPhone:
                     _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                     'phone',
-                () {},
+                setChatListKey: () {},
               )),
       ),
     );

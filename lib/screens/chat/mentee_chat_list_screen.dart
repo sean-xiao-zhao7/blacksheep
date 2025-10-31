@@ -38,7 +38,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
-  var _token;
+  // var _token;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   void _setupFCM() async {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
-    _token = await fcm.getToken();
+    // _token = await fcm.getToken();
     // print(_token);
   }
 
@@ -141,7 +141,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           String closestMentorUid = '';
           String closestMentorFirstName = '';
           String closestMentorLastName = '';
-          String closestMentorEmail = '';
+          // String closestMentorEmail = '';
           double closestDistance = 100000000;
           for (String key in allUsers.keys) {
             Map<dynamic, dynamic> currentUser = allUsers[key];
@@ -157,7 +157,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 closestMentorUid = key;
                 closestMentorFirstName = currentUser['firstName'];
                 closestMentorLastName = currentUser['lastName'];
-                closestMentorEmail = currentUser['email'];
+                // closestMentorEmail = currentUser['email'];
               }
             }
           }
@@ -519,7 +519,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       chatId: myChats[0]['chatId'],
                       isMentor: false,
                       mentorFirstName: myChats[0]['mentorFirstName'],
-                      () {},
+                      setChatListKey: () {},
                     ))),
       ),
     );

@@ -9,8 +9,7 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
-  SingleChat(
-    resetChatList, {
+  SingleChat({
     super.key,
     this.chatId = '',
     this.messages = const {},
@@ -21,6 +20,7 @@ class SingleChat extends StatefulWidget {
     this.isAdmin = false,
     this.isPhone = false,
     this.isApproved = false,
+    required this.setChatListKey,
   });
   final String chatId;
   final Map<dynamic, dynamic> messages;
@@ -31,7 +31,7 @@ class SingleChat extends StatefulWidget {
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
-  final Function resetChatList = () {};
+  final Function setChatListKey;
 
   @override
   State<StatefulWidget> createState() {
@@ -234,8 +234,9 @@ class _SingleChatState extends State<SingleChat> {
       );
       await chatstRef.update({'approved': true});
       resultMessage = 'Approved connection!';
-      widget.resetChatList(-1);
+      widget.setChatListKey(-1);
     } catch (error) {
+      print(error);
       resultMessage = 'Server error.';
     }
 

@@ -36,10 +36,11 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
     setState(() {
       _currentChatKey = newKey;
     });
+    _getChats();
   }
 
   /// get all matches belonging to current user
-  void _getChats() async {
+  _getChats() async {
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -168,44 +169,49 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
           ],
         ),
       ),
-      body: Container(
-        padding: _chatsPreviewList.isEmpty
-            ? EdgeInsets.all(20)
-            : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/blacksheep_background_full.png"),
-            fit: BoxFit.cover,
+      body: RefreshIndicator(
+        onRefresh: () {
+          return _getChats();
+        },
+        child: Container(
+          padding: _chatsPreviewList.isEmpty
+              ? EdgeInsets.all(20)
+              : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/blacksheep_background_full.png"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        height: MediaQuery.of(context).size.height,
-        child: _currentChatKey == -1
-            ? Container(
-                padding: EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    NowHeader('Admin - All connections', fontSize: 18),
-                    SizedBox(height: 15),
-                    ..._chatsPreviewList,
-                  ],
+          height: MediaQuery.of(context).size.height,
+          child: _currentChatKey == -1
+              ? Container(
+                  padding: EdgeInsets.all(10),
+                  child: ListView(
+                    children: [
+                      NowHeader('Admin - All connections', fontSize: 18),
+                      SizedBox(height: 15),
+                      ..._chatsPreviewList,
+                    ],
+                  ),
+                )
+              : SingleChat(
+                  messages:
+                      _chatsPreviewList[_currentChatKey].chatInfo['messages'],
+                  chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
+                  isMentor: true,
+                  mentorFirstName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['mentorFirstName'],
+                  mentorUid:
+                      _chatsPreviewList[_currentChatKey].chatInfo['mentorUid'],
+                  menteeFirstName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['menteeFirstName'],
+                  isAdmin: true,
+                  isApproved:
+                      _chatsPreviewList[_currentChatKey].chatInfo['approved'],
+                  setChatListKey: setCurrentChatKey,
                 ),
-              )
-            : SingleChat(
-                messages:
-                    _chatsPreviewList[_currentChatKey].chatInfo['messages'],
-                chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
-                isMentor: true,
-                mentorFirstName: _chatsPreviewList[_currentChatKey]
-                    .chatInfo['mentorFirstName'],
-                mentorUid:
-                    _chatsPreviewList[_currentChatKey].chatInfo['mentorUid'],
-                menteeFirstName: _chatsPreviewList[_currentChatKey]
-                    .chatInfo['menteeFirstName'],
-                isAdmin: true,
-                isApproved:
-                    _chatsPreviewList[_currentChatKey].chatInfo['approved'],
-                setCurrentChatKey,
-              ),
+        ),
       ),
     );
   }
