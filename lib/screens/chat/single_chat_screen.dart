@@ -1,4 +1,3 @@
-import "package:blacksheep/widgets/buttons/small_button.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:flutter/material.dart";
 
@@ -10,7 +9,8 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
-  const SingleChat({
+  SingleChat(
+    resetChatList, {
     super.key,
     this.chatId = '',
     this.messages = const {},
@@ -31,6 +31,7 @@ class SingleChat extends StatefulWidget {
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
+  final Function resetChatList = () {};
 
   @override
   State<StatefulWidget> createState() {
@@ -225,6 +226,27 @@ class _SingleChatState extends State<SingleChat> {
     );
   }
 
+  void approveConnection() async {
+    String resultMessage = '';
+    try {
+      DatabaseReference chatstRef = FirebaseDatabase.instance.ref(
+        "chats/${widget.chatId}",
+      );
+      await chatstRef.update({'approved': true});
+      resultMessage = 'Approved connection!';
+      widget.resetChatList(-1);
+    } catch (error) {
+      resultMessage = 'Server error.';
+    }
+
+    if (mounted && resultMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(resultMessage)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> columnChildren = [];
@@ -236,7 +258,7 @@ class _SingleChatState extends State<SingleChat> {
           children: [
             SmallButtonFlexible(
               text: widget.isApproved ? 'Approved' : 'Approve',
-              handler: () {},
+              handler: approveConnection,
               forgroundColor: widget.isApproved
                   ? Color(0xff32a2c0)
                   : Colors.red,

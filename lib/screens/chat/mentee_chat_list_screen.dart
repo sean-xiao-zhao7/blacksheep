@@ -519,6 +519,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       chatId: myChats[0]['chatId'],
                       isMentor: false,
                       mentorFirstName: myChats[0]['mentorFirstName'],
+                      () {},
                     ))),
       ),
     );

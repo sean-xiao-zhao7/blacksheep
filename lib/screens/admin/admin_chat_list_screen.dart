@@ -12,17 +12,17 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// Screen for managing all matches across entire system
 ///
-class AdminMatchesListScreen extends StatefulWidget {
-  const AdminMatchesListScreen({super.key, this.userData = const {}});
+class AdminChatListScreen extends StatefulWidget {
+  const AdminChatListScreen({super.key, this.userData = const {}});
   final Map<String, dynamic> userData;
 
   @override
   State<StatefulWidget> createState() {
-    return _AdminMatchesListScreenState();
+    return _AdminChatListScreenState();
   }
 }
 
-class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
+class _AdminChatListScreenState extends State<AdminChatListScreen> {
   List<ChatPreviewWidget> _chatsPreviewList = [];
   int _currentChatKey = -1;
 
@@ -202,6 +202,9 @@ class _AdminMatchesListScreenState extends State<AdminMatchesListScreen> {
                 menteeFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['menteeFirstName'],
                 isAdmin: true,
+                isApproved:
+                    _chatsPreviewList[_currentChatKey].chatInfo['approved'],
+                setCurrentChatKey,
               ),
       ),
     );
