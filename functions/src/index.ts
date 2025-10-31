@@ -23,9 +23,9 @@ export const sendMentorNewConnectionFCM = onValueCreated(
         // App Alert - New Matchup Available - Please Login
         const notification = {
             title: "BlackSheep",
-            body: "New Matchup Available - " + event.value['type'] == 'chat' ? "Please login" : "Check your emails"
+            body: "New Matchup Available - " + event.value['type'] === 'chat' ? "Please login" : "Check your emails"
         };
 
-        await messaging.send({ token: fcmToken, notification: notification });
+        await messaging.send({ token: String(fcmToken), notification: notification });
     },
 );
