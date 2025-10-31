@@ -1,1 +1,58 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"blacksheep-dff33","appId":"1:745015994572:android:fb946c5bc7a73a01fbfa69","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"blacksheep-dff33","appId":"1:745015994572:ios:bdcfa7ee0705ba8afbfa69","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"blacksheep-dff33","appId":"1:745015994572:ios:bdcfa7ee0705ba8afbfa69","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"blacksheep-dff33","configurations":{"android":"1:745015994572:android:fb946c5bc7a73a01fbfa69","ios":"1:745015994572:ios:bdcfa7ee0705ba8afbfa69","macos":"1:745015994572:ios:bdcfa7ee0705ba8afbfa69","web":"1:745015994572:web:35caf3ca729e8076fbfa69","windows":"1:745015994572:web:1f8a2931227d88d7fbfa69"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "blacksheep-dff33",
+          "appId": "1:745015994572:android:fb946c5bc7a73a01fbfa69",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "blacksheep-dff33",
+          "appId": "1:745015994572:ios:bdcfa7ee0705ba8afbfa69",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "blacksheep-dff33",
+          "appId": "1:745015994572:ios:bdcfa7ee0705ba8afbfa69",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "blacksheep-dff33",
+          "configurations": {
+            "android": "1:745015994572:android:fb946c5bc7a73a01fbfa69",
+            "ios": "1:745015994572:ios:bdcfa7ee0705ba8afbfa69",
+            "macos": "1:745015994572:ios:bdcfa7ee0705ba8afbfa69",
+            "web": "1:745015994572:web:35caf3ca729e8076fbfa69",
+            "windows": "1:745015994572:web:1f8a2931227d88d7fbfa69"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}
