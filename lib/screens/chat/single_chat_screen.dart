@@ -9,7 +9,7 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 
 /// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
-  SingleChat({
+  const SingleChat({
     super.key,
     this.chatId = '',
     this.messages = const {},
@@ -235,8 +235,10 @@ class _SingleChatState extends State<SingleChat> {
       await chatstRef.update({'approved': true});
       resultMessage = 'Approved connection!';
       widget.setChatListKey(-1);
+      // App Alert - New Matchup Available - Please Login
+      // App Alert - New Matchup Available - Check your Emails
     } catch (error) {
-      print(error);
+      // print(error);
       resultMessage = 'Server error.';
     }
 
