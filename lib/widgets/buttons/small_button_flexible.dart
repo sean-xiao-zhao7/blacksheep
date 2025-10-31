@@ -7,11 +7,13 @@ class SmallButtonFlexible extends StatelessWidget {
     required this.handler,
     this.forgroundColor = const Color(0xff32a2c0),
     this.backgroundColor = Colors.white,
+    this.isEnabled = true,
   });
   final String text;
   final Function handler;
   final Color forgroundColor;
   final Color backgroundColor;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,11 @@ class SmallButtonFlexible extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 30, right: 30),
       ),
-      onPressed: () {
-        handler();
-      },
+      onPressed: isEnabled
+          ? () {
+              handler();
+            }
+          : null,
       child: Text(
         text,
         style: TextStyle(

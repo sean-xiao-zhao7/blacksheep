@@ -235,11 +235,76 @@ class _SingleChatState extends State<SingleChat> {
           spacing: 10,
           children: [
             SmallButtonFlexible(
-              text: 'Approve',
+              text: widget.isApproved ? 'Approved' : 'Approve',
               handler: () {},
-              forgroundColor: Colors.red,
+              forgroundColor: widget.isApproved
+                  ? Color(0xff32a2c0)
+                  : Colors.red,
+              isEnabled: !widget.isApproved,
             ),
-            SmallButtonFlexible(text: 'Change Mentor', handler: () {}),
+            SmallButtonFlexible(
+              text: 'Change Mentor',
+              handler: () => {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return FractionallySizedBox(
+                      widthFactor: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
+                        padding: EdgeInsets.all(40),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Choose new mentor for ${widget.menteeFirstName}:',
+                              style: TextStyle(
+                                color: Color(0xff32a2c0),
+                                fontSize: 20,
+                              ),
+                            ),
+                            StatefulBuilder(
+                              builder: (BuildContext context, setState) {
+                                return DropdownButton<String>(
+                                  value: _newMentorUid,
+                                  icon: const Icon(Icons.arrow_downward),
+                                  elevation: 16,
+                                  style: const TextStyle(
+                                    color: Colors.deepPurple,
+                                  ),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.deepPurpleAccent,
+                                  ),
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _newMentorUid = value!;
+                                    });
+                                    _changeMentor(value!);
+                                  },
+                                  items: _mentorsSelectionList.map((
+                                    currentMentor,
+                                  ) {
+                                    return DropdownMenuItem<String>(
+                                      value: currentMentor['uid'],
+                                      child: Text(
+                                        "${currentMentor['firstName']} ${currentMentor['lastName']}",
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              },
+            ),
           ],
         ),
       );
