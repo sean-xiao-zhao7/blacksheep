@@ -1,3 +1,5 @@
+import "package:blacksheep/widgets/buttons/small_button.dart";
+import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:flutter/material.dart";
 
 import "package:firebase_database/firebase_database.dart";
@@ -18,6 +20,7 @@ class SingleChat extends StatefulWidget {
     this.menteeFirstName = '',
     this.isAdmin = false,
     this.isPhone = false,
+    this.isApproved = false,
   });
   final String chatId;
   final Map<dynamic, dynamic> messages;
@@ -27,6 +30,7 @@ class SingleChat extends StatefulWidget {
   final String menteeFirstName;
   final bool isAdmin;
   final bool isPhone;
+  final bool isApproved;
 
   @override
   State<StatefulWidget> createState() {
@@ -223,267 +227,314 @@ class _SingleChatState extends State<SingleChat> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(200, 255, 255, 255),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      padding: EdgeInsets.only(bottom: 10),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
+    List<Widget> columnChildren = [];
+    if (widget.isAdmin) {
+      columnChildren.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 10,
+          children: [
+            SmallButtonFlexible(
+              text: 'Approve',
+              handler: () {},
+              forgroundColor: Colors.red,
             ),
-            padding: EdgeInsets.only(top: 5, left: 15, bottom: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                NowHeader(
-                  widget.menteeFirstName.isEmpty
-                      ? 'Chatting with ${widget.mentorFirstName}'
-                      : '${widget.mentorFirstName} | ${widget.menteeFirstName}',
-                  fontSize: 14,
-                  color: Color(0xff32a2c0),
+            SmallButtonFlexible(text: 'Change Mentor', handler: () {}),
+          ],
+        ),
+      );
+      columnChildren.add(SizedBox(height: 10));
+    }
+
+    columnChildren.add(
+      Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(200, 255, 255, 255),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          padding: EdgeInsets.only(bottom: 10),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
                 ),
-                Row(
+                padding: EdgeInsets.only(top: 5, left: 15, bottom: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      iconSize: 26,
-                      icon: const Icon(Icons.refresh),
-                      onPressed: () {
-                        _makeMessagesBubbles();
-                      },
-                      padding: EdgeInsets.all(0),
+                    NowHeader(
+                      widget.menteeFirstName.isEmpty
+                          ? 'Chatting with ${widget.mentorFirstName}'
+                          : '${widget.mentorFirstName} | ${widget.menteeFirstName}',
+                      fontSize: 14,
+                      color: Color(0xff32a2c0),
                     ),
-                    MenuAnchor(
-                      menuChildren: <Widget>[
-                        widget.isAdmin
-                            ? MenuItemButton(
-                                onPressed: () => {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return FractionallySizedBox(
-                                        widthFactor: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(50),
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.all(40),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Choose new mentor for ${widget.menteeFirstName}:',
-                                                style: TextStyle(
-                                                  color: Color(0xff32a2c0),
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                              StatefulBuilder(
-                                                builder: (BuildContext context, setState) {
-                                                  return DropdownButton<String>(
-                                                    value: _newMentorUid,
-                                                    icon: const Icon(
-                                                      Icons.arrow_downward,
-                                                    ),
-                                                    elevation: 16,
-                                                    style: const TextStyle(
-                                                      color: Colors.deepPurple,
-                                                    ),
-                                                    underline: Container(
-                                                      height: 2,
-                                                      color: Colors
-                                                          .deepPurpleAccent,
-                                                    ),
-                                                    onChanged: (String? value) {
-                                                      setState(() {
-                                                        _newMentorUid = value!;
-                                                      });
-                                                      _changeMentor(value!);
-                                                    },
-                                                    items: _mentorsSelectionList.map((
-                                                      currentMentor,
-                                                    ) {
-                                                      return DropdownMenuItem<
-                                                        String
-                                                      >(
-                                                        value:
-                                                            currentMentor['uid'],
-                                                        child: Text(
-                                                          "${currentMentor['firstName']} ${currentMentor['lastName']}",
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                },
-                                child: Text('Change matched mentor'),
-                              )
-                            : MenuItemButton(
-                                onPressed: () => {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return FractionallySizedBox(
-                                        widthFactor: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(50),
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.all(40),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Report mentor',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                              TextFormField(
-                                                decoration: InputDecoration(
-                                                  fillColor: Colors.white,
-                                                  filled: true,
-                                                  hintText:
-                                                      'Please explain reason for reporting.',
-                                                  suffixIcon: _isLoading
-                                                      ? CircularProgressIndicator()
-                                                      : IconButton(
-                                                          icon: Icon(
-                                                            Icons.send,
-                                                            color: Color(
-                                                              0xff32a2c0,
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            _reportMentor();
-                                                          },
-                                                        ),
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Color(
-                                                            0xff32a2c0,
-                                                          ),
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                ),
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.trim().isEmpty) {
-                                                    return 'Message is required.';
-                                                  }
-                                                  return null;
-                                                },
-                                                autocorrect: false,
-                                                textCapitalization:
-                                                    TextCapitalization
-                                                        .sentences,
-                                                maxLines: 5,
-                                                minLines: 5,
-                                                controller:
-                                                    reportMessageController,
-                                                enabled: !_isLoading,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                },
-                                child: Text('Report mentor'),
-                              ),
-                      ],
-                      builder:
-                          (
-                            BuildContext context,
-                            MenuController controller,
-                            Widget? child,
-                          ) {
-                            return IconButton(
-                              iconSize: 26,
-                              icon: const Icon(Icons.more_vert),
-                              onPressed: () {
-                                if (controller.isOpen) {
-                                  controller.close();
-                                } else {
-                                  controller.open();
-                                }
-                              },
-                            );
+                    Row(
+                      children: [
+                        IconButton(
+                          iconSize: 26,
+                          icon: const Icon(Icons.refresh),
+                          onPressed: () {
+                            _makeMessagesBubbles();
                           },
+                          padding: EdgeInsets.all(0),
+                        ),
+                        MenuAnchor(
+                          menuChildren: <Widget>[
+                            widget.isAdmin
+                                ? MenuItemButton(
+                                    onPressed: () => {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return FractionallySizedBox(
+                                            widthFactor: 1,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(50),
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.all(40),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    'Choose new mentor for ${widget.menteeFirstName}:',
+                                                    style: TextStyle(
+                                                      color: Color(0xff32a2c0),
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  StatefulBuilder(
+                                                    builder:
+                                                        (
+                                                          BuildContext context,
+                                                          setState,
+                                                        ) {
+                                                          return DropdownButton<
+                                                            String
+                                                          >(
+                                                            value:
+                                                                _newMentorUid,
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .arrow_downward,
+                                                            ),
+                                                            elevation: 16,
+                                                            style:
+                                                                const TextStyle(
+                                                                  color: Colors
+                                                                      .deepPurple,
+                                                                ),
+                                                            underline: Container(
+                                                              height: 2,
+                                                              color: Colors
+                                                                  .deepPurpleAccent,
+                                                            ),
+                                                            onChanged:
+                                                                (
+                                                                  String? value,
+                                                                ) {
+                                                                  setState(() {
+                                                                    _newMentorUid =
+                                                                        value!;
+                                                                  });
+                                                                  _changeMentor(
+                                                                    value!,
+                                                                  );
+                                                                },
+                                                            items: _mentorsSelectionList.map((
+                                                              currentMentor,
+                                                            ) {
+                                                              return DropdownMenuItem<
+                                                                String
+                                                              >(
+                                                                value:
+                                                                    currentMentor['uid'],
+                                                                child: Text(
+                                                                  "${currentMentor['firstName']} ${currentMentor['lastName']}",
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                          );
+                                                        },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    },
+                                    child: Text('Change matched mentor'),
+                                  )
+                                : MenuItemButton(
+                                    onPressed: () => {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return FractionallySizedBox(
+                                            widthFactor: 1,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(50),
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.all(40),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    'Report mentor',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  TextFormField(
+                                                    decoration: InputDecoration(
+                                                      fillColor: Colors.white,
+                                                      filled: true,
+                                                      hintText:
+                                                          'Please explain reason for reporting.',
+                                                      suffixIcon: _isLoading
+                                                          ? CircularProgressIndicator()
+                                                          : IconButton(
+                                                              icon: Icon(
+                                                                Icons.send,
+                                                                color: Color(
+                                                                  0xff32a2c0,
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                _reportMentor();
+                                                              },
+                                                            ),
+                                                      focusedBorder:
+                                                          UnderlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                  color: Color(
+                                                                    0xff32a2c0,
+                                                                  ),
+                                                                  width: 1,
+                                                                ),
+                                                          ),
+                                                    ),
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value
+                                                              .trim()
+                                                              .isEmpty) {
+                                                        return 'Message is required.';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    autocorrect: false,
+                                                    textCapitalization:
+                                                        TextCapitalization
+                                                            .sentences,
+                                                    maxLines: 5,
+                                                    minLines: 5,
+                                                    controller:
+                                                        reportMessageController,
+                                                    enabled: !_isLoading,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    },
+                                    child: Text('Report mentor'),
+                                  ),
+                          ],
+                          builder:
+                              (
+                                BuildContext context,
+                                MenuController controller,
+                                Widget? child,
+                              ) {
+                                return IconButton(
+                                  iconSize: 26,
+                                  icon: const Icon(Icons.more_vert),
+                                  onPressed: () {
+                                    if (controller.isOpen) {
+                                      controller.close();
+                                    } else {
+                                      controller.open();
+                                    }
+                                  },
+                                );
+                              },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListView(
-                      controller: _listViewController,
-                      children: chatBubbles,
+              ),
+              Expanded(
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: ListView(
+                          controller: _listViewController,
+                          children: chatBubbles,
+                        ),
+                      ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10, right: 10, bottom: 0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: widget.isPhone
+                        ? 'Please contact by phone'
+                        : 'Enter chat message',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.send, color: Color(0xff32a2c0)),
+                      onPressed: () {
+                        _sendNewMessage();
+                      },
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff32a2c0),
+                        width: 1,
+                      ),
                     ),
                   ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10, right: 10, bottom: 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: widget.isPhone
-                    ? 'Please contact by phone'
-                    : 'Enter chat message',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send, color: Color(0xff32a2c0)),
-                  onPressed: () {
-                    _sendNewMessage();
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Message is required.';
+                    }
+                    return null;
                   },
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff32a2c0), width: 1),
+                  autocorrect: false,
+                  textCapitalization: TextCapitalization.sentences,
+                  maxLines: 5,
+                  minLines: 1,
+                  controller: newMessageController,
+                  enabled: !widget.isPhone,
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Message is required.';
-                }
-                return null;
-              },
-              autocorrect: false,
-              textCapitalization: TextCapitalization.sentences,
-              maxLines: 5,
-              minLines: 1,
-              controller: newMessageController,
-              enabled: !widget.isPhone,
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
+
+    return Column(children: columnChildren);
   }
 }
