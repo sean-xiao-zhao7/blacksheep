@@ -56,6 +56,7 @@ class LargeInfoButton extends StatelessWidget {
                               color: Colors.black,
                               fontFamily: 'Now',
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ]
                       : [

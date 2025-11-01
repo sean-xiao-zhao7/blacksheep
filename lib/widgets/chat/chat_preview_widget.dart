@@ -23,7 +23,7 @@ class ChatPreviewWidget extends StatelessWidget {
 
     if (showBothNames) {
       headerText =
-          "${chatInfo['mentorFirstName']} / ${chatInfo['menteeFirstName']}";
+          "${chatInfo['mentorFirstName']} ${chatInfo['mentorLastName'].substring(0, 1)}. / ${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName'].substring(0, 1)}.";
       secondaryText = '';
       if (!chatInfo['approved']) {
         secondaryText = 'PENDING APPROVAL';
