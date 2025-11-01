@@ -67,44 +67,31 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
   /// get all matches belonging to current user
   void _getChats() async {
+    if (widget.userData['chatId'] == null) {
+      return;
+    }
+
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
-      DataSnapshot snapshot = await ref.child("chats").get();
+      DataSnapshot snapshot = await ref
+          .child("chats/${widget.userData['chatId']}")
+          .get();
       if (!snapshot.exists) {
         // print('No matches/chats in database.');
         return;
       }
-      Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
-
-      List tempChats = [];
-      bool isPhoneMentee = false;
-      bool isApproved = false;
-      for (final String key in allChats.keys) {
-        var currentChat = allChats[key];
-        currentChat['chatId'] = key;
-        if (widget.userData['type'] == 'mentee' &&
-            currentChat['menteeUid'] == widget.userData['uid']) {
-          currentChat['isMentor'] = false;
-          tempChats.add(currentChat);
-          if (currentChat['type'] == 'phone') {
-            isPhoneMentee = true;
-          }
-          isApproved = currentChat['approved'];
-
-          break;
-        }
-      }
+      Map<dynamic, dynamic> currentChat =
+          snapshot.value as Map<dynamic, dynamic>;
 
       setState(() {
-        if (!isApproved) {
-          _showInitialMessage = true;
+        if (!currentChat['approved']) {
           _waitingForConnection = true;
-          if (isPhoneMentee) {
+          if (currentChat['type'] == 'phone') {
             _isPhoneConnectionMentee = true;
           }
         } else {
-          myChats = tempChats;
+          myChats = [currentChat];
         }
       });
     } catch (error) {
