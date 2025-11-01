@@ -15,8 +15,10 @@ class SingleChat extends StatefulWidget {
     this.messages = const {},
     this.isMentor = false,
     this.mentorFirstName = '',
+    this.mentorLastName = '',
     this.mentorUid = '',
     this.menteeFirstName = '',
+    this.menteeLastName = '',
     this.isAdmin = false,
     this.isPhone = false,
     this.isApproved = false,
@@ -26,8 +28,10 @@ class SingleChat extends StatefulWidget {
   final Map<dynamic, dynamic> messages;
   final bool isMentor;
   final String mentorFirstName;
+  final String mentorLastName;
   final String mentorUid;
   final String menteeFirstName;
+  final String menteeLastName;
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
@@ -114,8 +118,8 @@ class _SingleChatState extends State<SingleChat> {
           isCurrentUser: widget.messages[key]['mentee'] ? true : false,
           timestamp: timestamp,
           userName: widget.messages[key]['mentee']
-              ? widget.menteeFirstName
-              : widget.mentorFirstName,
+              ? "${widget.menteeFirstName} ${widget.menteeLastName}"
+              : "${widget.mentorFirstName} ${widget.mentorLastName}",
           isAdmin: true,
         );
       } else {
@@ -124,8 +128,8 @@ class _SingleChatState extends State<SingleChat> {
           isCurrentUser: widget.messages[key]['mentee'] == !widget.isMentor,
           timestamp: timestamp,
           userName: widget.messages[key]['mentee']
-              ? widget.menteeFirstName
-              : widget.mentorFirstName,
+              ? "${widget.menteeFirstName} ${widget.menteeLastName}"
+              : "${widget.mentorFirstName} ${widget.mentorLastName}",
         );
       }
       tempBubbles.add(currentBubble);
@@ -360,8 +364,8 @@ class _SingleChatState extends State<SingleChat> {
                   children: [
                     NowHeader(
                       widget.menteeFirstName.isEmpty
-                          ? 'Chatting with ${widget.mentorFirstName}'
-                          : '${widget.mentorFirstName} | ${widget.menteeFirstName}',
+                          ? 'Chatting with ${widget.mentorFirstName} ${widget.mentorLastName}'
+                          : '${widget.mentorFirstName} ${widget.mentorLastName} | ${widget.menteeFirstName} ${widget.menteeLastName}',
                       fontSize: 14,
                       color: Color(0xff32a2c0),
                     ),

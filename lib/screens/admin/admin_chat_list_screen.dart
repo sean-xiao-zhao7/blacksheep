@@ -202,10 +202,14 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                   isMentor: true,
                   mentorFirstName: _chatsPreviewList[_currentChatKey]
                       .chatInfo['mentorFirstName'],
+                  mentorLastName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['mentorLastName'],
                   mentorUid:
                       _chatsPreviewList[_currentChatKey].chatInfo['mentorUid'],
                   menteeFirstName: _chatsPreviewList[_currentChatKey]
                       .chatInfo['menteeFirstName'],
+                  menteeLastName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['menteeLastName'],
                   isAdmin: true,
                   isApproved:
                       _chatsPreviewList[_currentChatKey].chatInfo['approved'],
