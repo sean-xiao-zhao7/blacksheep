@@ -79,6 +79,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       for (final String key in allChats.keys) {
         var currentChat = allChats[key];
         currentChat['chatId'] = key;
+        // print(currentChat);
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           if (!currentChat['approved']) {
@@ -86,7 +87,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
           }
 
           currentChat['isMentor'] = true;
-
           // find user info from users collection
           DataSnapshot userSnapshot = await ref
               .child("users/${currentChat['menteeUid']}")
@@ -308,8 +308,12 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 isMentor: true,
                 mentorFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['mentorFirstName'],
+                mentorLastName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['mentorLastName'],
                 menteeFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['menteeFirstName'],
+                menteeLastName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['menteeLastName'],
                 isPhone:
                     _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                     'phone',
