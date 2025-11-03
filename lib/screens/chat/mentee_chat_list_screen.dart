@@ -1,11 +1,9 @@
 import 'dart:math';
 
-import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
-import "package:blacksheep/services/email_service.dart";
 
 import 'package:video_player/video_player.dart';
 
@@ -14,6 +12,7 @@ import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/buttons/main_button.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
+import "package:blacksheep/services/email_service.dart";
 
 /// The main chat screen for mentee after logging in.
 ///
@@ -55,14 +54,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           ..initialize().then((_) {
             setState(() {});
           });
-    _setupFCM();
-  }
-
-  void _setupFCM() async {
-    final fcm = FirebaseMessaging.instance;
-    await fcm.requestPermission();
-    // _token = await fcm.getToken();
-    // print(_token);
   }
 
   /// get all matches belonging to current user
@@ -176,13 +167,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'chatId': newChatRef.key,
           });
 
-          // email admin about the new match
-          EmailService.sendNewMatchEmailAdmin();
-
-          // set up push notification for this device for this connection
-          final fcm = FirebaseMessaging.instance;
-          fcm.subscribeToTopic('chat');
-
           // email mentor if type is phone
           if (type == 'phone') {
             EmailService.sendNewMatchPhoneMentor(
@@ -192,13 +176,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
               age: widget.userData['age'],
               // mentorEmail: closestMentorEmail,
             );
-
-            // phone option push notification
-            // App Alert - New Matchup Available - Check your Emails
           }
 
-          // chat option push notification
-          // App Alert - New Matchup Available - Please Login
+          // email admin about this new connection for approval
+          EmailService.sendNewMatchEmailAdmin(
+            newMenteeName:
+                "${widget.userData['firstName']} ${widget.userData['lastName']}",
+            newMentorName: "$closestMentorFirstName, $closestMentorLastName",
+          );
         } else {
           snackMessage = 'Server error. Please check back later!';
         }

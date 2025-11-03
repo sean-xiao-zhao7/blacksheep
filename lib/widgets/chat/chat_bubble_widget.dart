@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 /// A widget that shows a container with a message and its metadata.
 class ChatBubble extends StatelessWidget {
@@ -71,7 +72,7 @@ class ChatBubble extends StatelessWidget {
             Text(
               timestamp == 0
                   ? 'Date not available.'
-                  : "${date.month}/${date.day}/${date.year} ${date.hour}:${date.minute}",
+                  : DateFormat('M/dd/hh:mm a').format(date),
               style: TextStyle(fontSize: 10, fontFamily: 'Now'),
             ),
           ],
