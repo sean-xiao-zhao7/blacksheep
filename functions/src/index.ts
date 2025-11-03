@@ -30,14 +30,11 @@ export const sendMentorNewConnectionFCM = onValueUpdated(
         result = await mentorFCMTokenRef.get();
         const mentorFCMToken = result.val();
 
-        logger.log(`chatInfo.mentorUid ${chatInfo.mentorUid}`);
-        logger.log(`mentorFCMToken ${mentorFCMToken}`);
-
         // send FCM
         // App Alert - New Matchup Available - Please Login
         const notification = {
             title: "BlackSheep",
-            body: "New Matchup Available - " + chatInfo.type === 'chat' ? "Please login" : "Check your emails"
+            body: "New Matchup Available - " + (chatInfo.type === 'chat' ? "Please login" : "Check your emails")
         };
 
         await messaging.send({ token: String(mentorFCMToken), notification: notification });
