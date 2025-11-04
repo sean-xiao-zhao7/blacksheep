@@ -171,17 +171,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'chatId': newChatRef.key,
           });
 
-          // email mentor if type is phone
-          if (type == 'phone') {
-            EmailService.sendNewMatchPhoneMentor(
-              newMenteeName:
-                  "${widget.userData['firstName']} ${widget.userData['lastName']}",
-              phone: widget.userData['phone'],
-              age: widget.userData['age'],
-              mentorEmail: closestMentorEmail,
-            );
-          }
-
           // email admin about this new connection for approval
           EmailService.sendNewMatchEmailAdmin(
             newMenteeName:

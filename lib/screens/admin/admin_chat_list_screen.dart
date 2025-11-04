@@ -68,6 +68,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         _chatBubblesList[chatPreviewIndex] = _makeMessagesBubbles(currentChat);
         chatPreviewIndex++;
       }
+
       setState(() {
         _chatsPreviewList = chatPreviewsListTemp;
       });

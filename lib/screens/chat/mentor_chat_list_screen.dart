@@ -66,6 +66,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       await mentorRef.update({'fcmToken': token});
     } catch (error) {
       // unable to update FCM to DB.
+      // print(error);
     }
   }
 
@@ -344,10 +345,14 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                     .chatInfo['mentorFirstName'],
                 mentorLastName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['mentorLastName'],
+                mentorEmail: widget.userData['email'],
                 menteeFirstName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['menteeFirstName'],
                 menteeLastName: _chatsPreviewList[_currentChatKey]
                     .chatInfo['menteeLastName'],
+                menteePhone:
+                    _chatsPreviewList[_currentChatKey].chatInfo['phone'],
+                menteeAge: _chatsPreviewList[_currentChatKey].chatInfo['age'],
                 isPhone:
                     _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                     'phone',

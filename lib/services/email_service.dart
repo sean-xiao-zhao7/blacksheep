@@ -31,7 +31,7 @@ class EmailService {
       // [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
       [dotenv.env['EMAIL_ADMIN_SEAN']],
       'Approval needed for new connection',
-      'Please log into the app as admin and apporve/reject this new connection:\n\nMentor:$newMentorName\nMentee:$newMenteeName\n\nFor admin username/password, please see Google Drive.',
+      'Please log into the app as admin and apporve/reject this new connection:\n\nMentor: $newMentorName\nMentee: $newMenteeName\n\nFor admin username/password, please see Google Drive.',
     );
   }
 

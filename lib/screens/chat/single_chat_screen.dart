@@ -17,8 +17,11 @@ class SingleChat extends StatefulWidget {
     this.mentorFirstName = '',
     this.mentorLastName = '',
     this.mentorUid = '',
+    this.mentorEmail = '',
     this.menteeFirstName = '',
     this.menteeLastName = '',
+    this.menteePhone = '',
+    this.menteeAge = '',
     this.isAdmin = false,
     this.isPhone = false,
     this.isApproved = false,
@@ -31,8 +34,11 @@ class SingleChat extends StatefulWidget {
   final String mentorFirstName;
   final String mentorLastName;
   final String mentorUid;
+  final String mentorEmail;
   final String menteeFirstName;
   final String menteeLastName;
+  final String menteePhone;
+  final String menteeAge;
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
@@ -193,8 +199,19 @@ class _SingleChatState extends State<SingleChat> {
       await chatstRef.update({'approved': true});
       resultMessage = 'Approved connection!';
       widget.setChatListKey(-1);
-      // App Alert - New Matchup Available - Please Login
-      // App Alert - New Matchup Available - Check your Emails
+
+      // New Matchup Available - Please Login
+      // New Matchup Available - Check your Emails
+
+      // email mentor if type is phone
+      if (widget.isPhone) {
+        EmailService.sendNewMatchPhoneMentor(
+          newMenteeName: "${widget.menteeFirstName} ${widget.mentorLastName}",
+          phone: widget.menteePhone,
+          age: widget.menteeAge,
+          mentorEmail: widget.mentorEmail,
+        );
+      }
     } catch (error) {
       // print(error);
       resultMessage = 'Server error.';
