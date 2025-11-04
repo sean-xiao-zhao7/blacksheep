@@ -90,12 +90,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
       }
     } on FirebaseAuthException catch (e) {
       errorCode = e.code;
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(errorCode)));
-      }
+      // print(errorCode);
     }
   }
 
