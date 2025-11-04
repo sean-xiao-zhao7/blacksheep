@@ -9,6 +9,7 @@ import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
+import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
 /// The main chat screen for mentor after logging in.
 ///
@@ -27,12 +28,13 @@ class MentorChatListScreen extends StatefulWidget {
 class _MentorChatListScreen extends State<MentorChatListScreen> {
   bool _isLoading = true;
   List<ChatPreviewWidget> _chatsPreviewList = [];
+  final Map<int, List<ChatBubble>> _chatBubblesList = {};
   int _currentChatKey = -1;
 
   @override
   void initState() {
     super.initState();
-    _getChats();
+    getChats();
     _setupFCM();
   }
 
@@ -49,6 +51,10 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     setState(() {
       _currentChatKey = newKey;
     });
+
+    if (newKey == -1) {
+      getChats();
+    }
   }
 
   // on every mentor login we add new FCM token (if any) to database
@@ -64,7 +70,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
   }
 
   /// get all matches belonging to current user
-  void _getChats() async {
+  void getChats() async {
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -108,6 +114,9 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               chatInfo: currentChat,
             );
             newChatPreviewsList.add(currentChatPreview);
+            _chatBubblesList[_currentChatKey] = _makeMessagesBubbles(
+              currentChat,
+            );
             chatPreviewIndex++;
           }
         }
@@ -124,6 +133,35 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         ).showSnackBar(SnackBar(content: Text(snackMessage)));
       }
     }
+  }
+
+  _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+    List<ChatBubble> tempBubbles = [];
+    Map<dynamic, dynamic> chat = currentChat['messages'];
+    for (String key in chat['messages'].keys) {
+      int timestamp;
+      if (chat['messages'][key]['timestamp'] is String) {
+        timestamp = int.parse(chat['messages'][key]['timestamp']);
+      } else {
+        timestamp = chat['messages'][key]['timestamp'];
+      }
+
+      ChatBubble currentBubble;
+
+      currentBubble = ChatBubble(
+        message: chat['messages'][key]['message'],
+        isCurrentUser: chat['messages'][key]['mentee'] == true,
+        timestamp: timestamp,
+        userName: chat['messages'][key]['mentee']
+            ? "${chat['menteeFirstName']} ${chat['menteeLastName']}"
+            : "${chat['mentorFirstName']} ${chat['mentorLastName']}",
+      );
+
+      tempBubbles.add(currentBubble);
+    }
+
+    tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    return tempBubbles;
   }
 
   @override
@@ -227,9 +265,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
             ListTile(
               title: const Text('View All Connections'),
               onTap: () {
-                setState(() {
-                  _currentChatKey = -1;
-                });
+                setCurrentChatKey(-1);
                 Navigator.pop(context);
               },
             ),
@@ -302,8 +338,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 ),
               )
             : SingleChat(
-                messages:
-                    _chatsPreviewList[_currentChatKey].chatInfo['messages'],
+                chatBubbles: _chatBubblesList[_currentChatKey]!,
                 chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
                 isMentor: true,
                 mentorFirstName: _chatsPreviewList[_currentChatKey]
@@ -318,6 +353,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                     _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                     'phone',
                 setChatListKey: () {},
+                refreshChat: getChats,
               )),
       ),
     );

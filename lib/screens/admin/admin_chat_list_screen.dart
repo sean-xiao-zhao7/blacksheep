@@ -6,9 +6,10 @@ import "package:firebase_database/firebase_database.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 
-import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
+import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
+import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
 /// Screen for managing all matches across entire system
 ///
@@ -23,24 +24,26 @@ class AdminChatListScreen extends StatefulWidget {
 }
 
 class _AdminChatListScreenState extends State<AdminChatListScreen> {
+  // bool _isLoading = true;
   List<ChatPreviewWidget> _chatsPreviewList = [];
+  final Map<int, List<ChatBubble>> _chatBubblesList = {};
   int _currentChatKey = -1;
 
   @override
   void initState() {
     super.initState();
-    _getChats();
+    getChats();
   }
 
   void setCurrentChatKey(int newKey) {
     setState(() {
       _currentChatKey = newKey;
     });
-    _getChats();
+    getChats();
   }
 
   /// get all matches belonging to current user
-  _getChats() async {
+  getChats() async {
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -62,6 +65,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
           showBothNames: true,
         );
         chatPreviewsListTemp.add(currentChatPreview);
+        _chatBubblesList[_currentChatKey] = _makeMessagesBubbles(currentChat);
         chatPreviewIndex++;
       }
       setState(() {
@@ -75,6 +79,35 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         ).showSnackBar(SnackBar(content: Text(snackMessage)));
       }
     }
+  }
+
+  _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+    List<ChatBubble> tempBubbles = [];
+    Map<dynamic, dynamic> chat = currentChat['messages'];
+    for (String key in chat['messages'].keys) {
+      int timestamp;
+      if (chat['messages'][key]['timestamp'] is String) {
+        timestamp = int.parse(chat['messages'][key]['timestamp']);
+      } else {
+        timestamp = chat['messages'][key]['timestamp'];
+      }
+
+      ChatBubble currentBubble;
+
+      currentBubble = ChatBubble(
+        message: chat['messages'][key]['message'],
+        isCurrentUser: chat['messages'][key]['mentee'] == true,
+        timestamp: timestamp,
+        userName: chat['messages'][key]['mentee']
+            ? "${chat['menteeFirstName']} ${chat['menteeLastName']}"
+            : "${chat['mentorFirstName']} ${chat['mentorLastName']}",
+      );
+
+      tempBubbles.add(currentBubble);
+    }
+
+    tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    return tempBubbles;
   }
 
   @override
@@ -147,9 +180,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
             ListTile(
               title: const Text('View All Connections'),
               onTap: () {
-                setState(() {
-                  _currentChatKey = -1;
-                });
+                setCurrentChatKey(-1);
                 Navigator.pop(context);
               },
             ),
@@ -171,7 +202,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          return _getChats();
+          return getChats();
         },
         child: Container(
           padding: _chatsPreviewList.isEmpty
@@ -196,8 +227,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                   ),
                 )
               : SingleChat(
-                  messages:
-                      _chatsPreviewList[_currentChatKey].chatInfo['messages'],
+                  chatBubbles: _chatBubblesList[_currentChatKey]!,
                   chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
                   isMentor: true,
                   mentorFirstName: _chatsPreviewList[_currentChatKey]
@@ -214,6 +244,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                   isApproved:
                       _chatsPreviewList[_currentChatKey].chatInfo['approved'],
                   setChatListKey: setCurrentChatKey,
+                  refreshChat: getChats(),
                 ),
         ),
       ),

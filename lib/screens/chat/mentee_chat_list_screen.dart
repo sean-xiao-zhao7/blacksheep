@@ -12,9 +12,11 @@ import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/buttons/main_button.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
+import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 import "package:blacksheep/services/email_service.dart";
 
 /// The main chat screen for mentee after logging in.
+/// Mentee only has a single chat.
 ///
 /// Manages states regarding matched or not matched.
 ///
@@ -34,6 +36,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _waitingForConnection = false;
   bool _isPhoneConnectionMentee = false;
   List myChats = [];
+  List<ChatBubble> _chatBubbles = [];
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
@@ -42,7 +45,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   @override
   void initState() {
     super.initState();
-    _getChats();
+    getChats();
     _menteeConnectVideoController =
         VideoPlayerController.asset('assets/videos/video2.mp4')
           ..initialize().then((_) {
@@ -57,7 +60,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   }
 
   /// get all matches belonging to current user
-  void _getChats() async {
+  void getChats() async {
     if (widget.userData['chatId'] == null) {
       return;
     }
@@ -85,6 +88,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           myChats = [currentChat];
         }
       });
+      _makeMessagesBubbles();
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -221,6 +225,37 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     var radiusOfEarth = 6371;
     return radiusOfEarth * 2 * asin(sqrt(a));
+  }
+
+  void _makeMessagesBubbles() {
+    List<ChatBubble> tempBubbles = [];
+    Map<dynamic, dynamic> chat = myChats[0]['messages'];
+    for (String key in chat['messages'].keys) {
+      int timestamp;
+      if (chat['messages'][key]['timestamp'] is String) {
+        timestamp = int.parse(chat['messages'][key]['timestamp']);
+      } else {
+        timestamp = chat['messages'][key]['timestamp'];
+      }
+
+      ChatBubble currentBubble;
+
+      currentBubble = ChatBubble(
+        message: chat['messages'][key]['message'],
+        isCurrentUser: chat['messages'][key]['mentee'] == true,
+        timestamp: timestamp,
+        userName: chat['messages'][key]['mentee']
+            ? "${chat['menteeFirstName']} ${chat['menteeLastName']}"
+            : "${chat['mentorFirstName']} ${chat['mentorLastName']}",
+      );
+
+      tempBubbles.add(currentBubble);
+    }
+    setState(() {
+      tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      _chatBubbles = tempBubbles;
+      _isLoading = false;
+    });
   }
 
   @override
@@ -487,11 +522,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                             ]),
                     )
                   : SingleChat(
-                      messages: myChats[0]['messages'],
+                      chatBubbles: _chatBubbles,
                       chatId: myChats[0]['chatId'],
                       isMentor: false,
                       mentorFirstName: myChats[0]['mentorFirstName'],
                       setChatListKey: () {},
+                      refreshChat: getChats,
                     ))),
       ),
     );

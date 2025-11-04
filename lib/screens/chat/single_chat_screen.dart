@@ -3,16 +3,16 @@ import "package:flutter/material.dart";
 import "package:firebase_database/firebase_database.dart";
 
 import "package:blacksheep/services/email_service.dart";
-import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
+import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
 /// A single chat between 2 parties.
 class SingleChat extends StatefulWidget {
   const SingleChat({
     super.key,
     this.chatId = '',
-    this.messages = const {},
+    this.chatBubbles = const [],
     this.isMentor = false,
     this.mentorFirstName = '',
     this.mentorLastName = '',
@@ -23,9 +23,10 @@ class SingleChat extends StatefulWidget {
     this.isPhone = false,
     this.isApproved = false,
     required this.setChatListKey,
+    required this.refreshChat,
   });
   final String chatId;
-  final Map<dynamic, dynamic> messages;
+  final List<ChatBubble> chatBubbles;
   final bool isMentor;
   final String mentorFirstName;
   final String mentorLastName;
@@ -36,6 +37,7 @@ class SingleChat extends StatefulWidget {
   final bool isPhone;
   final bool isApproved;
   final Function setChatListKey;
+  final Function refreshChat;
 
   @override
   State<StatefulWidget> createState() {
@@ -55,7 +57,6 @@ class _SingleChatState extends State<SingleChat> {
   @override
   void initState() {
     super.initState();
-    _makeMessagesBubbles();
     if (widget.isAdmin) {
       _getAllMentors();
     }
@@ -101,61 +102,23 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  void _makeMessagesBubbles() {
-    List<ChatBubble> tempBubbles = [];
-    for (String key in widget.messages.keys) {
-      int timestamp;
-      if (widget.messages[key]['timestamp'] is String) {
-        timestamp = int.parse(widget.messages[key]['timestamp']);
-      } else {
-        timestamp = widget.messages[key]['timestamp'];
-      }
-
-      ChatBubble currentBubble;
-      if (widget.isAdmin) {
-        currentBubble = ChatBubble(
-          message: widget.messages[key]['message'],
-          isCurrentUser: widget.messages[key]['mentee'] ? true : false,
-          timestamp: timestamp,
-          userName: widget.messages[key]['mentee']
-              ? "${widget.menteeFirstName} ${widget.menteeLastName}"
-              : "${widget.mentorFirstName} ${widget.mentorLastName}",
-          isAdmin: true,
-        );
-      } else {
-        currentBubble = ChatBubble(
-          message: widget.messages[key]['message'],
-          isCurrentUser: widget.messages[key]['mentee'] == !widget.isMentor,
-          timestamp: timestamp,
-          userName: widget.messages[key]['mentee']
-              ? "${widget.menteeFirstName} ${widget.menteeLastName}"
-              : "${widget.mentorFirstName} ${widget.mentorLastName}",
-        );
-      }
-      tempBubbles.add(currentBubble);
-    }
-    setState(() {
-      tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      chatBubbles = tempBubbles;
-      _isLoading = false;
-    });
-  }
-
   _sendNewMessage() async {
     String snackMessage = '';
     try {
       DatabaseReference chatstRef = FirebaseDatabase.instance.ref(
         "chats/${widget.chatId}/messages",
       );
+      int timestamp = DateTime.now().millisecondsSinceEpoch;
       DatabaseReference newMessageRef = chatstRef.push();
       await newMessageRef.set({
         'mentee': !widget.isMentor,
         'message': newMessageController.text,
-        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'timestamp': timestamp,
       });
       ChatBubble newChatBubble = ChatBubble(
         message: newMessageController.text,
         isCurrentUser: true,
+        timestamp: timestamp,
       );
       setState(() {
         chatBubbles = [...chatBubbles, newChatBubble];
@@ -375,7 +338,7 @@ class _SingleChatState extends State<SingleChat> {
                           iconSize: 26,
                           icon: const Icon(Icons.refresh),
                           onPressed: () {
-                            _makeMessagesBubbles();
+                            widget.refreshChat();
                           },
                           padding: EdgeInsets.all(0),
                         ),
