@@ -46,11 +46,10 @@ class SingleChat extends StatefulWidget {
 }
 
 class _SingleChatState extends State<SingleChat> {
-  bool _isLoading = true;
+  bool _isLoading = false;
   TextEditingController newMessageController = TextEditingController();
   TextEditingController reportMessageController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
-  List<Widget> chatBubbles = [];
   List<dynamic> _mentorsSelectionList = [];
   String _newMentorUid = '';
 
@@ -115,15 +114,7 @@ class _SingleChatState extends State<SingleChat> {
         'message': newMessageController.text,
         'timestamp': timestamp,
       });
-      ChatBubble newChatBubble = ChatBubble(
-        message: newMessageController.text,
-        isCurrentUser: true,
-        timestamp: timestamp,
-      );
-      setState(() {
-        chatBubbles = [...chatBubbles, newChatBubble];
-        newMessageController.clear();
-      });
+      widget.refreshChat();
       _scrollDown();
     } catch (error) {
       snackMessage = 'Unable to send message, please try again later';
@@ -546,7 +537,7 @@ class _SingleChatState extends State<SingleChat> {
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: ListView(
                           controller: _listViewController,
-                          children: chatBubbles,
+                          children: widget.chatBubbles,
                         ),
                       ),
               ),

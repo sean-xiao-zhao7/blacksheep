@@ -65,7 +65,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
           showBothNames: true,
         );
         chatPreviewsListTemp.add(currentChatPreview);
-        _chatBubblesList[_currentChatKey] = _makeMessagesBubbles(currentChat);
+        _chatBubblesList[chatPreviewIndex] = _makeMessagesBubbles(currentChat);
         chatPreviewIndex++;
       }
       setState(() {
@@ -83,24 +83,23 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
 
   _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
     List<ChatBubble> tempBubbles = [];
-    Map<dynamic, dynamic> chat = currentChat['messages'];
-    for (String key in chat['messages'].keys) {
+    for (String key in currentChat['messages'].keys) {
       int timestamp;
-      if (chat['messages'][key]['timestamp'] is String) {
-        timestamp = int.parse(chat['messages'][key]['timestamp']);
+      if (currentChat['messages'][key]['timestamp'] is String) {
+        timestamp = int.parse(currentChat['messages'][key]['timestamp']);
       } else {
-        timestamp = chat['messages'][key]['timestamp'];
+        timestamp = currentChat['messages'][key]['timestamp'];
       }
 
       ChatBubble currentBubble;
 
       currentBubble = ChatBubble(
-        message: chat['messages'][key]['message'],
-        isCurrentUser: chat['messages'][key]['mentee'] == true,
+        message: currentChat['messages'][key]['message'],
+        isCurrentUser: currentChat['messages'][key]['mentee'] == true,
         timestamp: timestamp,
-        userName: chat['messages'][key]['mentee']
-            ? "${chat['menteeFirstName']} ${chat['menteeLastName']}"
-            : "${chat['mentorFirstName']} ${chat['mentorLastName']}",
+        userName: currentChat['messages'][key]['mentee']
+            ? "${currentChat['menteeFirstName']} ${currentChat['menteeLastName']}"
+            : "${currentChat['mentorFirstName']} ${currentChat['mentorLastName']}",
       );
 
       tempBubbles.add(currentBubble);
