@@ -93,7 +93,6 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
       }
 
       ChatBubble currentBubble;
-
       currentBubble = ChatBubble(
         message: currentChat['messages'][key]['message'],
         isCurrentUser: currentChat['messages'][key]['mentee'] == true,

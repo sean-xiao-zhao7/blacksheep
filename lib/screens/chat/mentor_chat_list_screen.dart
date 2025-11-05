@@ -90,7 +90,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         if (widget.userData['type'] == 'mentor' &&
             currentChat['mentorUid'] == widget.userData['uid']) {
           if (!currentChat['approved']) {
-            return;
+            continue;
           }
 
           currentChat['isMentor'] = true;

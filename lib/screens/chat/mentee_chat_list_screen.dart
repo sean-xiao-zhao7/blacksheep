@@ -123,7 +123,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           String closestMentorUid = '';
           String closestMentorFirstName = '';
           String closestMentorLastName = '';
-          String closestMentorEmail = '';
           double closestDistance = 100000000;
           for (String key in allUsers.keys) {
             Map<dynamic, dynamic> currentUser = allUsers[key];
@@ -139,7 +138,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 closestMentorUid = key;
                 closestMentorFirstName = currentUser['firstName'];
                 closestMentorLastName = currentUser['lastName'];
-                closestMentorEmail = currentUser['email'];
               }
             }
           }
