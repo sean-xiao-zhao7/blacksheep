@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 import "package:firebase_database/firebase_database.dart";
 
@@ -243,6 +244,16 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  // mentor function for launching phone app with mentee's number
+  Future<void> _callMentee() async {
+    bool result = await canLaunchUrl(Uri.parse('tel:${widget.menteePhone}'));
+    if (result) {
+      if (!await launchUrl(Uri.parse('tel:${widget.menteePhone}'))) {
+        throw Exception('Could not launch phone.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> columnChildren = [];
@@ -368,10 +379,18 @@ class _SingleChatState extends State<SingleChat> {
                           },
                           padding: EdgeInsets.all(0),
                         ),
+                        if (widget.isMentor)
+                          IconButton(
+                            iconSize: 26,
+                            icon: const Icon(Icons.phone),
+                            onPressed: _callMentee,
+                            padding: EdgeInsets.all(0),
+                          ),
                         MenuAnchor(
                           menuChildren: <Widget>[
-                            widget.isAdmin
+                            widget.isMentor
                                 ? MenuItemButton(
+                                    trailingIcon: Icon(Icons.person),
                                     onPressed: () => {
                                       showModalBottomSheet(
                                         context: context,
@@ -389,65 +408,23 @@ class _SingleChatState extends State<SingleChat> {
                                               child: Column(
                                                 children: [
                                                   Text(
-                                                    'Choose new mentor for ${widget.menteeFirstName}:',
+                                                    '${widget.menteeFirstName} ${widget.menteeLastName}',
                                                     style: TextStyle(
                                                       color: Color(0xff32a2c0),
                                                       fontSize: 20,
                                                     ),
                                                   ),
-                                                  StatefulBuilder(
-                                                    builder:
-                                                        (
-                                                          BuildContext context,
-                                                          setState,
-                                                        ) {
-                                                          return DropdownButton<
-                                                            String
-                                                          >(
-                                                            value:
-                                                                _newMentorUid,
-                                                            icon: const Icon(
-                                                              Icons
-                                                                  .arrow_downward,
-                                                            ),
-                                                            elevation: 16,
-                                                            style:
-                                                                const TextStyle(
-                                                                  color: Colors
-                                                                      .deepPurple,
-                                                                ),
-                                                            underline: Container(
-                                                              height: 2,
-                                                              color: Colors
-                                                                  .deepPurpleAccent,
-                                                            ),
-                                                            onChanged:
-                                                                (
-                                                                  String? value,
-                                                                ) {
-                                                                  setState(() {
-                                                                    _newMentorUid =
-                                                                        value!;
-                                                                  });
-                                                                  _changeMentor(
-                                                                    value!,
-                                                                  );
-                                                                },
-                                                            items: _mentorsSelectionList.map((
-                                                              currentMentor,
-                                                            ) {
-                                                              return DropdownMenuItem<
-                                                                String
-                                                              >(
-                                                                value:
-                                                                    currentMentor['uid'],
-                                                                child: Text(
-                                                                  "${currentMentor['firstName']} ${currentMentor['lastName']}",
-                                                                ),
-                                                              );
-                                                            }).toList(),
-                                                          );
-                                                        },
+                                                  Text(
+                                                    'Age: ${widget.menteeAge}',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Phone: ${widget.menteePhone}',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -456,9 +433,12 @@ class _SingleChatState extends State<SingleChat> {
                                         },
                                       ),
                                     },
-                                    child: Text('Change matched mentor'),
+                                    child: Text(
+                                      'About ${widget.menteeFirstName}',
+                                    ),
                                   )
                                 : MenuItemButton(
+                                    trailingIcon: Icon(Icons.report_problem),
                                     onPressed: () => {
                                       showModalBottomSheet(
                                         context: context,
