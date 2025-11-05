@@ -39,7 +39,9 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
     setState(() {
       _currentChatKey = newKey;
     });
-    getChats();
+    if (newKey == -1) {
+      getChats();
+    }
   }
 
   /// get all matches belonging to current user
@@ -243,7 +245,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                   isApproved:
                       _chatsPreviewList[_currentChatKey].chatInfo['approved'],
                   setChatListKey: setCurrentChatKey,
-                  refreshChat: getChats(),
+                  refreshChat: getChats,
                 ),
         ),
       ),
