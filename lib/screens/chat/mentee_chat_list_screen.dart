@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import "package:blacksheep/models/chat.dart";
 import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
@@ -15,6 +14,7 @@ import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 import "package:blacksheep/services/email_service.dart";
+import "package:blacksheep/models/chat.dart";
 
 /// The main chat screen for mentee after logging in.
 /// Mentee only has a single chat.
@@ -35,7 +35,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
   bool _waitingForConnection = false;
-  bool _isPhoneConnectionMentee = false;
   Chat? myChat;
   List<ChatBubble> _chatBubbles = [];
   late VideoPlayerController _menteeConnectVideoController;
@@ -61,10 +60,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
   /// get all matches belonging to current user
   void getChats() async {
-    if (widget.userData['chatId'] == null) {
-      return;
-    }
-
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -79,28 +74,32 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           snapshot.value as Map<dynamic, dynamic>;
 
       setState(() {
+        myChat = Chat(
+          id: widget.userData['chatId'],
+          approved: currentChatData['approved'],
+          menteeFirstName: currentChatData['menteeFirstName'],
+          menteeLastName: currentChatData['menteeLastName'],
+          menteeUid: currentChatData['menteeUid'],
+          mentorFirstName: currentChatData['mentorFirstName'],
+          mentorLastName: currentChatData['mentorLastName'],
+          mentorUid: currentChatData['mentorUid'],
+          messages: currentChatData['messages'],
+          type: currentChatData['type'],
+        );
+
         if (!currentChatData['approved']) {
           _waitingForConnection = true;
-          if (currentChatData['type'] == 'phone') {
-            _isPhoneConnectionMentee = true;
-          }
         } else {
-          myChat = Chat(
-            id: widget.userData['chatId'],
-            approved: currentChatData['approved'],
-            menteeFirstName: currentChatData['menteeFirstName'],
-            menteeLastName: currentChatData['menteeLastName'],
-            menteeUid: currentChatData['menteeUid'],
-            mentorFirstName: currentChatData['mentorFirstName'],
-            mentorLastName: currentChatData['mentorLastName'],
-            mentorUid: currentChatData['mentorUid'],
-            messages: currentChatData['messages'],
-            type: currentChatData['type'],
-          );
+          if (currentChatData['type'] == 'phone') {
+            _showInitialMessage = true;
+            _waitingForConnection = true;
+          }
         }
       });
-      _makeMessagesBubbles();
+
+      if (!myChat!.approved && !myChat!.isPhone) _makeMessagesBubbles();
     } catch (error) {
+      print(error);
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(
@@ -227,7 +226,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
   void _makeMessagesBubbles() {
     List<ChatBubble> tempBubbles = [];
-    Map<String, dynamic> messages = myChat!.messages;
+    Map<dynamic, dynamic> messages = myChat!.messages;
     for (String key in messages.keys) {
       int timestamp;
       if (messages[key]['timestamp'] is String) {
@@ -258,15 +257,13 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final firstName = widget.userData['firstName'];
-
-    if (firstName != null) {
+    if (widget.userData['chatId'] != null) {
       setState(() {
         _isLoading = false;
       });
     }
 
-    if (myChat == null) {
+    if (myChat == null || myChat!.isPhone) {
       if (_waitingForConnection) {
         _menteeWaitVideoController.play();
       } else {
@@ -371,7 +368,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         ),
       ),
       body: Container(
-        padding: myChat == null
+        padding: myChat == null || myChat!.isPhone
             ? EdgeInsets.all(20)
             : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
         decoration: const BoxDecoration(
@@ -391,29 +388,29 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                   strokeCap: StrokeCap.round,
                 ),
               )
-            : (myChat == null
+            : (myChat == null || myChat!.isPhone
                   ? Column(
                       spacing: 10,
                       children: (_showInitialMessage
                           ? (_waitingForConnection
                                 ? [
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(15),
                                       decoration: BoxDecoration(
-                                        color: Color(0xffa06181).withAlpha(230),
+                                        color: Colors.yellow,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10),
                                         ),
                                       ),
                                       child: NowHeader(
-                                        _isPhoneConnectionMentee
+                                        myChat!.isPhone
                                             ? 'Someone will be in touch with you on the phone shortly!'
                                             : 'Someone will be in touch with you shortly!',
-                                        fontSize: 20,
-                                        color: Colors.white,
+                                        fontSize: 18,
+                                        color: Colors.black,
                                       ),
                                     ),
-                                    SizedBox(height: 100),
+                                    SizedBox(height: 80),
                                     _menteeWaitVideoController
                                             .value
                                             .isInitialized

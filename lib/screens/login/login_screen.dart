@@ -80,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['longitude'] = userData['longitude']!;
       sessionData['age'] = userData['age']!;
       sessionData['phone'] = userData['phone']!;
+      sessionData['chatId'] = userData['chatId']!;
 
       if (mounted) {
         Navigator.of(context).push(

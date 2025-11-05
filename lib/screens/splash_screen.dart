@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   heightFactor: 0.55,
                   child: VideoPlayer(_controller),
                 )
-              : CircularProgressIndicator(),
+              : Text('BlackSheep loading...'),
         ),
       ),
     );

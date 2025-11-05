@@ -22,6 +22,10 @@ class Chat {
   final String mentorFirstName;
   final String mentorLastName;
   final String mentorUid;
-  final Map<String, dynamic> messages;
+  final Map<dynamic, dynamic> messages;
   final String type;
+
+  bool get isPhone {
+    return type == 'phone';
+  }
 }
