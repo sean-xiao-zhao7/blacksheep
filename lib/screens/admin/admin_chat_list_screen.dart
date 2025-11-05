@@ -241,6 +241,9 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                       .chatInfo['menteeFirstName'],
                   menteeLastName: _chatsPreviewList[_currentChatKey]
                       .chatInfo['menteeLastName'],
+                  isPhone:
+                      _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
+                      'phone',
                   isAdmin: true,
                   isApproved:
                       _chatsPreviewList[_currentChatKey].chatInfo['approved'],

@@ -39,7 +39,7 @@ class EmailService {
     newMenteeName = 'Asif Sajid (Test mentee)',
     phone = '416-123-1234',
     age = 42,
-    mentorEmail = 'Test mentor email address',
+    mentorEmail = '',
   }) {
     sendEmail(
       mentorEmail == ''
