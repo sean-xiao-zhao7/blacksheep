@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import "package:blacksheep/models/chat.dart";
 import "package:flutter/material.dart";
 
 import "package:firebase_auth/firebase_auth.dart";
@@ -35,12 +36,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _showInitialMessage = false;
   bool _waitingForConnection = false;
   bool _isPhoneConnectionMentee = false;
-  List myChats = [];
+  Chat? myChat;
   List<ChatBubble> _chatBubbles = [];
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
   final _menteeInitialMessageController = TextEditingController();
-  // var _token;
 
   @override
   void initState() {
@@ -75,17 +75,28 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         // print('No matches/chats in database.');
         return;
       }
-      Map<dynamic, dynamic> currentChat =
+      Map<dynamic, dynamic> currentChatData =
           snapshot.value as Map<dynamic, dynamic>;
 
       setState(() {
-        if (!currentChat['approved']) {
+        if (!currentChatData['approved']) {
           _waitingForConnection = true;
-          if (currentChat['type'] == 'phone') {
+          if (currentChatData['type'] == 'phone') {
             _isPhoneConnectionMentee = true;
           }
         } else {
-          myChats = [currentChat];
+          myChat = Chat(
+            id: widget.userData['chatId'],
+            approved: currentChatData['approved'],
+            menteeFirstName: currentChatData['menteeFirstName'],
+            menteeLastName: currentChatData['menteeLastName'],
+            menteeUid: currentChatData['menteeUid'],
+            mentorFirstName: currentChatData['mentorFirstName'],
+            mentorLastName: currentChatData['mentorLastName'],
+            mentorUid: currentChatData['mentorUid'],
+            messages: currentChatData['messages'],
+            type: currentChatData['type'],
+          );
         }
       });
       _makeMessagesBubbles();
@@ -216,24 +227,24 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
   void _makeMessagesBubbles() {
     List<ChatBubble> tempBubbles = [];
-    Map<dynamic, dynamic> chat = myChats[0]['messages'];
-    for (String key in chat['messages'].keys) {
+    Map<String, dynamic> messages = myChat!.messages;
+    for (String key in messages.keys) {
       int timestamp;
-      if (chat['messages'][key]['timestamp'] is String) {
-        timestamp = int.parse(chat['messages'][key]['timestamp']);
+      if (messages[key]['timestamp'] is String) {
+        timestamp = int.parse(messages[key]['timestamp']);
       } else {
-        timestamp = chat['messages'][key]['timestamp'];
+        timestamp = messages[key]['timestamp'];
       }
 
       ChatBubble currentBubble;
 
       currentBubble = ChatBubble(
-        message: chat['messages'][key]['message'],
-        isCurrentUser: chat['messages'][key]['mentee'] == true,
+        message: messages[key]['message'],
+        isCurrentUser: messages[key]['mentee'] == true,
         timestamp: timestamp,
-        userName: chat['messages'][key]['mentee']
-            ? "${chat['menteeFirstName']} ${chat['menteeLastName']}"
-            : "${chat['mentorFirstName']} ${chat['mentorLastName']}",
+        userName: messages[key]['mentee']
+            ? "${myChat!.menteeFirstName} ${myChat!.menteeLastName}"
+            : "${myChat!.mentorFirstName} ${myChat!.mentorLastName}",
       );
 
       tempBubbles.add(currentBubble);
@@ -255,7 +266,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       });
     }
 
-    if (myChats.isEmpty) {
+    if (myChat == null) {
       if (_waitingForConnection) {
         _menteeWaitVideoController.play();
       } else {
@@ -356,17 +367,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 );
               },
             ),
-            // ListTile(
-            //   title: const Text('Test email'),
-            //   onTap: () {
-            //     EmailService.sendNewMatchPhoneMentor();
-            //   },
-            // ),
           ],
         ),
       ),
       body: Container(
-        padding: myChats.isEmpty
+        padding: myChat == null
             ? EdgeInsets.all(20)
             : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
         decoration: const BoxDecoration(
@@ -386,7 +391,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                   strokeCap: StrokeCap.round,
                 ),
               )
-            : (myChats.isEmpty
+            : (myChat == null
                   ? Column(
                       spacing: 10,
                       children: (_showInitialMessage
@@ -510,9 +515,9 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                     )
                   : SingleChat(
                       chatBubbles: _chatBubbles,
-                      chatId: myChats[0]['chatId'],
+                      chatId: myChat!.id,
                       isMentor: false,
-                      mentorFirstName: myChats[0]['mentorFirstName'],
+                      mentorFirstName: myChat!.mentorFirstName,
                       setChatListKey: () {},
                       refreshChat: getChats,
                     ))),
