@@ -56,9 +56,11 @@ class ChatBubble extends StatelessWidget {
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      message,
-                      style: TextStyle(fontSize: 16, fontFamily: 'Now'),
+                    SelectionArea(
+                      child: Text(
+                        message,
+                        style: TextStyle(fontSize: 16, fontFamily: 'Now'),
+                      ),
                     ),
                   ],
                 ),
