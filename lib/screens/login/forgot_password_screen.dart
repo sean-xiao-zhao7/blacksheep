@@ -53,11 +53,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
     errorCode = '';
     try {
+      await _firebase.sendPasswordResetEmail(email: _emailController.text);
       if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Please check your email.')));
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) {
-              return MentorChatListScreen(sessionData);
+              return LoginScreen();
             },
           ),
         );
@@ -76,7 +80,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ).showSnackBar(SnackBar(content: Text('Email format invalid.')));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid login. Please try again later.')),
+            SnackBar(
+              content: Text('Error recovering password. Please try later.'),
+            ),
           );
         }
       }
