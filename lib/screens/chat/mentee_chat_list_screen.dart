@@ -99,7 +99,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
 
       if (myChat!.approved && !myChat!.isPhone) _makeMessagesBubbles();
     } catch (error) {
-      print(error);
+      // print(error);
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(

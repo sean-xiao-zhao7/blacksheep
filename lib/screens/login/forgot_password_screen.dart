@@ -2,12 +2,6 @@ import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:blacksheep/screens/admin/admin_chat_list_screen.dart';
-
-import 'package:blacksheep/screens/chat/mentee_chat_list_screen.dart';
-import 'package:blacksheep/screens/chat/mentor_chat_list_screen.dart';
-import 'package:blacksheep/screens/register/register_screen_initial.dart';
 
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/genty_header.dart';

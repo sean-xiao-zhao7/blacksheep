@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="blacksheep"
+        android:label="BlackSheep"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/blacksheep">
         <activity
             android:name="com.blacksheep.app.MainActivity"
             android:exported="true"
