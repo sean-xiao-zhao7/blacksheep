@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['age'] = userData['age']!;
       sessionData['phone'] = userData['phone']!;
       sessionData['chatId'] = userData['chatId'] ?? "";
+      sessionData['active'] = userData['active'] ?? false;
 
       if (mounted) {
         Navigator.of(context).push(

@@ -1,3 +1,6 @@
+import "package:blacksheep/widgets/buttons/main_button.dart";
+import "package:blacksheep/widgets/buttons/small_button.dart";
+import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
@@ -30,12 +33,14 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
   List<ChatPreviewWidget> _chatsPreviewList = [];
   final Map<int, List<ChatBubble>> _chatBubblesList = {};
   int _currentChatKey = -1;
+  bool? isAccountActive;
 
   @override
   void initState() {
     super.initState();
     getChats();
     _setupFCM();
+    isAccountActive = widget.userData['active'];
   }
 
   void _setupFCM() async {
@@ -124,6 +129,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       }
       setState(() {
         _chatsPreviewList = newChatPreviewsList;
+        _isLoading = false;
       });
     } catch (error) {
       // print(error);
@@ -162,6 +168,38 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
 
     tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
     return tempBubbles;
+  }
+
+  toggleAccountInactiveHandler() async {
+    try {
+      bool newActiveVal = isAccountActive! ? false : true;
+
+      DatabaseReference userRef = FirebaseDatabase.instance.ref(
+        '/users/${widget.userData['uid']}',
+      );
+      await userRef.update({'active': newActiveVal});
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Set account to ${newActiveVal ? 'active' : 'inactive'}.',
+            ),
+          ),
+        );
+        Navigator.pop(context);
+      }
+      setState(() {
+        isAccountActive = newActiveVal;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unable to set inactive. Please try later.')),
+        );
+      }
+    }
   }
 
   @override
@@ -228,6 +266,17 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                               fontSize: 20,
                             ),
                           ),
+                          SizedBox(height: 20),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : SmallButtonFlexible(
+                                  text: isAccountActive!
+                                      ? 'Set account inactive'
+                                      : 'Set account active',
+                                  handler: toggleAccountInactiveHandler,
+                                  backgroundColor: Colors.yellow,
+                                  forgroundColor: Colors.black,
+                                ),
                           // Text(
                           //   'Type: ${widget.userData['type']!}',
                           //   style: TextStyle(
