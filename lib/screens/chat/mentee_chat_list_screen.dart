@@ -44,7 +44,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   @override
   void initState() {
     super.initState();
-    getChats();
+    if (widget.userData['chatId'] != '') getChats();
     _menteeConnectVideoController =
         VideoPlayerController.asset('assets/videos/video2.mp4')
           ..initialize().then((_) {
