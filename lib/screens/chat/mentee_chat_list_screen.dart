@@ -136,7 +136,8 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           double closestDistance = 100000000;
           for (String key in allUsers.keys) {
             Map<dynamic, dynamic> currentUser = allUsers[key];
-            if (currentUser['type'] == 'mentor') {
+            if (currentUser['type'] == 'mentor' &&
+                (currentUser['active'] != null && currentUser['active'])) {
               double newDistance = calculateDistance(
                 currentUser['latitude'],
                 currentUser['longitude'],

@@ -78,6 +78,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         'latitude': widget.registerData['latitude']!,
         'longitude': widget.registerData['longitude']!,
         'type': 'mentee',
+        'active': true,
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
         "users/${userInfo.user!.uid}",

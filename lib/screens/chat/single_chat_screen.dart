@@ -81,7 +81,8 @@ class _SingleChatState extends State<SingleChat> {
       List<dynamic> newMentorsSelectionList = [];
       for (final String key in allUsers.keys) {
         var currentUser = allUsers[key];
-        if (currentUser['type'] == 'mentor') {
+        if (currentUser['type'] == 'mentor' &&
+            (currentUser['active'] != null && currentUser['active'])) {
           newMentorsSelectionList.add({
             'uid': key,
             'firstName': currentUser['firstName'],
