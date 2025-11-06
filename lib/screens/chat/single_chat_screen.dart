@@ -550,10 +550,12 @@ class _SingleChatState extends State<SingleChat> {
                     ? Center(child: CircularProgressIndicator())
                     : Container(
                         padding: EdgeInsets.only(left: 10, right: 10),
-                        child: ListView(
-                          controller: _listViewController,
-                          children: widget.chatBubbles,
-                        ),
+                        child: widget.chatBubbles.isEmpty
+                            ? Center(child: Text('No chat messages yet!'))
+                            : ListView(
+                                controller: _listViewController,
+                                children: widget.chatBubbles,
+                              ),
                       ),
               ),
               Container(

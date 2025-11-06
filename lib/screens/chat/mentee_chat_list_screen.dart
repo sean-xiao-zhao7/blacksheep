@@ -97,7 +97,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         }
       });
 
-      if (!myChat!.approved && !myChat!.isPhone) _makeMessagesBubbles();
+      if (myChat!.approved && !myChat!.isPhone) _makeMessagesBubbles();
     } catch (error) {
       print(error);
       if (mounted) {
