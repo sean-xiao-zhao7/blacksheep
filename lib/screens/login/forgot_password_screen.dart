@@ -1,4 +1,4 @@
-import 'package:blacksheep/screens/login/forgot_password_screen.dart';
+import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,18 +15,17 @@ import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginScreenState();
+    return _ForgotPasswordScreenState();
   }
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> sessionData = {};
   String errorCode = '';
@@ -35,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -49,54 +47,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void loginAsyncAction() async {
+  void recoverPasswordAsyncAction() async {
     setState(() {
       _isLoading = true;
     });
     errorCode = '';
     try {
-      final userInfo = await _firebase.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      // get userData from database
-      final ref = FirebaseDatabase.instance.ref();
-      DataSnapshot snapshot = await ref
-          .child("users/${userInfo.user!.uid}")
-          .get();
-      if (!snapshot.exists) {
-        throw Error();
-        // 'User with uid ${userInfo.user!.uid} does not exist in database even though it exists in auth.',
-      }
-      Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
-      sessionData = {};
-      sessionData['uid'] = userInfo.user!.uid;
-      sessionData['refreshToken'] = userInfo.user!.refreshToken;
-      sessionData['firstName'] = userData['firstName']!;
-      sessionData['lastName'] = userData['lastName']!;
-      sessionData['email'] = userData['email']!;
-      sessionData['type'] = userData['type']!;
-      sessionData['latitude'] = userData['latitude']!;
-      sessionData['longitude'] = userData['longitude']!;
-      sessionData['age'] = userData['age']!;
-      sessionData['phone'] = userData['phone']!;
-      sessionData['chatId'] = userData['chatId']!;
-
       if (mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) {
-              switch (userData['type']) {
-                case 'mentor':
-                  return MentorChatListScreen(sessionData);
-                case 'mentee':
-                  return MenteeChatListScreen(sessionData);
-                case 'admin':
-                  return AdminChatListScreen(userData: sessionData);
-                default:
-                  return MentorChatListScreen(sessionData);
-              }
+              return MentorChatListScreen(sessionData);
             },
           ),
         );
@@ -158,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    NowHeader('Please Login', color: Colors.black),
+                    NowHeader('Recover password', color: Colors.black),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'EMAIL (username)',
@@ -180,51 +141,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       autocorrect: false,
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'PASSWORD',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _passwordController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Password is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
                     _isLoading
                         ? CircularProgressIndicator()
-                        : SmallButton('Login', () {
+                        : SmallButton('Recover via email', () {
                             if (submit()) {
-                              loginAsyncAction();
+                              recoverPasswordAsyncAction();
                             }
                           }, 0xff32a2c0),
-                    SmallButton('Register', () {
+                    SmallButton('Back to login', () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenInitial(),
-                        ),
+                        MaterialPageRoute(builder: (ctx) => LoginScreen()),
                       );
                     }, 0xff32a2c0),
-                    TextButton(
-                      onPressed: () => {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => ForgotPasswordScreen(),
-                          ),
-                        ),
-                      },
-                      child: Text('Forgot password?'),
-                    ),
                   ],
                 ),
               ),
