@@ -66,10 +66,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
+      // print(userInfo);
       userData = {
         'email': userInfo.user!.email!,
         'uid': userInfo.user!.uid,
-        'authToken': userInfo.user!.refreshToken!,
+        'authToken': userInfo.user!.refreshToken,
         'firstName': widget.registerData['firstName']!,
         'lastName': widget.registerData['lastName']!,
         'age': widget.registerData['age']!,
@@ -79,6 +80,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
         'longitude': widget.registerData['longitude']!,
         'type': 'mentee',
         'active': true,
+        'chatId': '',
       };
       DatabaseReference firebaseDatabaseRef = FirebaseDatabase.instance.ref(
         "users/${userInfo.user!.uid}",
