@@ -144,202 +144,207 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 100),
-        decoration: BoxDecoration(color: Color(0xff32a2c0)),
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 150),
-              padding: EdgeInsets.only(
-                top: 80,
-                left: 50,
-                right: 50,
-                bottom: 50,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xfffbee5e),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(200),
-                  topRight: Radius.circular(200),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'FIRST NAME',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _firstNameController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'First name is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.sentences,
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 100),
+            decoration: BoxDecoration(color: Color(0xff32a2c0)),
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 150),
+                  padding: EdgeInsets.only(
+                    top: 80,
+                    left: 50,
+                    right: 50,
+                    bottom: 50,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xfffbee5e),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(200),
+                      topRight: Radius.circular(200),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'LAST NAME',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _lastNameController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Last name is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.sentences,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'AGE',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _ageController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Age is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'PHONE',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _phoneController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Phone is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RadioListTile(
-                            dense: true,
-                            title: Text(
-                              "Male",
-                              style: TextStyle(color: Colors.white),
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      spacing: 15,
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'FIRST NAME',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
-                            value: 'MALE',
-                            groupValue: _genderController.text,
-                            onChanged: (value) {
-                              setState(() {
-                                _genderController.text = value!;
-                              });
-                            },
-                            activeColor: Color(0xff32a2c0),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          controller: _firstNameController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'First name is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
                         ),
-                        Expanded(
-                          child: RadioListTile(
-                            dense: true,
-                            title: Text(
-                              "Female",
-                              style: TextStyle(color: Colors.white),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'LAST NAME',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
-                            value: 'FEMALE',
-                            groupValue: _genderController.text,
-                            onChanged: (value) {
-                              setState(() {
-                                _genderController.text = value!;
-                              });
-                            },
-                            activeColor: Color(0xff32a2c0),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          controller: _lastNameController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Last name is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
                         ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'AGE',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _ageController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Age is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'PHONE',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _phoneController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Phone is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: RadioListTile(
+                                dense: true,
+                                title: Text(
+                                  "Male",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                value: 'MALE',
+                                groupValue: _genderController.text,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _genderController.text = value!;
+                                  });
+                                },
+                                activeColor: Color(0xff32a2c0),
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile(
+                                dense: true,
+                                title: Text(
+                                  "Female",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                value: 'FEMALE',
+                                groupValue: _genderController.text,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _genderController.text = value!;
+                                  });
+                                },
+                                activeColor: Color(0xff32a2c0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        longitude == 0 && latitude == 0
+                            ? (_isLoading
+                                  ? CircularProgressIndicator()
+                                  : SmallButton('Get current location', () {
+                                      getLocationAsync();
+                                    }, 0xff32a2c0))
+                            : Text('Location obtained!'),
+                        SmallButton('CONTINUE', () {
+                          if (submit()) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) =>
+                                    RegisterScreen3(registerData: newData),
+                              ),
+                            );
+                          }
+                        }, 0xff32a2c0),
+                        SmallButton('BACK', () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => RegisterScreenInitial(),
+                            ),
+                          );
+                        }, 0xffffff),
                       ],
                     ),
-                    longitude == 0 && latitude == 0
-                        ? (_isLoading
-                              ? CircularProgressIndicator()
-                              : SmallButton('Get current location', () {
-                                  getLocationAsync();
-                                }, 0xff32a2c0))
-                        : Text('Location obtained!'),
-                    SmallButton('CONTINUE', () {
-                      if (submit()) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) =>
-                                RegisterScreen3(registerData: newData),
-                          ),
-                        );
-                      }
-                    }, 0xff32a2c0),
-                    SmallButton('BACK', () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenInitial(),
-                        ),
-                      );
-                    }, 0xffffff),
-                  ],
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 0,
+                  width: MediaQuery.of(context).size.width,
+                  child: const NowHeader('SIGN UP TODAY!'),
+                ),
+                Positioned(
+                  top: 40,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Image(
+                    image: AssetImage('assets/images/sheep.png'),
+                    height: 200,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 0,
-              width: MediaQuery.of(context).size.width,
-              child: const NowHeader('SIGN UP TODAY!'),
-            ),
-            Positioned(
-              top: 40,
-              width: MediaQuery.of(context).size.width,
-              child: const Image(
-                image: AssetImage('assets/images/sheep.png'),
-                height: 200,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

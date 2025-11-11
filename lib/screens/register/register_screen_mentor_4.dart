@@ -66,142 +66,147 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 80),
-        decoration: BoxDecoration(color: Color(0xfff7ca2d)),
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 200),
-              padding: EdgeInsets.only(
-                top: 50,
-                left: 50,
-                right: 50,
-                bottom: 50,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xff9e607e),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(200),
-                  topRight: Radius.circular(200),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 80),
+            decoration: BoxDecoration(color: Color(0xfff7ca2d)),
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 200),
+                  padding: EdgeInsets.only(
+                    top: 50,
+                    left: 50,
+                    right: 50,
+                    bottom: 50,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xff9e607e),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(200),
+                      topRight: Radius.circular(200),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      maxLines: 2,
-                      controller: _experienceController,
-                      style: TextStyle(height: 2),
-                      cursorHeight: 20,
-                      maxLength: 2000,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Experience text is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.sentences,
-                    ),
-                    Text(
-                      'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _storiesController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Bible parallel text is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.sentences,
-                    ),
-                    Text(
-                      'DO YOU HAVE A CRIMINAL RECORD?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _criminalController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Criminal record text is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.sentences,
-                    ),
-                    SmallButton('CONTINUE', () {
-                      if (submit()) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => RegisterScreenMentor5(newData),
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      }
-                    }, 0xff32a2c0),
-                    SmallButton('BACK', () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenMentor3(newData),
                         ),
-                      );
-                    }, 0xffffff),
-                  ],
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          maxLines: 2,
+                          controller: _experienceController,
+                          style: TextStyle(height: 2),
+                          cursorHeight: 20,
+                          maxLength: 2000,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Experience text is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                        Text(
+                          'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _storiesController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Bible parallel text is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                        Text(
+                          'DO YOU HAVE A CRIMINAL RECORD?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _criminalController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Criminal record text is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                        SmallButton('CONTINUE', () {
+                          if (submit()) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) =>
+                                    RegisterScreenMentor5(newData),
+                              ),
+                            );
+                          }
+                        }, 0xff32a2c0),
+                        SmallButton('BACK', () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => RegisterScreenMentor3(newData),
+                            ),
+                          );
+                        }, 0xffffff),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 0,
+                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: NowHeader('JUST A LITTLE MORE INFORMATION'),
+                  ),
+                ),
+                Positioned(
+                  top: 60,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Image(
+                    image: AssetImage('assets/images/sheep.png'),
+                    height: 200,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 0,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: NowHeader('JUST A LITTLE MORE INFORMATION'),
-              ),
-            ),
-            Positioned(
-              top: 60,
-              width: MediaQuery.of(context).size.width,
-              child: const Image(
-                image: AssetImage('assets/images/sheep.png'),
-                height: 200,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
