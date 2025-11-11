@@ -141,11 +141,9 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'I agree to the Commitment Statement, Confidentiality Agreement, Confidentiality of the Community Seeker, and with the Statement of Faith:',
+                            'To agree and move forward, click Continue',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 20),
-                          Text('AGREE / DISAGREE'),
                         ],
                       ),
                     ),

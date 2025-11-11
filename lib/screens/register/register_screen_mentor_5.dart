@@ -142,11 +142,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'I agree to the Commitment Statement, Confidentiality Agreement, Confidentiality of the Community Seeker, and with the Statement of Faith:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
                             'Statement of Faith',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
@@ -193,11 +188,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'I agree to the Commitment Statement, Confidentiality Agreement, Confidentiality of the Community Seeker, and with the Statement of Faith:',
+                            'To agree and move forward, click Continue',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 20),
-                          Text('AGREE / DISAGREE'),
                         ],
                       ),
                     ),

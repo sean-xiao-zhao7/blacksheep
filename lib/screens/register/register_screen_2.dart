@@ -263,7 +263,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       children: <Widget>[
                         Expanded(
                           child: RadioListTile(
-                            title: Text("Male"),
+                            dense: true,
+                            title: Text(
+                              "Male",
+                              style: TextStyle(color: Colors.white),
+                            ),
                             value: 'MALE',
                             groupValue: _genderController.text,
                             onChanged: (value) {
@@ -276,7 +280,11 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                         Expanded(
                           child: RadioListTile(
-                            title: Text("Female"),
+                            dense: true,
+                            title: Text(
+                              "Female",
+                              style: TextStyle(color: Colors.white),
+                            ),
                             value: 'FEMALE',
                             groupValue: _genderController.text,
                             onChanged: (value) {

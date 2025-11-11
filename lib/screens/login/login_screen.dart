@@ -157,9 +157,14 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    NowHeader('Please Login', color: Colors.black),
+                    NowHeader(
+                      'Please Login',
+                      color: Colors.black,
+                      fontSize: 22,
+                    ),
+                    SizedBox(height: 20),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'EMAIL (username)',

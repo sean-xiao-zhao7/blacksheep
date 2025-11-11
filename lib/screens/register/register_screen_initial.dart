@@ -54,6 +54,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                       MaterialPageRoute(builder: (ctx) => RegisterScreen2({})),
                     );
                   }, 0xff32a2c0),
+                  SizedBox(height: 30),
                   Text(
                     'I AM THE LEADER OF A COMMUNITY GROUP',
                     style: const TextStyle(
@@ -69,6 +70,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                       ),
                     );
                   }, 0xff062d69),
+                  SizedBox(height: 30),
                   SmallButton('BACK', () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
