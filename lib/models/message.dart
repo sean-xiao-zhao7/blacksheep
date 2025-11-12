@@ -1,3 +1,4 @@
+/// Chat Message Model
 class Message {
   const Message(this.id, this.mentee, this.message, this.timestamp);
 

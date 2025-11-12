@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:blacksheep/screens/home_screen.dart';
-import 'package:blacksheep/screens/register/register_screen_2.dart';
+import 'package:blacksheep/screens/register/register_screen_mentee_2.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_2.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
+/// Choosing between mentee/mentor register screens
 class RegisterScreenInitial extends StatefulWidget {
   const RegisterScreenInitial({super.key});
 

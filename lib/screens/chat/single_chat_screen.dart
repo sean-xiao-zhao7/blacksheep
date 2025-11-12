@@ -75,6 +75,14 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  @override
+  void dispose() {
+    _newMessageController.dispose();
+    _reportMessageController.dispose();
+    _listViewController.dispose();
+    super.dispose();
+  }
+
   // get all mentors only for admin
   // Since admin could switch mentor. This is not needed if not switching.
   Future<void> _getAllMentors() async {

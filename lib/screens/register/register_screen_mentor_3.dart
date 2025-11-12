@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:blacksheep/screens/register/register_screen_mentor_2.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_4.dart';
-
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
+/// Church info for mentor
 class RegisterScreenMentor3 extends StatefulWidget {
   const RegisterScreenMentor3(this.registerData, {super.key});
   final Map<String, dynamic> registerData;

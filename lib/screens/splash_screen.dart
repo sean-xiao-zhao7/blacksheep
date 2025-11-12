@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:blacksheep/screens/home_screen.dart';
-import 'package:video_player/video_player.dart';
 import 'dart:async';
+import 'package:video_player/video_player.dart';
 
+import 'package:blacksheep/screens/home_screen.dart';
+
+/// Shows a sheep video for 6 seconds then go to HomeScreen
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -35,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 

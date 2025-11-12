@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:blacksheep/screens/register/register_screen_mentor_3.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_5.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
+/// Faith questions for mentor
 class RegisterScreenMentor4 extends StatefulWidget {
   const RegisterScreenMentor4(this.registerData, {super.key});
   final Map<String, dynamic> registerData;

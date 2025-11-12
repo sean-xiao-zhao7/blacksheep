@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:blacksheep/screens/login/login_screen.dart';
-import 'package:blacksheep/screens/register/register_screen_initial.dart';
 
+import 'package:blacksheep/screens/login/login_screen.dart';
+import 'package:blacksheep/screens/register/register_screen_initial_choice.dart';
 import 'package:blacksheep/widgets/buttons/main_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/genty_header.dart';
 
+/// Show a beautiful screen with sheep at start
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

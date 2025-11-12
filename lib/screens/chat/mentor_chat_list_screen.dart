@@ -1,10 +1,9 @@
-import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
-import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
-
+import "package:firebase_messaging/firebase_messaging.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
+import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
@@ -12,10 +11,10 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
-/// The main chat screen for mentor after logging in.
-///
-/// Shows list of chats
-///
+/// Only for mentor account
+/// Initially shows a list of both type 'chat' and 'phone'
+/// Once _currentChatKey has been set, SingleChatScreen child widget takes over.
+/// setCurrentChatKey is used to reset to the list of chats
 class MentorChatListScreen extends StatefulWidget {
   const MentorChatListScreen(this.userData, {super.key});
   final Map<String, dynamic> userData;
@@ -36,32 +35,28 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
   @override
   void initState() {
     super.initState();
-    getChats();
+    _getChats();
     _setupFCM();
     isAccountActive = widget.userData['active'];
   }
 
-  void _setupFCM() async {
+  Future<void> _setupFCM() async {
+    /**
+     * Set up Firebase messaging.
+     * Get the FCM token on every mentor login.
+     * Then insert this token into mentor's database entry.
+     * To ensure FCM token is always up-to-date.
+     */
+
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
     final token = await fcm.getToken();
     if (token != null) {
-      updateFCMMentor(token);
+      _updateFCMMentor(token);
     }
   }
 
-  void setCurrentChatKey(int newKey) {
-    setState(() {
-      _currentChatKey = newKey;
-    });
-
-    if (newKey == -1) {
-      getChats();
-    }
-  }
-
-  // on every mentor login we add new FCM token (if any) to database
-  void updateFCMMentor(String token) async {
+  Future<void> _updateFCMMentor(String token) async {
     try {
       final mentorRef = FirebaseDatabase.instance.ref().child(
         'users/${widget.userData['uid']}',
@@ -73,8 +68,21 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     }
   }
 
-  /// get all matches belonging to current user
-  void getChats() async {
+  void setCurrentChatKey(int newKey) {
+    setState(() {
+      _currentChatKey = newKey;
+    });
+
+    if (newKey == -1) {
+      _getChats();
+    }
+  }
+
+  Future<void> _getChats() async {
+    /**
+     * Get all chats, then filter down to mentorUid equaling to this mentor's.     
+     */
+
     String snackMessage = 'Could not get chat list.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -140,7 +148,16 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     }
   }
 
-  _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+  List<ChatBubble> _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+    /**
+     * Once the single chat has been received from Firebase,
+     * Make a list of ChatMessageBubble for the SingleChatScreen to display.
+     * Passes the result bubbles into the child widget.
+     * This workflow could be improved in the future.
+     * 
+     * Also, this function could be outsourced and shared between all chat lists.
+     */
+
     List<ChatBubble> tempBubbles = [];
     for (String key in currentChat['messages'].keys) {
       int timestamp;
@@ -151,7 +168,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
       }
 
       ChatBubble currentBubble;
-
       currentBubble = ChatBubble(
         message: currentChat['messages'][key]['message'],
         isCurrentUser: currentChat['messages'][key]['mentee'] == false,
@@ -168,7 +184,11 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     return tempBubbles;
   }
 
-  toggleAccountInactiveHandler() async {
+  Future<void> toggleAccountInactiveHandler() async {
+    /**
+     * Switch account to active/inactive.
+     * Inactive mentor account will not be connected by MenteeChatList screen.    
+     */
     try {
       bool newActiveVal = isAccountActive! ? false : true;
 
@@ -413,7 +433,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                         _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                         'phone',
                     setChatListKey: () {},
-                    refreshChat: getChats,
+                    refreshChat: _getChats,
                   )),
           ),
         ],

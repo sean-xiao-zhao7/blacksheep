@@ -1,10 +1,7 @@
 import 'dart:math';
-
 import "package:flutter/material.dart";
-
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
-
 import 'package:video_player/video_player.dart';
 
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
@@ -16,11 +13,8 @@ import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 import "package:blacksheep/services/email_service.dart";
 import "package:blacksheep/models/chat.dart";
 
-/// The main chat screen for mentee after logging in.
-/// Mentee only has a single chat.
-///
-/// Manages states regarding matched or not matched.
-///
+/// Only for mentee account
+/// Only contains 1 chat for both type 'chat' and 'phone'
 class MenteeChatListScreen extends StatefulWidget {
   const MenteeChatListScreen(this.userData, {super.key});
   final Map<String, dynamic> userData;
@@ -35,7 +29,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   bool _isLoading = true;
   bool _showInitialMessage = false;
   bool _waitingForConnection = false;
-  Chat? myChat;
+  Chat? _myChat;
   List<ChatBubble> _chatBubbles = [];
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
@@ -44,7 +38,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.userData['chatId'] != '') getChats();
+    if (widget.userData['chatId'] != '') _getChat();
     _menteeConnectVideoController =
         VideoPlayerController.asset('assets/videos/video2.mp4')
           ..initialize().then((_) {
@@ -58,8 +52,20 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           });
   }
 
-  /// get all matches belonging to current user
-  void getChats() async {
+  @override
+  void dispose() {
+    _menteeConnectVideoController.dispose();
+    _menteeWaitVideoController.dispose();
+    _menteeInitialMessageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _getChat() async {
+    /**
+     * Only for mentee, get the single chat corresponding to the chatId passed in. 
+     * In the future we might allow more than 1 chat for a mentee. 
+     */
+
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -74,7 +80,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           snapshot.value as Map<dynamic, dynamic>;
 
       setState(() {
-        myChat = Chat(
+        _myChat = Chat(
           id: widget.userData['chatId'],
           approved: currentChatData['approved'],
           menteeFirstName: currentChatData['menteeFirstName'],
@@ -97,7 +103,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         }
       });
 
-      if (myChat!.approved && !myChat!.isPhone) _makeMessagesBubbles();
+      if (_myChat!.approved && !_myChat!.isPhone) _makeMessagesBubbles();
     } catch (error) {
       // print(error);
       if (mounted) {
@@ -109,8 +115,54 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
   }
 
-  /// Make database connection between current user and a mentor (only mentee)
-  void _connectToMentor(String type) async {
+  void _makeMessagesBubbles() {
+    /**
+     * Once the single chat has been received from Firebase,
+     * Make a list of ChatMessageBubble for the SingleChatScreen to display.
+     * Passes the result bubbles into the child widget.
+     * This workflow could be improved in the future.
+     * 
+     * Also, this function could be outsourced and shared between all chat lists.
+     */
+
+    List<ChatBubble> tempBubbles = [];
+    Map<dynamic, dynamic> messages = _myChat!.messages;
+    for (String key in messages.keys) {
+      int timestamp;
+      if (messages[key]['timestamp'] is String) {
+        timestamp = int.parse(messages[key]['timestamp']);
+      } else {
+        timestamp = messages[key]['timestamp'];
+      }
+
+      ChatBubble currentBubble;
+
+      currentBubble = ChatBubble(
+        message: messages[key]['message'],
+        isCurrentUser: messages[key]['mentee'] == true,
+        timestamp: timestamp,
+        userName: messages[key]['mentee']
+            ? "${_myChat!.menteeFirstName} ${_myChat!.menteeLastName}"
+            : "${_myChat!.mentorFirstName} ${_myChat!.mentorLastName}",
+      );
+
+      tempBubbles.add(currentBubble);
+    }
+    setState(() {
+      tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      _chatBubbles = tempBubbles;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _connectToMentor(String type) async {
+    /**
+     * Called initially when mentee clicks on "Connect By Phone/Chat"
+     * Finds the geographically nearest mentor, then adds a new "chat" document in Firebase.
+     * Currently does not balance a mentor's already connected mentees against other mentors.
+     * This connection requires admin approval, until then, nothing changes in the UI.
+     */
+
     setState(() {
       _isLoading = true;
     });
@@ -138,7 +190,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             Map<dynamic, dynamic> currentUser = allUsers[key];
             if (currentUser['type'] == 'mentor' &&
                 (currentUser['active'] != null && currentUser['active'])) {
-              double newDistance = calculateDistance(
+              double newDistance = _calculateDistance(
                 currentUser['latitude'],
                 currentUser['longitude'],
                 widget.userData['latitude'],
@@ -212,8 +264,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
   }
 
-  /// Calculate distance between two coordinates.
-  double calculateDistance(lat1, lon1, lat2, lon2) {
+  double _calculateDistance(lat1, lon1, lat2, lon2) {
+    /**
+     * Calc distance between two (lat, long) coordinates.
+     */
+
     var p =
         0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
     var c = cos;
@@ -225,37 +280,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     return radiusOfEarth * 2 * asin(sqrt(a));
   }
 
-  void _makeMessagesBubbles() {
-    List<ChatBubble> tempBubbles = [];
-    Map<dynamic, dynamic> messages = myChat!.messages;
-    for (String key in messages.keys) {
-      int timestamp;
-      if (messages[key]['timestamp'] is String) {
-        timestamp = int.parse(messages[key]['timestamp']);
-      } else {
-        timestamp = messages[key]['timestamp'];
-      }
-
-      ChatBubble currentBubble;
-
-      currentBubble = ChatBubble(
-        message: messages[key]['message'],
-        isCurrentUser: messages[key]['mentee'] == true,
-        timestamp: timestamp,
-        userName: messages[key]['mentee']
-            ? "${myChat!.menteeFirstName} ${myChat!.menteeLastName}"
-            : "${myChat!.mentorFirstName} ${myChat!.mentorLastName}",
-      );
-
-      tempBubbles.add(currentBubble);
-    }
-    setState(() {
-      tempBubbles.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      _chatBubbles = tempBubbles;
-      _isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.userData['chatId'] != null) {
@@ -264,7 +288,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       });
     }
 
-    if (myChat == null || myChat!.isPhone) {
+    if (_myChat == null || _myChat!.isPhone) {
       if (_waitingForConnection) {
         _menteeWaitVideoController.play();
       } else {
@@ -371,7 +395,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       body: ListView(
         children: [
           Container(
-            padding: myChat == null || myChat!.isPhone
+            padding: _myChat == null || _myChat!.isPhone
                 ? EdgeInsets.all(20)
                 : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
             decoration: const BoxDecoration(
@@ -393,7 +417,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       strokeCap: StrokeCap.round,
                     ),
                   )
-                : (myChat == null || myChat!.isPhone
+                : (_myChat == null || _myChat!.isPhone
                       ? Column(
                           spacing: 10,
                           children: (_showInitialMessage
@@ -408,7 +432,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                             ),
                                           ),
                                           child: NowHeader(
-                                            myChat!.isPhone
+                                            _myChat!.isPhone
                                                 ? 'Someone will be in touch with you on the phone shortly!'
                                                 : 'Someone will be in touch with you shortly!',
                                             fontSize: 18,
@@ -521,11 +545,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                         )
                       : SingleChat(
                           chatBubbles: _chatBubbles,
-                          chatId: myChat!.id,
+                          chatId: _myChat!.id,
                           isMentor: false,
-                          mentorFirstName: myChat!.mentorFirstName,
+                          mentorFirstName: _myChat!.mentorFirstName,
                           setChatListKey: () {},
-                          refreshChat: getChats,
+                          refreshChat: _getChat,
                         ))),
           ),
         ],

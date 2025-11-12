@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
-
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
-/// Screen for managing all matches across entire system
-///
+/// Only for admin account
+/// Manages users and connections
+/// Can see all chat messages
+/// See Google Doc for auth credentials
 class AdminChatListScreen extends StatefulWidget {
   const AdminChatListScreen({super.key, this.userData = const {}});
   final Map<String, dynamic> userData;
@@ -24,28 +24,37 @@ class AdminChatListScreen extends StatefulWidget {
 }
 
 class _AdminChatListScreenState extends State<AdminChatListScreen> {
-  // bool _isLoading = true;
-  List<ChatPreviewWidget> _chatsPreviewList = [];
   final Map<int, List<ChatBubble>> _chatBubblesList = {};
+  List<ChatPreviewWidget> _chatsPreviewList = [];
   int _currentChatKey = -1;
 
   @override
   void initState() {
     super.initState();
-    getChats();
+    _getChats();
   }
 
   void setCurrentChatKey(int newKey) {
+    /**
+     * Switch betwee SingleChatScreen child widget or this chat list
+     * Setting -1 will show the list of chats.
+     * Any other index will trigger the SingleChatScreen to activate 
+     */
+
     setState(() {
       _currentChatKey = newKey;
     });
     if (newKey == -1) {
-      getChats();
+      _getChats();
     }
   }
 
-  /// get all matches belonging to current user
-  getChats() async {
+  Future<void> _getChats() async {
+    /**
+     * get all chats from Firebase.
+     * Display as list of ChatBubbles initially, until setCurrentChatKey is called with index.     
+     */
+
     String snackMessage = 'Server error while getting matches for user.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -84,7 +93,11 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
     }
   }
 
-  _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+  List<ChatBubble> _makeMessagesBubbles(Map<dynamic, dynamic> currentChat) {
+    /**
+     * Used by _getChats to make the displayed list of chats.
+     */
+
     List<ChatBubble> tempBubbles = [];
     for (String key in currentChat['messages'].keys) {
       int timestamp;
@@ -203,7 +216,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          return getChats();
+          return _getChats();
         },
         child: ListView(
           children: [
@@ -253,7 +266,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                       isApproved: _chatsPreviewList[_currentChatKey]
                           .chatInfo['approved'],
                       setChatListKey: setCurrentChatKey,
-                      refreshChat: getChats,
+                      refreshChat: _getChats,
                     ),
             ),
           ],

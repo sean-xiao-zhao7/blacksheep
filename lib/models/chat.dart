@@ -1,5 +1,5 @@
-// import 'package:blacksheep/models/message.dart';
-
+/// Chat Model
+/// Not in use at the moment.
 class Chat {
   const Chat({
     required this.id,

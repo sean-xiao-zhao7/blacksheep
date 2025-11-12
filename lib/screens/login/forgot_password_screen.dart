@@ -1,14 +1,14 @@
-import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/genty_header.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
+/// Use Firebase to reset password
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -21,8 +21,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, dynamic> sessionData = {};
-  String errorCode = '';
+  String _errorCode = '';
   bool _isLoading = false;
 
   @override
@@ -45,7 +44,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {
       _isLoading = true;
     });
-    errorCode = '';
+    _errorCode = '';
     try {
       await _firebase.sendPasswordResetEmail(email: _emailController.text);
       if (mounted) {
@@ -61,14 +60,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
-      errorCode = e.code;
-      if (mounted && errorCode != '') {
+      _errorCode = e.code;
+      if (mounted && _errorCode != '') {
         ScaffoldMessenger.of(context).clearSnackBars();
-        if (errorCode == 'invalid-credential') {
+        if (_errorCode == 'invalid-credential') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Invalid email(username) or password.')),
           );
-        } else if (errorCode == 'invalid-email') {
+        } else if (_errorCode == 'invalid-email') {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('Email format invalid.')));

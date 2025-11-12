@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -10,6 +9,7 @@ import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
+/// Login info for mentor
 class RegisterScreenMentor6 extends StatefulWidget {
   const RegisterScreenMentor6(this.registerData, {super.key});
   final Map<String, dynamic> registerData;

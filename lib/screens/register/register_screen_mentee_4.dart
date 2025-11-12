@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:blacksheep/screens/chat/mentee_chat_list_screen.dart';
-import 'package:blacksheep/screens/register/register_screen_3.dart';
+import 'package:blacksheep/screens/register/register_screen_mentee_3.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 final _firebase = FirebaseAuth.instance;
 
+/// Login info for mentee
 class RegisterScreen4 extends StatefulWidget {
   const RegisterScreen4({this.registerData = const {}, super.key});
   final Map<String, dynamic> registerData;

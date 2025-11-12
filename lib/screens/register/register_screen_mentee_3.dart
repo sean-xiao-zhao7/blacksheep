@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:blacksheep/screens/register/register_screen_2.dart';
-import 'package:blacksheep/screens/register/register_screen_4.dart';
+
+import 'package:blacksheep/screens/register/register_screen_mentee_2.dart';
+import 'package:blacksheep/screens/register/register_screen_mentee_4.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
+/// Agreement for mentee
 class RegisterScreen3 extends StatefulWidget {
   const RegisterScreen3({this.registerData = const {}, super.key});
   final Map<String, dynamic> registerData;

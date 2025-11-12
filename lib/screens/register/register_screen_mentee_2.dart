@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:blacksheep/screens/register/register_screen_3.dart';
-import 'package:blacksheep/screens/register/register_screen_initial.dart';
+
+import 'package:blacksheep/screens/register/register_screen_mentee_3.dart';
+import 'package:blacksheep/screens/register/register_screen_initial_choice.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
+/// Personal information for mentee
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2(this.registerData, {super.key});
   final Map<String, dynamic> registerData;

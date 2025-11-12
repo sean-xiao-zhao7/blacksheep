@@ -2,7 +2,11 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+/// Static class to send emails
 class EmailService {
+  /*
+    Construct email data and metadata using Mailgun.
+  */
   static Future sendEmail(recipients, subject, body) async {
     final message = Message()
       ..from = Address(dotenv.env['EMAIL_FROM_MAILGUN']!, 'BlackSheep')
@@ -23,6 +27,10 @@ class EmailService {
     }
   }
 
+  /*
+    Mentee chat list initiates a connection between a new mentee and an existing mentor.
+    This connection requires admin to approve from his/her single chat screen.
+  */
   static sendNewMatchEmailAdmin({
     newMenteeName = 'Test mentee name',
     newMentorName = 'Test mentor name',
@@ -35,6 +43,9 @@ class EmailService {
     );
   }
 
+  /*    
+    Sent when admin approves a new phone connection, or changes a phone connection to another mentor.
+  */
   static sendNewMatchPhoneMentor({
     newMenteeName = 'Asif Sajid (Test mentee)',
     phone = '416-123-1234',
