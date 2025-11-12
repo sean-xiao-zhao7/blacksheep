@@ -115,6 +115,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 30),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'FULL CHURCH ADDRESS',
@@ -137,6 +138,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 30),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText:
@@ -161,6 +163,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 30),
                         SmallButton('CONTINUE', () {
                           if (submit()) {
                             Navigator.of(context).push(
@@ -171,6 +174,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                             );
                           }
                         }, 0xff32a2c0),
+                        SizedBox(height: 30),
                         SmallButton('BACK', () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

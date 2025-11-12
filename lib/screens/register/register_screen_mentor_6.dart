@@ -69,7 +69,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
       userData = {
         'email': userInfo.user!.email!,
         'uid': userInfo.user!.uid,
-        'authToken': userInfo.user!.refreshToken!,
+        'authToken': userInfo.user!.refreshToken,
         'firstName': widget.registerData['firstName']!,
         'lastName': widget.registerData['lastName']!,
         'age': widget.registerData['age']!,

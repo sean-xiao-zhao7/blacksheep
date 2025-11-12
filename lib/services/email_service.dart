@@ -42,10 +42,7 @@ class EmailService {
     mentorEmail = '',
   }) {
     sendEmail(
-      mentorEmail == ''
-          ? [dotenv.env['EMAIL_ADMIN_SEAN'], dotenv.env['EMAIL_ADMIN_RAY']]
-          : [dotenv.env['EMAIL_ADMIN_SEAN']],
-      // : [mentorEmail],
+      [mentorEmail, dotenv.env['EMAIL_ADMIN_SEAN']],
       'Someone near you is in search of community',
       'Please contact:\n\nName: $newMenteeName\nPhone: $phone\nAge: $age\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com',
     );

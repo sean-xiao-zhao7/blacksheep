@@ -97,10 +97,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(height: 10),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
@@ -120,14 +121,16 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 20),
                         Text(
                           'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(height: 10),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
@@ -143,14 +146,16 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 20),
                         Text(
                           'DO YOU HAVE A CRIMINAL RECORD?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(height: 10),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
@@ -166,6 +171,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
+                        SizedBox(height: 30),
                         SmallButton('CONTINUE', () {
                           if (submit()) {
                             Navigator.of(context).push(
@@ -176,6 +182,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                             );
                           }
                         }, 0xff32a2c0),
+                        SizedBox(height: 30),
                         SmallButton('BACK', () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

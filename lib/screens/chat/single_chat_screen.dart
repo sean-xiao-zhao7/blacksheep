@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:url_launcher/url_launcher.dart';
-
 import "package:firebase_database/firebase_database.dart";
 
 import "package:blacksheep/services/email_service.dart";
@@ -8,7 +7,9 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 
-/// A single chat between 2 parties.
+/// A single chat between 2 people. Can be seen as mentor, mentee and admin.
+/// Not a scaffold widget, just a child of the "chat list" parent widget.
+/// Use "setChatListKey(-1)" callback to trigger parent to switch to list of chats view instead of single chat.
 class SingleChat extends StatefulWidget {
   const SingleChat({
     super.key,
@@ -53,22 +54,30 @@ class SingleChat extends StatefulWidget {
 }
 
 class _SingleChatState extends State<SingleChat> {
-  bool _isLoading = false;
-  TextEditingController newMessageController = TextEditingController();
-  TextEditingController reportMessageController = TextEditingController();
+  final TextEditingController _newMessageController = TextEditingController();
+  final TextEditingController _reportMessageController =
+      TextEditingController();
   final ScrollController _listViewController = ScrollController();
-  List<dynamic> _mentorsSelectionList = [];
+
+  // all mentors map for admin
+  // key is Firebase UID
+  Map<String, dynamic> _allMentors = {};
+
+  bool _isLoading = false;
   String _newMentorUid = '';
 
   @override
   void initState() {
     super.initState();
+
     if (widget.isAdmin) {
       _getAllMentors();
     }
   }
 
-  _getAllMentors() async {
+  // get all mentors only for admin
+  // Since admin could switch mentor. This is not needed if not switching.
+  Future<void> _getAllMentors() async {
     String snackMessage = 'Server error while getting mentors for admin.';
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -78,16 +87,16 @@ class _SingleChatState extends State<SingleChat> {
       }
       Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
 
-      List<dynamic> newMentorsSelectionList = [];
+      Map<String, dynamic> allMentorsTemp = {};
       for (final String key in allUsers.keys) {
         var currentUser = allUsers[key];
         if (currentUser['type'] == 'mentor' &&
             (currentUser['active'] != null && currentUser['active'])) {
-          newMentorsSelectionList.add({
-            'uid': key,
+          allMentorsTemp[key] = {
             'firstName': currentUser['firstName'],
             'lastName': currentUser['lastName'],
-          });
+            'email': currentUser['email'],
+          };
 
           if (key == widget.mentorUid) {
             setState(() {
@@ -97,7 +106,7 @@ class _SingleChatState extends State<SingleChat> {
         }
       }
       setState(() {
-        _mentorsSelectionList = newMentorsSelectionList;
+        _allMentors = allMentorsTemp;
       });
     } catch (error) {
       if (mounted) {
@@ -109,7 +118,9 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  _sendNewMessage() async {
+  // send a single chat message for type chat
+  // Only between mentor and mentee
+  Future<void> _sendNewMessage() async {
     String snackMessage = '';
     try {
       DatabaseReference chatstRef = FirebaseDatabase.instance.ref(
@@ -119,7 +130,7 @@ class _SingleChatState extends State<SingleChat> {
       DatabaseReference newMessageRef = chatstRef.push();
       await newMessageRef.set({
         'mentee': !widget.isMentor,
-        'message': newMessageController.text,
+        'message': _newMessageController.text,
         'timestamp': timestamp,
       });
       widget.refreshChat();
@@ -135,36 +146,7 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  // admin function for changing mentor/mentee connection
-  _changeMentor(String newMentorUid) async {
-    String snackMessage = '';
-    try {
-      DatabaseReference chatsRef = FirebaseDatabase.instance.ref(
-        "chats/${widget.chatId}",
-      );
-      var newMentor = _mentorsSelectionList.firstWhere(
-        (mentor) => mentor['uid'] == newMentorUid,
-      );
-      await chatsRef.update({
-        'mentorFirstName': newMentor['firstName'],
-        'mentorLastName': newMentor['lastName'],
-        'mentorUid': newMentorUid,
-      });
-      sendMentorEmailPhone(chatsRef);
-      snackMessage = 'Updated mentor successfully.';
-    } catch (error) {
-      snackMessage = 'Unable to change mentor, please try again later';
-    }
-
-    if (mounted && snackMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
-    }
-  }
-
-  // go to bottom of chat list
+  // after sending message in chat, scroll down to the bottom of the ListView
   void _scrollDown({bool animated = true}) {
     if (animated) {
       _listViewController.animateTo(
@@ -178,14 +160,14 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   // mentee function for reporting bad mentor
-  _reportMentor() {
+  void _reportMentor() {
     setState(() {
       _isLoading = true;
     });
     final recipient = ['contact.us.blacksheep@gmail.com'];
     final subject = 'Mentor reported by mentee';
     final emailBody =
-        'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${reportMessageController.text}';
+        'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${_reportMessageController.text}';
     EmailService.sendEmail(recipient, subject, emailBody).then(
       (value) => {
         setState(() {
@@ -195,62 +177,104 @@ class _SingleChatState extends State<SingleChat> {
     );
   }
 
-  // admin function for approving new connection
-  void approveConnection() async {
-    String resultMessage = '';
-    try {
-      DatabaseReference chatsRef = FirebaseDatabase.instance.ref(
-        "chats/${widget.chatId}",
-      );
-      await chatsRef.update({'approved': true});
-      sendMentorEmailPhone(chatsRef);
-      resultMessage = 'Approved connection!';
-      // set chat list to overview mode
-      widget.setChatListKey(-1);
-    } catch (error) {
-      // print(error);
-      resultMessage = 'Server error.';
-    }
-
-    if (mounted && resultMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(resultMessage)));
-    }
-  }
-
-  sendMentorEmailPhone(DatabaseReference chatsRef) async {
-    // email mentor if type is phone
-    if (widget.isPhone) {
-      // find out mentee's age/phone
-      DataSnapshot result = await chatsRef.child('menteeUid').get();
-      if (result.exists) {
-        int menteeUid = result.value as int;
-        DatabaseReference usersRef = FirebaseDatabase.instance.ref(
-          'users/$menteeUid',
-        );
-        result = await usersRef.child('age').get();
-        int age = result.value as int;
-        result = await usersRef.child('phone').get();
-        int phone = result.value as int;
-
-        EmailService.sendNewMatchPhoneMentor(
-          newMenteeName: "${widget.menteeFirstName} ${widget.menteeLastName}",
-          phone: phone,
-          age: age,
-          mentorEmail: widget.mentorEmail,
-        );
-      }
-    }
-  }
-
   // mentor function for launching phone app with mentee's number
   Future<void> _callMentee() async {
     bool result = await canLaunchUrl(Uri.parse('tel:${widget.menteePhone}'));
     if (result) {
       if (!await launchUrl(Uri.parse('tel:${widget.menteePhone}'))) {
         throw Exception('Could not launch phone.');
+      }
+    }
+  }
+
+  // admin function for changing mentor/mentee connection
+  Future<void> _changeMentor(String newMentorUid) async {
+    String snackMessage = '';
+    try {
+      DatabaseReference chatsRef = FirebaseDatabase.instance.ref(
+        "chats/${widget.chatId}",
+      );
+      var newMentor = _allMentors[newMentorUid];
+      await chatsRef.update({
+        'mentorFirstName': newMentor['firstName'],
+        'mentorLastName': newMentor['lastName'],
+        'mentorUid': newMentorUid,
+      });
+
+      // send email to mentor
+      _sendMentorEmailPhone(chatsRef, newMentor['email']);
+
+      // set chat list to overview mode
+      widget.setChatListKey(-1);
+      snackMessage = 'Updated mentor successfully.';
+
+      // close bottom sheet
+      if (mounted) Navigator.pop(context);
+    } catch (error) {
+      snackMessage = 'Unable to change mentor, please try again later';
+    }
+
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
+
+  // admin function for approving new connection
+  Future<void> _approveConnection() async {
+    String snackMessage = '';
+    try {
+      DatabaseReference chatsRef = FirebaseDatabase.instance.ref(
+        "chats/${widget.chatId}",
+      );
+      await chatsRef.update({'approved': true});
+
+      // send email to mentor
+      _sendMentorEmailPhone(chatsRef, _allMentors[widget.mentorUid]['email']);
+
+      // set chat list to overview mode
+      widget.setChatListKey(-1);
+      snackMessage = 'Approved connection!';
+    } catch (error) {
+      // print(error);
+      snackMessage = 'Server error.';
+    }
+
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
+
+  // send an email to mentor when either new connection approved by admin
+  // or mentee changed by admin
+  Future<void> _sendMentorEmailPhone(
+    DatabaseReference chatsRef,
+    String email,
+  ) async {
+    if (widget.isPhone) {
+      DataSnapshot result = await chatsRef.child('menteeUid').get();
+      if (result.exists) {
+        String menteeUid = result.value as String;
+        DatabaseReference usersRef = FirebaseDatabase.instance.ref(
+          'users/$menteeUid',
+        );
+        result = await usersRef.child('age').get();
+
+        String age = result.value as String;
+        result = await usersRef.child('phone').get();
+        String phone = result.value as String;
+
+        EmailService.sendNewMatchPhoneMentor(
+          newMenteeName: "${widget.menteeFirstName} ${widget.menteeLastName}",
+          phone: phone,
+          age: age,
+          mentorEmail: email,
+        );
       }
     }
   }
@@ -266,7 +290,7 @@ class _SingleChatState extends State<SingleChat> {
           children: [
             SmallButtonFlexible(
               text: widget.isApproved ? 'Approved' : 'Approve',
-              handler: approveConnection,
+              handler: _approveConnection,
               forgroundColor: widget.isApproved
                   ? Color(0xff32a2c0)
                   : Colors.red,
@@ -314,16 +338,21 @@ class _SingleChatState extends State<SingleChat> {
                                     });
                                     _changeMentor(value!);
                                   },
-                                  items: _mentorsSelectionList.map((
-                                    currentMentor,
-                                  ) {
-                                    return DropdownMenuItem<String>(
-                                      value: currentMentor['uid'],
-                                      child: Text(
-                                        "${currentMentor['firstName']} ${currentMentor['lastName']}",
-                                      ),
-                                    );
-                                  }).toList(),
+                                  items: () {
+                                    List<DropdownMenuItem<String>>
+                                    dropdownItems = [];
+                                    _allMentors.forEach((key, value) {
+                                      dropdownItems.add(
+                                        DropdownMenuItem(
+                                          value: key,
+                                          child: Text(
+                                            '${value['firstName']} ${value['lastName']}',
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                    return dropdownItems;
+                                  }(),
                                 );
                               },
                             ),
@@ -380,7 +409,7 @@ class _SingleChatState extends State<SingleChat> {
                           },
                           padding: EdgeInsets.all(0),
                         ),
-                        if (widget.isMentor)
+                        if (widget.isPhone)
                           IconButton(
                             iconSize: 26,
                             icon: const Icon(Icons.phone),
@@ -509,7 +538,7 @@ class _SingleChatState extends State<SingleChat> {
                                                     maxLines: 5,
                                                     minLines: 5,
                                                     controller:
-                                                        reportMessageController,
+                                                        _reportMessageController,
                                                     enabled: !_isLoading,
                                                   ),
                                                 ],
@@ -591,7 +620,7 @@ class _SingleChatState extends State<SingleChat> {
                   textCapitalization: TextCapitalization.sentences,
                   maxLines: 5,
                   minLines: 1,
-                  controller: newMessageController,
+                  controller: _newMessageController,
                   enabled: !widget.isPhone,
                 ),
               ),
