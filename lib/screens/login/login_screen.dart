@@ -139,101 +139,110 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: Stack(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 200),
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 50,
-                right: 50,
-                bottom: 100,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xfffbee5e),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(200),
-                  topRight: Radius.circular(200),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    NowHeader(
-                      'Please Login',
-                      color: Colors.black,
-                      fontSize: 22,
+            ListView(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 200),
+                  padding: EdgeInsets.only(
+                    top: 30,
+                    left: 50,
+                    right: 50,
+                    bottom: 100,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xfffbee5e),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(200),
+                      topRight: Radius.circular(200),
                     ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'EMAIL (username)',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(height: 50),
+                        NowHeader(
+                          'Please Login',
+                          color: Colors.black,
+                          fontSize: 22,
                         ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _emailController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Email is required.';
-                        }
-
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'PASSWORD',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _passwordController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Password is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : SmallButton('Login', () {
-                            if (submit()) {
-                              loginAsyncAction();
-                            }
-                          }, 0xff32a2c0),
-                    SmallButton('Register', () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenInitial(),
-                        ),
-                      );
-                    }, 0xff32a2c0),
-                    TextButton(
-                      onPressed: () => {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => ForgotPasswordScreen(),
+                        SizedBox(height: 50),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'EMAIL (username)',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          controller: _emailController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Email is required.';
+                            }
+
+                            return null;
+                          },
+                          autocorrect: false,
                         ),
-                      },
-                      child: Text('Forgot password?'),
+                        SizedBox(height: 30),
+                        TextFormField(
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'PASSWORD',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Password is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                        ),
+                        SizedBox(height: 50),
+                        _isLoading
+                            ? CircularProgressIndicator()
+                            : SmallButton('Login', () {
+                                if (submit()) {
+                                  loginAsyncAction();
+                                }
+                              }, 0xff32a2c0),
+                        SizedBox(height: 30),
+                        SmallButton('Register', () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => RegisterScreenInitial(),
+                            ),
+                          );
+                        }, 0xff32a2c0),
+                        SizedBox(height: 30),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => ForgotPasswordScreen(),
+                              ),
+                            ),
+                          },
+                          child: Text('Forgot password?'),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
             Positioned(
               top: 40,
