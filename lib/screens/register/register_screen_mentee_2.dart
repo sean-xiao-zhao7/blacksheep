@@ -146,6 +146,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff32a2c0),
       body: ListView(
         children: [
           Container(

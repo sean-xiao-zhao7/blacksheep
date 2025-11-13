@@ -20,6 +20,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff7ca2d),
       body: Container(
         padding: EdgeInsets.only(top: 50),
         decoration: BoxDecoration(color: Color(0xfff7ca2d)),

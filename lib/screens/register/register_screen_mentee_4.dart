@@ -100,6 +100,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff32a2c0),
       body: Container(
         padding: EdgeInsets.only(top: 100),
         decoration: BoxDecoration(color: Color(0xff32a2c0)),
