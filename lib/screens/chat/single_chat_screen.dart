@@ -403,7 +403,7 @@ class _SingleChatState extends State<SingleChat> {
                     NowHeader(
                       widget.menteeFirstName.isEmpty
                           ? 'Chatting with ${widget.mentorFirstName} ${widget.mentorLastName}'
-                          : '${widget.isAdmin ? '${widget.mentorFirstName} ${widget.mentorLastName}) |' : 'Chatting with'} ${widget.menteeFirstName} ${widget.menteeLastName}',
+                          : '${widget.isAdmin ? '${widget.mentorFirstName} ${widget.mentorLastName} |' : 'Chatting with'} ${widget.menteeFirstName} ${widget.menteeLastName}',
                       fontSize: 12,
                       color: Color(0xff32a2c0),
                     ),

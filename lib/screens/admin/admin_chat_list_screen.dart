@@ -115,6 +115,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         userName: currentChat['messages'][key]['mentee']
             ? "${currentChat['menteeFirstName']} ${currentChat['menteeLastName']}"
             : "${currentChat['mentorFirstName']} ${currentChat['mentorLastName']}",
+        isAdmin: true,
       );
 
       tempBubbles.add(currentBubble);
@@ -218,58 +219,51 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         onRefresh: () {
           return _getChats();
         },
-        child: ListView(
-          children: [
-            Container(
-              padding: _chatsPreviewList.isEmpty
-                  ? EdgeInsets.all(20)
-                  : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    "assets/images/blacksheep_background_full.png",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              height: MediaQuery.of(context).size.height,
-              child: _currentChatKey == -1
-                  ? Container(
-                      padding: EdgeInsets.all(10),
-                      child: ListView(
-                        children: [
-                          NowHeader('Admin - All connections', fontSize: 18),
-                          SizedBox(height: 15),
-                          ..._chatsPreviewList,
-                        ],
-                      ),
-                    )
-                  : SingleChat(
-                      chatBubbles: _chatBubblesList[_currentChatKey]!,
-                      chatId:
-                          _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
-                      isMentor: true,
-                      mentorFirstName: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['mentorFirstName'],
-                      mentorLastName: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['mentorLastName'],
-                      mentorUid: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['mentorUid'],
-                      menteeFirstName: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['menteeFirstName'],
-                      menteeLastName: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['menteeLastName'],
-                      isPhone:
-                          _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
-                          'phone',
-                      isAdmin: true,
-                      isApproved: _chatsPreviewList[_currentChatKey]
-                          .chatInfo['approved'],
-                      setChatListKey: setCurrentChatKey,
-                      refreshChat: _getChats,
-                    ),
+        child: Container(
+          padding: _chatsPreviewList.isEmpty
+              ? EdgeInsets.all(20)
+              : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/blacksheep_background_full.png"),
+              fit: BoxFit.cover,
             ),
-          ],
+          ),
+          height: MediaQuery.of(context).size.height,
+          child: _currentChatKey == -1
+              ? Container(
+                  padding: EdgeInsets.all(10),
+                  child: ListView(
+                    children: [
+                      NowHeader('Admin - All connections', fontSize: 18),
+                      SizedBox(height: 15),
+                      ..._chatsPreviewList,
+                    ],
+                  ),
+                )
+              : SingleChat(
+                  chatBubbles: _chatBubblesList[_currentChatKey]!,
+                  chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
+                  isMentor: true,
+                  mentorFirstName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['mentorFirstName'],
+                  mentorLastName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['mentorLastName'],
+                  mentorUid:
+                      _chatsPreviewList[_currentChatKey].chatInfo['mentorUid'],
+                  menteeFirstName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['menteeFirstName'],
+                  menteeLastName: _chatsPreviewList[_currentChatKey]
+                      .chatInfo['menteeLastName'],
+                  isPhone:
+                      _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
+                      'phone',
+                  isAdmin: true,
+                  isApproved:
+                      _chatsPreviewList[_currentChatKey].chatInfo['approved'],
+                  setChatListKey: setCurrentChatKey,
+                  refreshChat: _getChats,
+                ),
         ),
       ),
     );

@@ -129,24 +129,24 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 50),
+        // padding: EdgeInsets.only(top: 5),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: Stack(
+        child: ListView(
           children: [
-            ListView(
+            Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 150),
+                  margin: EdgeInsets.only(top: 160),
                   padding: EdgeInsets.only(
-                    top: 30,
+                    top: 90,
                     left: 50,
                     right: 50,
-                    bottom: 100,
+                    bottom: 150,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xfffbee5e),
@@ -241,20 +241,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+
+                Positioned(
+                  top: 30,
+                  width: MediaQuery.of(context).size.width,
+                  child: const GentyHeader('BlackSheep', fontSize: 70),
+                ),
+                Positioned(
+                  top: 30,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Image(
+                    image: AssetImage('assets/images/sheep.png'),
+                    height: 300,
+                  ),
+                ),
               ],
-            ),
-            Positioned(
-              top: 40,
-              width: MediaQuery.of(context).size.width,
-              child: const GentyHeader('BlackSheep', fontSize: 70),
-            ),
-            Positioned(
-              top: 40,
-              width: MediaQuery.of(context).size.width,
-              child: const Image(
-                image: AssetImage('assets/images/sheep.png'),
-                height: 300,
-              ),
             ),
           ],
         ),
