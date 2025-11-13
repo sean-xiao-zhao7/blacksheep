@@ -452,18 +452,24 @@ class _SingleChatState extends State<SingleChat> {
                                                       fontSize: 20,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    'Age: ${widget.menteeAge}',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
+                                                  if (widget
+                                                      .menteeAge
+                                                      .isNotEmpty)
+                                                    Text(
+                                                      'Age: ${widget.menteeAge}',
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    'Phone: ${widget.menteePhone}',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
+                                                  if (widget
+                                                      .menteePhone
+                                                      .isNotEmpty)
+                                                    Text(
+                                                      'Phone: ${widget.menteePhone}',
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                      ),
                                                     ),
-                                                  ),
                                                 ],
                                               ),
                                             ),
