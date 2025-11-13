@@ -127,7 +127,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(

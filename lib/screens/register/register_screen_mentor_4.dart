@@ -72,14 +72,14 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 80),
+            padding: EdgeInsets.only(top: 20),
             decoration: BoxDecoration(color: Color(0xfff7ca2d)),
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 200),
+                  margin: EdgeInsets.only(top: 180),
                   padding: EdgeInsets.only(
-                    top: 50,
+                    top: 100,
                     left: 50,
                     right: 50,
                     bottom: 50,
@@ -185,7 +185,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                             );
                           }
                         }, 0xff32a2c0),
-                        SizedBox(height: 30),
+                        SizedBox(height: 10),
                         SmallButton('BACK', () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

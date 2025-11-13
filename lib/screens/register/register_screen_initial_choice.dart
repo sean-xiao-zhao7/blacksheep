@@ -1,3 +1,4 @@
+import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blacksheep/screens/home_screen.dart';
@@ -24,17 +25,17 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 100),
+            padding: EdgeInsets.only(top: 50),
             decoration: BoxDecoration(color: Color(0xff32a2c0)),
             child: Stack(
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 150),
                   padding: EdgeInsets.only(
-                    top: 100,
+                    top: 120,
                     left: 50,
                     right: 50,
-                    bottom: 200,
+                    bottom: 150,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xfffbee5e),
@@ -79,15 +80,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                         );
                       }, 0xff062d69),
                       SizedBox(height: 30),
-                      SmallButton('BACK', () {
+                      SmallButton('LOGIN INSTEAD', () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (ctx) {
-                              return HomeScreen();
+                              return LoginScreen();
                             },
                           ),
                         );
-                      }, 0xffffff),
+                      }, 0xff062d69),
                     ],
                   ),
                 ),

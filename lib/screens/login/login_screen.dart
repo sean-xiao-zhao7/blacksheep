@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ListView(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 200),
+                  margin: EdgeInsets.only(top: 150),
                   padding: EdgeInsets.only(
                     top: 30,
                     left: 50,

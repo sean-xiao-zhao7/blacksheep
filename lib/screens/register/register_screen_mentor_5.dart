@@ -22,7 +22,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
     return Scaffold(
       backgroundColor: Color(0xfff7ca2d),
       body: Container(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 80),
         decoration: BoxDecoration(color: Color(0xfff7ca2d)),
         child: Stack(
           children: [
@@ -30,9 +30,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
               margin: EdgeInsets.only(top: 120),
               padding: EdgeInsets.only(
                 top: 80,
-                left: 50,
-                right: 50,
-                bottom: 50,
+                left: 20,
+                right: 20,
+                bottom: 80,
               ),
               decoration: BoxDecoration(
                 color: Color(0xff9e607e),
@@ -205,7 +205,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                       ),
                     );
                   }, 0xff32a2c0),
-                  SizedBox(height: 5),
+                  SizedBox(height: 10),
                   SmallButton('BACK', () {
                     Navigator.of(context).push(
                       MaterialPageRoute(

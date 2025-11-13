@@ -150,17 +150,17 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 100),
+            padding: EdgeInsets.only(top: 40),
             decoration: BoxDecoration(color: Color(0xff32a2c0)),
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 150),
+                  margin: EdgeInsets.only(top: 120),
                   padding: EdgeInsets.only(
-                    top: 80,
+                    top: 100,
                     left: 50,
                     right: 50,
-                    bottom: 50,
+                    bottom: 150,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xfffbee5e),
@@ -337,7 +337,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                   child: const NowHeader('SIGN UP TODAY!'),
                 ),
                 Positioned(
-                  top: 40,
+                  top: 10,
                   width: MediaQuery.of(context).size.width,
                   child: const Image(
                     image: AssetImage('assets/images/sheep.png'),

@@ -149,17 +149,17 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 80),
+            padding: EdgeInsets.only(top: 20),
             decoration: BoxDecoration(color: Color(0xfff7ca2d)),
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 100),
+                  margin: EdgeInsets.only(top: 150),
                   padding: EdgeInsets.only(
-                    top: 100,
+                    top: 120,
                     left: 50,
                     right: 50,
-                    bottom: 50,
+                    bottom: 200,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xff9e607e),
@@ -339,7 +339,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                   ),
                 ),
                 Positioned(
-                  top: 30,
+                  top: 50,
                   width: MediaQuery.of(context).size.width,
                   child: const Image(
                     image: AssetImage('assets/images/sheep.png'),
