@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_5.dart';
 import 'package:blacksheep/screens/chat/mentor_chat_list_screen.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -212,14 +213,20 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
                         }
                       }
                     }, 0xff32a2c0),
-                    SmallButton('BACK', () {
-                      newData['email'] = _emailController.text;
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => RegisterScreenMentor5(newData),
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => RegisterScreenMentor5(newData),
+                          ),
                         ),
-                      );
-                    }, 0xffffff),
+                      },
+                      child: NowText(
+                        body: 'BACK',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),

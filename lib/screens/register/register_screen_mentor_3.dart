@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_2.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_4.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -77,12 +78,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 170),
+                  margin: EdgeInsets.only(top: 100),
                   padding: EdgeInsets.only(
-                    top: 130,
-                    left: 50,
-                    right: 50,
-                    bottom: 100,
+                    top: 120,
+                    left: 30,
+                    right: 30,
+                    bottom: 250,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xff9e607e),
@@ -100,8 +101,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           decoration: const InputDecoration(
                             labelText: 'NAME OF YOUR CHURCH',
                             labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Now',
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -116,14 +118,16 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(fontSize: 18, fontFamily: 'Now'),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'FULL CHURCH ADDRESS',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 18,
+                              fontFamily: 'Now',
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -139,23 +143,24 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(fontSize: 18, fontFamily: 'Now'),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText:
                                 'HOW LONG HAVE YOU\nBEEN A FOLLOWER OF CHRIST?',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 18,
+                              fontFamily: 'Now',
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
                             fillColor: Colors.white,
                           ),
                           controller: _longController,
-                          style: TextStyle(height: 3),
-                          cursorHeight: 20,
+                          cursorHeight: 18,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'How long at church is required.';
@@ -164,8 +169,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 3,
+                            fontFamily: 'Now',
+                          ),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         SmallButton('CONTINUE', () {
                           if (submit()) {
                             Navigator.of(context).push(
@@ -177,13 +187,21 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                           }
                         }, 0xff32a2c0),
                         SizedBox(height: 10),
-                        SmallButton('BACK', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenMentor2(newData),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) =>
+                                    RegisterScreenMentor2(newData),
+                              ),
                             ),
-                          );
-                        }, 0xffffff),
+                          },
+                          child: NowText(
+                            body: 'BACK',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -193,11 +211,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor3> {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: NowHeader('WHICH CHURCH DO YOU ATTEND?'),
+                    child: NowHeader(
+                      'WHICH CHURCH DO YOU ATTEND?',
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 Positioned(
-                  top: 60,
                   width: MediaQuery.of(context).size.width,
                   child: const Image(
                     image: AssetImage('assets/images/sheep.png'),

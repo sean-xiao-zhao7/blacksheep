@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_4.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_6.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -206,14 +207,21 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
                     );
                   }, 0xff32a2c0),
                   SizedBox(height: 10),
-                  SmallButton('BACK', () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) =>
-                            RegisterScreenMentor4(widget.registerData),
+                  TextButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) =>
+                              RegisterScreenMentor4(widget.registerData),
+                        ),
                       ),
-                    );
-                  }, 0xffffff),
+                    },
+                    child: NowText(
+                      body: 'BACK',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -222,7 +230,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor5> {
               width: MediaQuery.of(context).size.width,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: NowHeader('ALMOST FINISHED'),
+                child: NowHeader('ALMOST FINISHED', fontSize: 20),
               ),
             ),
             Positioned(

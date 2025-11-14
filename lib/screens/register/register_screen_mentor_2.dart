@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/register/register_screen_initial_choice.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_3.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -155,11 +156,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 150),
+                  margin: EdgeInsets.only(top: 100),
                   padding: EdgeInsets.only(
                     top: 120,
-                    left: 50,
-                    right: 50,
+                    left: 30,
+                    right: 30,
                     bottom: 200,
                   ),
                   decoration: BoxDecoration(
@@ -179,8 +180,9 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           decoration: const InputDecoration(
                             labelText: 'FIRST NAME',
                             labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Now',
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -195,13 +197,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(fontSize: 18),
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'LAST NAME',
                             labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Now',
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -216,13 +220,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(fontSize: 18),
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'AGE',
                             labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Now',
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -242,13 +248,15 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                             FilteringTextInputFormatter.digitsOnly,
                           ],
                           maxLength: 2,
+                          style: TextStyle(fontSize: 18),
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'PHONE',
                             labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Now',
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
@@ -273,42 +281,45 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                             ),
                           ],
                           maxLength: 14,
+                          style: TextStyle(fontSize: 18),
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: RadioListTile(
-                                dense: true,
-                                title: Text(
-                                  "Male",
-                                  style: TextStyle(color: Colors.white),
+                        Column(
+                          children: [
+                            RadioListTile(
+                              dense: true,
+                              title: Text(
+                                "Male",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
                                 ),
-                                value: 'MALE',
-                                groupValue: _genderController.text,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _genderController.text = value!;
-                                  });
-                                },
-                                activeColor: Color(0xff32a2c0),
                               ),
+                              value: 'MALE',
+                              groupValue: _genderController.text,
+                              onChanged: (value) {
+                                setState(() {
+                                  _genderController.text = value!;
+                                });
+                              },
+                              activeColor: Color(0xff32a2c0),
                             ),
-                            Expanded(
-                              child: RadioListTile(
-                                dense: true,
-                                title: Text(
-                                  "Female",
-                                  style: TextStyle(color: Colors.white),
+                            RadioListTile(
+                              dense: true,
+                              title: Text(
+                                "Female",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
                                 ),
-                                value: 'FEMALE',
-                                groupValue: _genderController.text,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _genderController.text = value!;
-                                  });
-                                },
-                                activeColor: Color(0xff32a2c0),
                               ),
+                              value: 'FEMALE',
+                              groupValue: _genderController.text,
+                              onChanged: (value) {
+                                setState(() {
+                                  _genderController.text = value!;
+                                });
+                              },
+                              activeColor: Color(0xff32a2c0),
                             ),
                           ],
                         ),
@@ -318,7 +329,11 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                                   : SmallButton('Get current location', () {
                                       getLocationAsync();
                                     }, 0xff32a2c0))
-                            : Text('Location obtained!'),
+                            : NowText(
+                                body: 'Location obtained!',
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
                         SmallButton('CONTINUE', () {
                           if (submit()) {
                             Navigator.of(context).push(
@@ -329,13 +344,20 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                             );
                           }
                         }, 0xff32a2c0),
-                        SmallButton('BACK', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenInitial(),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => RegisterScreenInitial(),
+                              ),
                             ),
-                          );
-                        }, 0xffffff),
+                          },
+                          child: NowText(
+                            body: 'BACK',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -345,11 +367,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: NowHeader('SIGN UP AS A COMMUNITY MENTOR'),
+                    child: NowHeader(
+                      'SIGN UP AS COMMUNITY MENTOR',
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 Positioned(
-                  top: 50,
                   width: MediaQuery.of(context).size.width,
                   child: const Image(
                     image: AssetImage('assets/images/sheep.png'),

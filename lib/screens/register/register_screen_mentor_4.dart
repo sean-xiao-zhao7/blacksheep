@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_3.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_5.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -77,12 +78,12 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
             child: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 180),
+                  margin: EdgeInsets.only(top: 100),
                   padding: EdgeInsets.only(
                     top: 100,
-                    left: 50,
-                    right: 50,
-                    bottom: 50,
+                    left: 30,
+                    right: 30,
+                    bottom: 150,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xff9e607e),
@@ -95,24 +96,25 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                     key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      spacing: 10,
                       children: [
                         Text(
-                          'WHAT KIND OF EXPERIENCE\nDO YOU HAVE BEING A\nCOMMUNITY LEADER?',
+                          'WHAT KIND OF EXPERIENCE DO YOU HAVE BEING A COMMUNITY LEADER?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Now',
                           ),
                         ),
-                        SizedBox(height: 10),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
+                            counterStyle: TextStyle(color: Colors.white),
                           ),
-                          maxLines: 2,
+                          maxLines: 3,
                           controller: _experienceController,
-                          style: TextStyle(height: 2),
                           cursorHeight: 20,
                           maxLength: 2000,
                           validator: (value) {
@@ -123,23 +125,29 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           },
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'ARE YOU ABLE TO PARALLEL BIBLE\nSTORIES AND THEIR LESSONS\nWITHIN A MODERN CONTEXT?',
                           style: TextStyle(
-                            color: Colors.white,
+                            fontFamily: 'Now',
+                            height: 2,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 10),
+                        Text(
+                          'ARE YOU ABLE TO PARALLEL BIBLE STORIES AND THEIR LESSONS WITHIN A MODERN CONTEXT?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Now',
+                          ),
+                        ),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                           ),
                           controller: _storiesController,
+                          maxLines: 3,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Bible parallel text is required.';
@@ -149,16 +157,16 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         Text(
                           'DO YOU HAVE A CRIMINAL RECORD?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Now',
                           ),
                         ),
-                        SizedBox(height: 10),
                         TextFormField(
                           decoration: const InputDecoration(
                             filled: true,
@@ -174,7 +182,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                           autocorrect: false,
                           textCapitalization: TextCapitalization.sentences,
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 10),
                         SmallButton('CONTINUE', () {
                           if (submit()) {
                             Navigator.of(context).push(
@@ -185,14 +193,21 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                             );
                           }
                         }, 0xff32a2c0),
-                        SizedBox(height: 10),
-                        SmallButton('BACK', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenMentor3(newData),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) =>
+                                    RegisterScreenMentor3(newData),
+                              ),
                             ),
-                          );
-                        }, 0xffffff),
+                          },
+                          child: NowText(
+                            body: 'BACK',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -202,11 +217,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor4> {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: NowHeader('JUST A LITTLE MORE INFORMATION'),
+                    child: NowHeader(
+                      'JUST A LITTLE MORE INFORMATION',
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 Positioned(
-                  top: 60,
                   width: MediaQuery.of(context).size.width,
                   child: const Image(
                     image: AssetImage('assets/images/sheep.png'),
