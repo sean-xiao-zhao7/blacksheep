@@ -1,3 +1,4 @@
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
@@ -338,7 +339,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                               ),
                             ),
                           },
-                          child: Text('BACK'),
+                          child: NowText(
+                            body: 'BACK',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),

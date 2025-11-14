@@ -1,3 +1,4 @@
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blacksheep/screens/register/register_screen_mentee_2.dart';
@@ -27,12 +28,12 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 150),
+              margin: EdgeInsets.only(top: 100),
               padding: EdgeInsets.only(
-                top: 100,
-                left: 50,
-                right: 50,
-                bottom: 100,
+                top: 110,
+                left: 20,
+                right: 20,
+                bottom: 60,
               ),
               decoration: BoxDecoration(
                 color: Color(0xfffbee5e),
@@ -160,13 +161,17 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                     );
                   }, 0xff32a2c0),
                   SizedBox(height: 10),
-                  SmallButton('BACK', () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => RegisterScreen2(widget.registerData),
+                  TextButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) =>
+                              RegisterScreen2(widget.registerData),
+                        ),
                       ),
-                    );
-                  }, 0xffffff),
+                    },
+                    child: NowText(body: 'BACK', fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),
@@ -176,7 +181,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
               child: const NowHeader('ALMOST FINISHED'),
             ),
             Positioned(
-              top: 40,
+              top: 10,
               width: MediaQuery.of(context).size.width,
               child: const Image(
                 image: AssetImage('assets/images/sheep.png'),
