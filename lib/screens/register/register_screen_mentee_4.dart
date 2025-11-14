@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:blacksheep/screens/chat/mentee_chat_list_screen.dart';
 import 'package:blacksheep/screens/register/register_screen_mentee_3.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
@@ -212,22 +213,33 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       },
                       autocorrect: false,
                     ),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : SmallButton('COMPLETE', () {
-                            if (submit()) {
-                              completeRegister();
-                            }
-                          }, 0xff32a2c0),
-                    SmallButton('BACK', () {
-                      newData['email'] = _emailController.text;
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) =>
-                              RegisterScreen3(registerData: newData),
+                    Column(
+                      children: [
+                        _isLoading
+                            ? CircularProgressIndicator()
+                            : SmallButton('COMPLETE', () {
+                                if (submit()) {
+                                  completeRegister();
+                                }
+                              }, 0xff32a2c0),
+                        SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            newData['email'] = _emailController.text;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) =>
+                                    RegisterScreen3(registerData: newData),
+                              ),
+                            );
+                          },
+                          child: NowText(
+                            body: 'BACK',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      );
-                    }, 0xffffff),
+                      ],
+                    ),
                   ],
                 ),
               ),
