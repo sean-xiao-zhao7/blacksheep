@@ -1,7 +1,6 @@
 import 'package:blacksheep/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:blacksheep/screens/home_screen.dart';
 import 'package:blacksheep/screens/register/register_screen_mentee_2.dart';
 import 'package:blacksheep/screens/register/register_screen_mentor_2.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';

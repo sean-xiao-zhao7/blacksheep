@@ -26,23 +26,32 @@ class MenteeChatListScreen extends StatefulWidget {
 }
 
 class _MenteeChatListScreen extends State<MenteeChatListScreen> {
-  bool _isLoading = true;
-  bool _showInitialMessage = false;
-  bool _waitingForConnection = false;
+  // single chat data
   Chat? _myChat;
   List<ChatBubble> _chatBubbles = [];
+  final _menteeInitialMessageController = TextEditingController();
+
+  // videos for waiting for connection only
   late VideoPlayerController _menteeConnectVideoController;
   late VideoPlayerController _menteeWaitVideoController;
-  final _menteeInitialMessageController = TextEditingController();
+
+  bool _isLoading = true;
+  bool _showNewMenteeQuestions = false;
+  bool _waitingForMentor = false;
 
   @override
   void initState() {
     super.initState();
+
+    // get single chat data, only if chatId from login is not null.
+    // _myChat controls whether to display chat or waiting for connection message
     if (widget.userData['chatId'] != '') _getChat();
+
     _menteeConnectVideoController =
         VideoPlayerController.asset('assets/videos/video2.mp4')
           ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            // Ensure the first frame is shown after the video is initialized,
+            // even before the play button has been pressed.
             setState(() {});
           });
     _menteeWaitVideoController =
@@ -94,16 +103,17 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         );
 
         if (!currentChatData['approved']) {
-          _waitingForConnection = true;
-        } else {
-          if (currentChatData['type'] == 'phone') {
-            _showInitialMessage = true;
-            _waitingForConnection = true;
-          }
+          _waitingForMentor = true;
+          _showNewMenteeQuestions = true;
+        }
+        if (currentChatData['type'] == 'phone') {
+          _showNewMenteeQuestions = true;
         }
       });
 
-      if (_myChat!.approved && !_myChat!.isPhone) _makeMessagesBubbles();
+      if (currentChatData['approved'] && !_myChat!.isPhone) {
+        _makeMessagesBubbles();
+      }
     } catch (error) {
       // print(error);
       if (mounted) {
@@ -209,23 +219,27 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           DatabaseReference chatstRef = FirebaseDatabase.instance.ref("chats");
           DatabaseReference newChatRef = chatstRef.push();
           await newChatRef.set({
-            'menteeUid': widget.userData['uid'],
-            'mentorUid': closestMentorUid,
-            'type': type,
+            'approved': false,
             'menteeFirstName': widget.userData['firstName'],
             'menteeLastName': widget.userData['lastName'],
+            'menteeUid': widget.userData['uid'],
             'mentorFirstName': closestMentorFirstName,
             'mentorLastName': closestMentorLastName,
-            'approved': false,
+            'mentorUid': closestMentorUid,
+            'type': type,
           });
 
-          newChatRef.child('messages').push().set({
+          DatabaseReference firstMessageRef = newChatRef
+              .child('messages')
+              .push();
+          Map<String, dynamic> newMessageBody = {
             'mentee': true,
             'message': type == 'chat'
                 ? _menteeInitialMessageController.text
                 : "New Matchup Available\n\n${widget.userData['firstName']} is in search of community.\n\nPlease contact:\n\nFirstname: ${widget.userData['firstName']}\nLastname: ${widget.userData['lastName']}\nPhone: ${widget.userData['phone']}\nAge: ${widget.userData['age']}\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com",
             'timestamp': DateTime.now().millisecondsSinceEpoch,
-          });
+          };
+          firstMessageRef.set(newMessageBody);
 
           // update current user with new match id and chat id
           usersRef.child(widget.userData['uid']).update({
@@ -238,14 +252,36 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                 "${widget.userData['firstName']} ${widget.userData['lastName']}",
             newMentorName: "$closestMentorFirstName, $closestMentorLastName",
           );
+
+          setState(() {
+            _myChat = Chat(
+              id: newChatRef.key!,
+              approved: false,
+              menteeFirstName: widget.userData['firstName'],
+              menteeLastName: widget.userData['lastName'],
+              menteeUid: widget.userData['uid'],
+              mentorFirstName: closestMentorFirstName,
+              mentorLastName: closestMentorLastName,
+              mentorUid: closestMentorUid,
+              type: type,
+              messages: {
+                firstMessageRef.key: {newMessageBody},
+              },
+            );
+
+            _waitingForMentor = true;
+            if (type == 'phone') {
+              _showNewMenteeQuestions = true;
+            }
+          });
         } else {
           snackMessage = 'Server error. Please check back later!';
         }
 
         setState(() {
           _isLoading = false;
-          _showInitialMessage = true;
-          _waitingForConnection = true;
+          _showNewMenteeQuestions = true;
+          _waitingForMentor = true;
         });
       } catch (error) {
         // print(error);
@@ -288,8 +324,8 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       });
     }
 
-    if (_myChat == null || _myChat!.isPhone) {
-      if (_waitingForConnection) {
+    if ((_myChat == null || !_myChat!.approved) || _myChat!.isPhone) {
+      if (_waitingForMentor) {
         _menteeWaitVideoController.play();
       } else {
         _menteeConnectVideoController.play();
@@ -392,36 +428,34 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: _myChat == null || _myChat!.isPhone
-                ? EdgeInsets.all(20)
-                : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/blacksheep_background_full.png",
+      body: Container(
+        padding: _myChat == null || _myChat!.isPhone
+            ? EdgeInsets.all(20)
+            : EdgeInsets.only(top: 10, right: 6, left: 6, bottom: 30),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        height: MediaQuery.of(context).size.height,
+        child: (_isLoading
+            ? Center(
+                heightFactor: 20,
+                child: CircularProgressIndicator(
+                  color: Color(0xff32a2c0),
+                  strokeWidth: 10,
+                  strokeAlign: 5,
+                  strokeCap: StrokeCap.round,
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            height: MediaQuery.of(context).size.height,
-            child: (_isLoading
-                ? Center(
-                    heightFactor: 20,
-                    child: CircularProgressIndicator(
-                      color: Color(0xff32a2c0),
-                      strokeWidth: 10,
-                      strokeAlign: 5,
-                      strokeCap: StrokeCap.round,
-                    ),
-                  )
-                : (_myChat == null || _myChat!.isPhone
-                      ? Column(
+              )
+            : ((_myChat == null || !_myChat!.approved) || _myChat!.isPhone
+                  ? ListView(
+                      children: [
+                        Column(
                           spacing: 10,
-                          children: (_showInitialMessage
-                              ? (_waitingForConnection
+                          children: (_showNewMenteeQuestions
+                              ? (_waitingForMentor
                                     ? [
                                         Container(
                                           padding: EdgeInsets.all(15),
@@ -477,6 +511,10 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                               Icons.message,
                                               color: Color(0xff32a2c0),
                                             ),
+                                            counterStyle: TextStyle(
+                                              color: Colors.black,
+                                              backgroundColor: Colors.white,
+                                            ),
                                           ),
                                           autocorrect: false,
                                           textCapitalization:
@@ -496,7 +534,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                           'Cancel',
                                           () => {
                                             setState(() {
-                                              _showInitialMessage = false;
+                                              _showNewMenteeQuestions = false;
                                             }),
                                           },
                                           size: 400,
@@ -531,7 +569,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                     'In app text',
                                     () => {
                                       setState(() {
-                                        _showInitialMessage = true;
+                                        _showNewMenteeQuestions = true;
                                       }),
                                     },
                                     size: 400,
@@ -542,17 +580,17 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                     size: 400,
                                   ),
                                 ]),
-                        )
-                      : SingleChat(
-                          chatBubbles: _chatBubbles,
-                          chatId: _myChat!.id,
-                          isMentor: false,
-                          mentorFirstName: _myChat!.mentorFirstName,
-                          setChatListKey: () {},
-                          refreshChat: _getChat,
-                        ))),
-          ),
-        ],
+                        ),
+                      ],
+                    )
+                  : SingleChat(
+                      chatBubbles: _chatBubbles,
+                      chatId: _myChat!.id,
+                      isMentor: false,
+                      mentorFirstName: _myChat!.mentorFirstName,
+                      setChatListKey: () {},
+                      refreshChat: _getChat,
+                    ))),
       ),
     );
   }
