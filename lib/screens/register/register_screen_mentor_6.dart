@@ -22,13 +22,16 @@ class RegisterScreenMentor6 extends StatefulWidget {
 }
 
 class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
+  Map<String, dynamic> newData = {};
+  Map<String, dynamic> userData = {};
+
+  String _errorCode = '';
+  bool _isLoading = false;
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Map<String, dynamic> newData = {};
-  Map<String, dynamic> userData = {};
-  String errorCode = '';
 
   @override
   void initState() {
@@ -61,7 +64,10 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
   }
 
   void completeRegister() async {
-    errorCode = '';
+    _errorCode = '';
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final userInfo = await _firebase.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -96,8 +102,29 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
           MaterialPageRoute(builder: (ctx) => MentorChatListScreen(userData)),
         );
       }
+      setState(() {
+        _isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
-      errorCode = e.code;
+      _errorCode = e.code;
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        if (_errorCode != '') {
+          var message = 'Invalid form data. Please verify all fields.';
+          if (_errorCode == 'invalid-email') {
+            message = 'Email format invalid.';
+          } else if (_errorCode == 'weak-password') {
+            message = 'Password should be at least 6 chars.';
+          } else if (_errorCode == 'email-already-in-use') {
+            message = 'Email already in use.';
+          }
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+        }
+      }
     }
   }
 
@@ -197,22 +224,13 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor6> {
                       },
                       autocorrect: false,
                     ),
-                    SmallButton('COMPLETE', () {
-                      if (submit()) {
-                        completeRegister();
-                        if (errorCode != '') {
-                          var message = '';
-                          if (errorCode == 'weak-password') {
-                            message = 'Password should be at least 6 chars.';
-                          } else if (errorCode == 'email-already-in-use') {
-                            message = 'Email already in use.';
-                          }
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(message)));
-                        }
-                      }
-                    }, 0xff32a2c0),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : SmallButton('COMPLETE', () {
+                            if (submit()) {
+                              completeRegister();
+                            }
+                          }, 0xff32a2c0),
                     TextButton(
                       onPressed: () => {
                         Navigator.of(context).push(
