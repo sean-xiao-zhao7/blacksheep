@@ -140,18 +140,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                       autocorrect: false,
                     ),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : SmallButton('Recover via email', () {
-                            if (submit()) {
-                              recoverPasswordAsyncAction();
-                            }
-                          }, 0xff32a2c0),
-                    SmallButton('Back to login', () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => LoginScreen()),
-                      );
-                    }, 0xff32a2c0),
+                    Column(
+                      children: [
+                        _isLoading
+                            ? CircularProgressIndicator()
+                            : SmallButton('Recover via email', () {
+                                if (submit()) {
+                                  recoverPasswordAsyncAction();
+                                }
+                              }, 0xff32a2c0),
+                        SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => LoginScreen(),
+                              ),
+                            ),
+                          },
+                          child: Text('Back to login'),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

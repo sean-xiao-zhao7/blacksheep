@@ -80,15 +80,14 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                         );
                       }, 0xff062d69),
                       SizedBox(height: 30),
-                      SmallButton('LOGIN INSTEAD', () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) {
-                              return LoginScreen();
-                            },
+                      TextButton(
+                        onPressed: () => {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (ctx) => LoginScreen()),
                           ),
-                        );
-                      }, 0xff062d69),
+                        },
+                        child: Text('Login Instead'),
+                      ),
                     ],
                   ),
                 ),

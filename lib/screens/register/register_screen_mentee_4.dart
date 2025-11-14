@@ -27,7 +27,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> newData = {};
   Map<String, dynamic> userData = {};
-  String errorCode = '';
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -59,8 +59,10 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
     }
   }
 
-  completeRegister() async {
-    errorCode = '';
+  Future<void> completeRegister() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final userInfo = await _firebase.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -91,9 +93,26 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
           MaterialPageRoute(builder: (ctx) => MenteeChatListScreen(userData)),
         );
       }
+      setState(() {
+        _isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
-      errorCode = e.code;
-      // print(errorCode);
+      if (e.code != '' && mounted) {
+        var message = '';
+        if (e.code == 'invalid-email') {
+          message = 'Email format wrong';
+        } else if (e.code == 'weak-password') {
+          message = 'Password should be at least 6 chars';
+        } else if (e.code == 'email-already-in-use') {
+          message = 'Email already in use';
+        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -193,22 +212,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
                       },
                       autocorrect: false,
                     ),
-                    SmallButton('COMPLETE', () {
-                      if (submit()) {
-                        completeRegister();
-                        if (errorCode != '') {
-                          var message = '';
-                          if (errorCode == 'weak-password') {
-                            message = 'Password should be at least 6 chars.';
-                          } else if (errorCode == 'email-already-in-use') {
-                            message = 'Email already in use.';
-                          }
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(message)));
-                        }
-                      }
-                    }, 0xff32a2c0),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : SmallButton('COMPLETE', () {
+                            if (submit()) {
+                              completeRegister();
+                            }
+                          }, 0xff32a2c0),
                     SmallButton('BACK', () {
                       newData['email'] = _emailController.text;
                       Navigator.of(context).push(

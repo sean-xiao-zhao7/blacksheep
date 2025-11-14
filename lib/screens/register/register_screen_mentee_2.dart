@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:blacksheep/screens/register/register_screen_mentee_3.dart';
 import 'package:blacksheep/screens/register/register_screen_initial_choice.dart';
@@ -227,6 +228,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
                             fillColor: Colors.white,
+                            counterText: "",
                           ),
                           controller: _ageController,
                           validator: (value) {
@@ -240,6 +242,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
                           ],
+                          maxLength: 2,
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
@@ -251,6 +254,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
                             fillColor: Colors.white,
+                            counterText: "",
                           ),
                           controller: _phoneController,
                           validator: (value) {
@@ -263,7 +267,13 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
+                            MaskTextInputFormatter(
+                              mask: '(###) ###-####',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy,
+                            ),
                           ],
+                          maxLength: 14,
                         ),
                         Row(
                           children: <Widget>[
@@ -320,13 +330,16 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                             );
                           }
                         }, 0xff32a2c0),
-                        SmallButton('BACK', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenInitial(),
+                        TextButton(
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => RegisterScreenInitial(),
+                              ),
                             ),
-                          );
-                        }, 0xffffff),
+                          },
+                          child: Text('BACK'),
+                        ),
                       ],
                     ),
                   ),
