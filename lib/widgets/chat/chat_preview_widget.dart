@@ -19,7 +19,7 @@ class ChatPreviewWidget extends StatelessWidget {
     String headerText =
         "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
     String secondaryText =
-        'Age ${chatInfo['age']}, ${chatInfo['gender']}. (${chatInfo['phone']})';
+        'Age ${chatInfo['age']}, ${chatInfo['gender']}. ${chatInfo['type'] == 'phone' ? chatInfo['phone'] : ''}';
 
     if (showBothNames) {
       headerText =

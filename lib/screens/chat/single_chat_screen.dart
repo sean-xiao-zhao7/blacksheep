@@ -24,6 +24,7 @@ class SingleChat extends StatefulWidget {
     this.menteeLastName = '',
     this.menteePhone = '',
     this.menteeAge = '',
+    this.menteeGender = '',
     this.isAdmin = false,
     this.isPhone = false,
     this.isApproved = false,
@@ -41,6 +42,7 @@ class SingleChat extends StatefulWidget {
   final String menteeLastName;
   final String menteePhone;
   final String menteeAge;
+  final String menteeGender;
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
@@ -462,8 +464,18 @@ class _SingleChatState extends State<SingleChat> {
                                                       ),
                                                     ),
                                                   if (widget
-                                                      .menteePhone
+                                                      .menteeGender
                                                       .isNotEmpty)
+                                                    Text(
+                                                      'Gender: ${widget.menteeGender}',
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  if (widget.isPhone &&
+                                                      widget
+                                                          .menteePhone
+                                                          .isNotEmpty)
                                                     Text(
                                                       'Phone: ${widget.menteePhone}',
                                                       style: TextStyle(

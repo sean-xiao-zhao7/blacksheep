@@ -352,91 +352,82 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: _chatsPreviewList.isEmpty
-                ? EdgeInsets.all(20)
-                : EdgeInsets.only(top: 10, right: 5, left: 5, bottom: 30),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/blacksheep_background_full.png",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            height: MediaQuery.of(context).size.height,
-            child:
-                (_isLoading // user is mentor
-                ? Center(
-                    heightFactor: 20,
-                    child: CircularProgressIndicator(
-                      color: Color(0xff32a2c0),
-                      strokeWidth: 10,
-                      strokeAlign: 5,
-                      strokeCap: StrokeCap.round,
-                    ),
-                  )
-                : _chatsPreviewList.isEmpty
-                ? Column(
-                    spacing: 20,
-                    children: [
-                      NowHeader('Welcome $firstName!', fontSize: 26),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xff32a2c0).withAlpha(210),
-                        ),
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.only(top: 150),
-                        child: NowHeader(
-                          'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  )
-                : _currentChatKey == -1
-                ? Container(
-                    padding: EdgeInsets.all(10),
-                    child: ListView(
-                      children: [
-                        NowHeader(
-                          'People you are connected with',
-                          fontSize: 20,
-                        ),
-                        SizedBox(height: 10),
-                        ..._chatsPreviewList,
-                      ],
-                    ),
-                  )
-                : SingleChat(
-                    chatBubbles: _chatBubblesList[_currentChatKey]!,
-                    chatId:
-                        _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
-                    isMentor: true,
-                    mentorFirstName: _chatsPreviewList[_currentChatKey]
-                        .chatInfo['mentorFirstName'],
-                    mentorLastName: _chatsPreviewList[_currentChatKey]
-                        .chatInfo['mentorLastName'],
-                    mentorEmail: widget.userData['email'],
-                    menteeFirstName: _chatsPreviewList[_currentChatKey]
-                        .chatInfo['menteeFirstName'],
-                    menteeLastName: _chatsPreviewList[_currentChatKey]
-                        .chatInfo['menteeLastName'],
-                    menteePhone:
-                        _chatsPreviewList[_currentChatKey].chatInfo['phone'],
-                    menteeAge:
-                        _chatsPreviewList[_currentChatKey].chatInfo['age'],
-                    isPhone:
-                        _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
-                        'phone',
-                    setChatListKey: () {},
-                    refreshChat: _getChats,
-                  )),
+      body: Container(
+        padding: _chatsPreviewList.isEmpty
+            ? EdgeInsets.all(20)
+            : EdgeInsets.only(top: 10, right: 5, left: 5, bottom: 30),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
+        height: MediaQuery.of(context).size.height,
+        child:
+            (_isLoading // user is mentor
+            ? Center(
+                heightFactor: 20,
+                child: CircularProgressIndicator(
+                  color: Color(0xff32a2c0),
+                  strokeWidth: 10,
+                  strokeAlign: 5,
+                  strokeCap: StrokeCap.round,
+                ),
+              )
+            : _chatsPreviewList.isEmpty
+            ? Column(
+                spacing: 20,
+                children: [
+                  NowHeader('Welcome $firstName!', fontSize: 26),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff32a2c0).withAlpha(210),
+                    ),
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 150),
+                    child: NowHeader(
+                      'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              )
+            : _currentChatKey == -1
+            ? Container(
+                padding: EdgeInsets.all(10),
+                child: ListView(
+                  children: [
+                    NowHeader('People you are connected with', fontSize: 20),
+                    SizedBox(height: 10),
+                    ..._chatsPreviewList,
+                  ],
+                ),
+              )
+            : SingleChat(
+                chatBubbles: _chatBubblesList[_currentChatKey]!,
+                chatId: _chatsPreviewList[_currentChatKey].chatInfo['chatId'],
+                isMentor: true,
+                mentorFirstName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['mentorFirstName'],
+                mentorLastName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['mentorLastName'],
+                mentorEmail: widget.userData['email'],
+                menteeFirstName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['menteeFirstName'],
+                menteeLastName: _chatsPreviewList[_currentChatKey]
+                    .chatInfo['menteeLastName'],
+                menteePhone:
+                    _chatsPreviewList[_currentChatKey].chatInfo['phone'],
+                menteeAge: _chatsPreviewList[_currentChatKey].chatInfo['age'],
+                menteeGender:
+                    _chatsPreviewList[_currentChatKey].chatInfo['gender'],
+                isPhone:
+                    _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
+                    'phone',
+                setChatListKey: () {},
+                refreshChat: _getChats,
+              )),
       ),
     );
   }
