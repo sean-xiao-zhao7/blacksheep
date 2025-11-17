@@ -259,50 +259,52 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
                       padding: EdgeInsets.all(30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Your info',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 43, 141, 168),
-                              fontSize: 20,
+                      child: SelectionArea(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Your info',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 43, 141, 168),
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 43, 141, 168),
-                              fontSize: 20,
+                            SizedBox(height: 20),
+                            Text(
+                              '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 43, 141, 168),
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '${widget.userData['email']!}',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 43, 141, 168),
-                              fontSize: 20,
+                            Text(
+                              '${widget.userData['email']!}',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 43, 141, 168),
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 20),
-                          _isLoading
-                              ? CircularProgressIndicator()
-                              : SmallButtonFlexible(
-                                  text: isAccountActive!
-                                      ? 'Set account inactive'
-                                      : 'Set account active',
-                                  handler: toggleAccountInactiveHandler,
-                                  backgroundColor: Colors.yellow,
-                                  forgroundColor: Colors.black,
-                                ),
-                          // Text(
-                          //   'Type: ${widget.userData['type']!}',
-                          //   style: TextStyle(
-                          //     color: Color(0xff32a2c0),
-                          //     fontSize: 20,
-                          //   ),
-                          // ),
-                        ],
+                            SizedBox(height: 20),
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : SmallButtonFlexible(
+                                    text: isAccountActive!
+                                        ? 'Set account inactive'
+                                        : 'Set account active',
+                                    handler: toggleAccountInactiveHandler,
+                                    backgroundColor: Colors.yellow,
+                                    forgroundColor: Colors.black,
+                                  ),
+                            // Text(
+                            //   'Type: ${widget.userData['type']!}',
+                            //   style: TextStyle(
+                            //     color: Color(0xff32a2c0),
+                            //     fontSize: 20,
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
                   );

@@ -108,6 +108,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         }
         if (currentChatData['type'] == 'phone') {
           _showNewMenteeQuestions = true;
+          _waitingForMentor = true;
         }
       });
 

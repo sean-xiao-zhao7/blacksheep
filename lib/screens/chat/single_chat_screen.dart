@@ -1,4 +1,6 @@
+import "package:blacksheep/widgets/text/now_text.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import 'package:url_launcher/url_launcher.dart';
 import "package:firebase_database/firebase_database.dart";
 
@@ -85,6 +87,15 @@ class _SingleChatState extends State<SingleChat> {
     super.dispose();
   }
 
+  displaySnackMessage(String snackMessage) {
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
+
   // get all mentors only for admin
   // Since admin could switch mentor. This is not needed if not switching.
   Future<void> _getAllMentors() async {
@@ -119,12 +130,7 @@ class _SingleChatState extends State<SingleChat> {
         _allMentors = allMentorsTemp;
       });
     } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(snackMessage)));
-      }
+      displaySnackMessage(snackMessage);
     }
   }
 
@@ -147,12 +153,7 @@ class _SingleChatState extends State<SingleChat> {
       _scrollDown();
     } catch (error) {
       snackMessage = 'Unable to send message, please try again later';
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(snackMessage)));
-      }
+      displaySnackMessage(snackMessage);
     }
   }
 
@@ -223,13 +224,7 @@ class _SingleChatState extends State<SingleChat> {
     } catch (error) {
       snackMessage = 'Unable to change mentor, please try again later';
     }
-
-    if (mounted && snackMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
-    }
+    displaySnackMessage(snackMessage);
   }
 
   // admin function for approving new connection
@@ -251,13 +246,7 @@ class _SingleChatState extends State<SingleChat> {
       // print(error);
       snackMessage = 'Server error.';
     }
-
-    if (mounted && snackMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
-    }
+    displaySnackMessage(snackMessage);
   }
 
   // send an email to mentor when either new connection approved by admin
@@ -404,8 +393,8 @@ class _SingleChatState extends State<SingleChat> {
                   children: [
                     NowHeader(
                       widget.menteeFirstName.isEmpty
-                          ? 'Chatting with ${widget.mentorFirstName} ${widget.mentorLastName}'
-                          : '${widget.isAdmin ? '${widget.mentorFirstName} ${widget.mentorLastName} |' : 'Chatting with'} ${widget.menteeFirstName} ${widget.menteeLastName}',
+                          ? 'Connecting with ${widget.mentorFirstName} ${widget.mentorLastName}'
+                          : '${widget.isAdmin ? '${widget.mentorFirstName} ${widget.mentorLastName} |' : ''} ${widget.menteeFirstName} ${widget.menteeLastName}',
                       fontSize: 12,
                       color: Color(0xff32a2c0),
                     ),
@@ -445,44 +434,98 @@ class _SingleChatState extends State<SingleChat> {
                                                 ),
                                               ),
                                               padding: EdgeInsets.all(40),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    '${widget.menteeFirstName} ${widget.menteeLastName}',
-                                                    style: TextStyle(
-                                                      color: Color(0xff32a2c0),
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                  if (widget
-                                                      .menteeAge
-                                                      .isNotEmpty)
+                                              child: SelectionArea(
+                                                child: Column(
+                                                  children: [
                                                     Text(
-                                                      'Age: ${widget.menteeAge}',
+                                                      '${widget.menteeFirstName} ${widget.menteeLastName}',
                                                       style: TextStyle(
+                                                        color: Color(
+                                                          0xff32a2c0,
+                                                        ),
                                                         fontSize: 20,
                                                       ),
                                                     ),
-                                                  if (widget
-                                                      .menteeGender
-                                                      .isNotEmpty)
-                                                    Text(
-                                                      'Gender: ${widget.menteeGender}',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
+                                                    if (widget
+                                                        .menteeAge
+                                                        .isNotEmpty)
+                                                      Text(
+                                                        'Age: ${widget.menteeAge}',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  if (widget.isPhone &&
-                                                      widget
-                                                          .menteePhone
-                                                          .isNotEmpty)
-                                                    Text(
-                                                      'Phone: ${widget.menteePhone}',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
+                                                    if (widget
+                                                        .menteeGender
+                                                        .isNotEmpty)
+                                                      Text(
+                                                        'Gender: ${widget.menteeGender}',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        ),
                                                       ),
-                                                    ),
-                                                ],
+                                                    if (widget.isPhone &&
+                                                        widget
+                                                            .menteePhone
+                                                            .isNotEmpty)
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            'Phone: ${widget.menteePhone}',
+                                                            style: TextStyle(
+                                                              fontSize: 20,
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                            onPressed: () async {
+                                                              await Clipboard.setData(
+                                                                ClipboardData(
+                                                                  text: widget
+                                                                      .menteePhone,
+                                                                ),
+                                                              );
+                                                              if (context
+                                                                  .mounted) {
+                                                                showDialog<
+                                                                  String
+                                                                >(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (
+                                                                        BuildContext
+                                                                        context,
+                                                                      ) => AlertDialog(
+                                                                        title: const NowText(
+                                                                          body:
+                                                                              'Phone number copied to clipboard.',
+                                                                        ),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                            onPressed: () => Navigator.pop(
+                                                                              context,
+                                                                              'OK',
+                                                                            ),
+                                                                            child: const Text(
+                                                                              'OK',
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                );
+                                                              }
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.copy,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           );
@@ -623,12 +666,17 @@ class _SingleChatState extends State<SingleChat> {
                     hintText: widget.isPhone
                         ? 'Please contact by phone'
                         : 'Enter chat message',
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.send, color: Color(0xff32a2c0)),
-                      onPressed: () {
-                        _sendNewMessage();
-                      },
-                    ),
+                    suffixIcon: widget.isPhone
+                        ? IconButton(
+                            icon: Icon(Icons.phone, color: Color(0xff32a2c0)),
+                            onPressed: () {},
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.send, color: Color(0xff32a2c0)),
+                            onPressed: () {
+                              _sendNewMessage();
+                            },
+                          ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff32a2c0),
