@@ -149,6 +149,7 @@ class _SingleChatState extends State<SingleChat> {
         'message': _newMessageController.text,
         'timestamp': timestamp,
       });
+      _newMessageController.clear();
       widget.refreshChat();
       _scrollDown();
     } catch (error) {
@@ -175,17 +176,18 @@ class _SingleChatState extends State<SingleChat> {
     setState(() {
       _isLoading = true;
     });
-    final recipient = ['contact.us.blacksheep@gmail.com'];
-    final subject = 'Mentor reported by mentee';
-    final emailBody =
-        'Mentee ${widget.menteeFirstName} has reported ${widget.mentorFirstName}\n\n${_reportMessageController.text}';
-    EmailService.sendEmail(recipient, subject, emailBody).then(
-      (value) => {
-        setState(() {
-          _isLoading = false;
-        }),
-      },
+
+    EmailService.sendReportEmail(
+      widget.menteeFirstName,
+      widget.mentorFirstName,
+      _reportMessageController.text,
     );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    Navigator.of(context).pop();
   }
 
   // mentor function for launching phone app with mentee's number

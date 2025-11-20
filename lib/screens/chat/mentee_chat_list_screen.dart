@@ -467,9 +467,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                             ),
                                           ),
                                           child: NowHeader(
-                                            _myChat!.isPhone
-                                                ? 'Someone will be in touch with you on the phone shortly!'
-                                                : 'Someone will be in touch with you shortly!',
+                                            'We\'ve sent your contact details to one of our community leaders. Someone will be in touch with your shortly.',
                                             fontSize: 18,
                                             color: Colors.black,
                                           ),
@@ -551,7 +549,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                       ),
                                     ),
                                     child: NowHeader(
-                                      'Find your place in your community!\nPlease select how you\'d prefer to connect:',
+                                      'Find your place in your community!\nLock in your preference on how you\'d like to connect with someone.\n\nButton 1: In App Texting.\n\nButton 2: Contact Me By Phone',
                                       fontSize: 20,
                                       color: Colors.white,
                                     ),
