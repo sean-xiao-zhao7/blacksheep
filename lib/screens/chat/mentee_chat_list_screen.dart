@@ -589,6 +589,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       chatBubbles: _chatBubbles,
                       chatId: _myChat!.id,
                       isMentor: false,
+                      isDisabled: _myChat!.disabled,
                       mentorFirstName: _myChat!.mentorFirstName,
                       setChatListKey: () {},
                       refreshChat: _getChat,

@@ -420,6 +420,8 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                 isPhone:
                     _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                     'phone',
+                isDisabled:
+                    _chatsPreviewList[_currentChatKey].chatInfo['disabled'],
                 setChatListKey: () {},
                 refreshChat: _getChats,
               )),
