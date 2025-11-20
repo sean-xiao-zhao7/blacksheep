@@ -12,6 +12,7 @@ class Chat {
     required this.mentorUid,
     required this.messages,
     required this.type,
+    required this.disabled,
   });
 
   final String id;
@@ -24,6 +25,7 @@ class Chat {
   final String mentorUid;
   final Map<dynamic, dynamic> messages;
   final String type;
+  final bool disabled;
 
   bool get isPhone {
     return type == 'phone';

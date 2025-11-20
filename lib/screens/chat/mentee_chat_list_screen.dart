@@ -100,6 +100,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           mentorUid: currentChatData['mentorUid'],
           messages: currentChatData['messages'],
           type: currentChatData['type'],
+          disabled: currentChatData['disabled'],
         );
 
         if (!currentChatData['approved']) {
@@ -228,6 +229,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
             'mentorLastName': closestMentorLastName,
             'mentorUid': closestMentorUid,
             'type': type,
+            'disabled': false,
           });
 
           DatabaseReference firstMessageRef = newChatRef
@@ -268,6 +270,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
               messages: {
                 firstMessageRef.key: {newMessageBody},
               },
+              disabled: false,
             );
 
             _waitingForMentor = true;

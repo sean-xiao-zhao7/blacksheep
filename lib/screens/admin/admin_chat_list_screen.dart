@@ -259,6 +259,8 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                       _chatsPreviewList[_currentChatKey].chatInfo['type'] ==
                       'phone',
                   isAdmin: true,
+                  isDisabled:
+                      _chatsPreviewList[_currentChatKey].chatInfo['disabled'],
                   isApproved:
                       _chatsPreviewList[_currentChatKey].chatInfo['approved'],
                   setChatListKey: setCurrentChatKey,

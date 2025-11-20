@@ -30,6 +30,7 @@ class SingleChat extends StatefulWidget {
     this.isAdmin = false,
     this.isPhone = false,
     this.isApproved = false,
+    this.isDisabled = false,
     required this.setChatListKey,
     required this.refreshChat,
   });
@@ -48,6 +49,7 @@ class SingleChat extends StatefulWidget {
   final bool isAdmin;
   final bool isPhone;
   final bool isApproved;
+  final bool isDisabled;
   final Function setChatListKey;
   final Function refreshChat;
 
@@ -87,13 +89,17 @@ class _SingleChatState extends State<SingleChat> {
     super.dispose();
   }
 
-  displaySnackMessage(String snackMessage) {
+  void displaySnackMessage(String snackMessage) {
     if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(snackMessage)));
     }
+  }
+
+  void resetChatList() {
+    widget.setChatListKey(-1);
   }
 
   // get all mentors only for admin
@@ -185,6 +191,7 @@ class _SingleChatState extends State<SingleChat> {
 
     setState(() {
       _isLoading = false;
+      _reportMessageController.clear();
     });
 
     Navigator.of(context).pop();
@@ -218,7 +225,6 @@ class _SingleChatState extends State<SingleChat> {
       _sendMentorEmailPhone(chatsRef, newMentor['email']);
 
       // set chat list to overview mode
-      widget.setChatListKey(-1);
       snackMessage = 'Updated mentor successfully.';
 
       // close bottom sheet
@@ -242,7 +248,7 @@ class _SingleChatState extends State<SingleChat> {
       _sendMentorEmailPhone(chatsRef, _allMentors[widget.mentorUid]['email']);
 
       // set chat list to overview mode
-      widget.setChatListKey(-1);
+      resetChatList();
       snackMessage = 'Approved connection!';
     } catch (error) {
       // print(error);
@@ -275,6 +281,42 @@ class _SingleChatState extends State<SingleChat> {
           phone: phone,
           age: age,
           mentorEmail: email,
+        );
+      }
+    }
+  }
+
+  Future<void> toggleConnectionDisabledHandler() async {
+    /**
+     * Switch account to active/inactive.
+     * Inactive mentor account will not be connected by MenteeChatList screen.    
+     */
+    try {
+      DatabaseReference chatRef = FirebaseDatabase.instance.ref(
+        '/chats/${widget.chatId}/disabled',
+      );
+      await chatRef.set(!widget.isDisabled);
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${!widget.isDisabled ? 'Disabled' : 'Enabled'} connection.',
+            ),
+          ),
+        );
+        Navigator.pop(context);
+        resetChatList();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Unable to disable/enable account. Please try later.',
+            ),
+          ),
         );
       }
     }
@@ -410,7 +452,7 @@ class _SingleChatState extends State<SingleChat> {
                           },
                           padding: EdgeInsets.all(0),
                         ),
-                        if (widget.isPhone)
+                        if (widget.isPhone && !widget.isAdmin)
                           IconButton(
                             iconSize: 26,
                             icon: const Icon(Icons.phone),
@@ -419,208 +461,241 @@ class _SingleChatState extends State<SingleChat> {
                           ),
                         MenuAnchor(
                           menuChildren: <Widget>[
-                            widget.isMentor
-                                ? MenuItemButton(
-                                    trailingIcon: Icon(Icons.person),
-                                    onPressed: () => {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return FractionallySizedBox(
-                                            widthFactor: 1,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(50),
-                                                ),
-                                              ),
-                                              padding: EdgeInsets.all(40),
-                                              child: SelectionArea(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      '${widget.menteeFirstName} ${widget.menteeLastName}',
-                                                      style: TextStyle(
-                                                        color: Color(
-                                                          0xff32a2c0,
-                                                        ),
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                    if (widget
-                                                        .menteeAge
-                                                        .isNotEmpty)
-                                                      Text(
-                                                        'Age: ${widget.menteeAge}',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                        ),
-                                                      ),
-                                                    if (widget
-                                                        .menteeGender
-                                                        .isNotEmpty)
-                                                      Text(
-                                                        'Gender: ${widget.menteeGender}',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                        ),
-                                                      ),
-                                                    if (widget.isPhone &&
-                                                        widget
-                                                            .menteePhone
-                                                            .isNotEmpty)
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'Phone: ${widget.menteePhone}',
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            onPressed: () async {
-                                                              await Clipboard.setData(
-                                                                ClipboardData(
-                                                                  text: widget
-                                                                      .menteePhone,
-                                                                ),
-                                                              );
-                                                              if (context
-                                                                  .mounted) {
-                                                                showDialog<
-                                                                  String
-                                                                >(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (
-                                                                        BuildContext
-                                                                        context,
-                                                                      ) => AlertDialog(
-                                                                        title: const NowText(
-                                                                          body:
-                                                                              'Phone number copied to clipboard.',
-                                                                        ),
-                                                                        actions: [
-                                                                          TextButton(
-                                                                            onPressed: () => Navigator.pop(
-                                                                              context,
-                                                                              'OK',
-                                                                            ),
-                                                                            child: const Text(
-                                                                              'OK',
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                );
-                                                              }
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.copy,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
+                            if (widget.isMentor && !widget.isAdmin)
+                              MenuItemButton(
+                                trailingIcon: Icon(Icons.person),
+                                onPressed: () => {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FractionallySizedBox(
+                                        widthFactor: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    },
-                                    child: Text(
-                                      'About ${widget.menteeFirstName}',
-                                    ),
-                                  )
-                                : MenuItemButton(
-                                    trailingIcon: Icon(Icons.report_problem),
-                                    onPressed: () => {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return FractionallySizedBox(
-                                            widthFactor: 1,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(50),
+                                          ),
+                                          padding: EdgeInsets.all(40),
+                                          child: SelectionArea(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  '${widget.menteeFirstName} ${widget.menteeLastName}',
+                                                  style: TextStyle(
+                                                    color: Color(0xff32a2c0),
+                                                    fontSize: 20,
+                                                  ),
                                                 ),
-                                              ),
-                                              padding: EdgeInsets.all(40),
-                                              child: Column(
-                                                children: [
+                                                if (widget.menteeAge.isNotEmpty)
                                                   Text(
-                                                    'Report mentor',
+                                                    'Age: ${widget.menteeAge}',
                                                     style: TextStyle(
-                                                      color: Colors.red,
                                                       fontSize: 20,
                                                     ),
                                                   ),
-                                                  TextFormField(
-                                                    decoration: InputDecoration(
-                                                      fillColor: Colors.white,
-                                                      filled: true,
-                                                      hintText:
-                                                          'Please explain reason for reporting.',
-                                                      suffixIcon: _isLoading
-                                                          ? CircularProgressIndicator()
-                                                          : IconButton(
-                                                              icon: Icon(
-                                                                Icons.send,
-                                                                color: Color(
-                                                                  0xff32a2c0,
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                _reportMentor();
-                                                              },
-                                                            ),
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                                  color: Color(
-                                                                    0xff32a2c0,
-                                                                  ),
-                                                                  width: 1,
-                                                                ),
-                                                          ),
+                                                if (widget
+                                                    .menteeGender
+                                                    .isNotEmpty)
+                                                  Text(
+                                                    'Gender: ${widget.menteeGender}',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
                                                     ),
-                                                    validator: (value) {
-                                                      if (value == null ||
-                                                          value
-                                                              .trim()
-                                                              .isEmpty) {
-                                                        return 'Message is required.';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    autocorrect: false,
-                                                    textCapitalization:
-                                                        TextCapitalization
-                                                            .sentences,
-                                                    maxLines: 5,
-                                                    minLines: 5,
-                                                    controller:
-                                                        _reportMessageController,
-                                                    enabled: !_isLoading,
                                                   ),
-                                                ],
-                                              ),
+                                                if (widget.isPhone &&
+                                                    widget
+                                                        .menteePhone
+                                                        .isNotEmpty)
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        'Phone: ${widget.menteePhone}',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        onPressed: () async {
+                                                          await Clipboard.setData(
+                                                            ClipboardData(
+                                                              text: widget
+                                                                  .menteePhone,
+                                                            ),
+                                                          );
+                                                          if (context.mounted) {
+                                                            showDialog<String>(
+                                                              context: context,
+                                                              builder:
+                                                                  (
+                                                                    BuildContext
+                                                                    context,
+                                                                  ) => AlertDialog(
+                                                                    title: const NowText(
+                                                                      body:
+                                                                          'Phone number copied to clipboard.',
+                                                                    ),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                          context,
+                                                                          'OK',
+                                                                        ),
+                                                                        child: const Text(
+                                                                          'OK',
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            );
+                                                          }
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.copy,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                              ],
                                             ),
-                                          );
-                                        },
-                                      ),
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: Text('Report mentor'),
                                   ),
+                                },
+                                child: Text('About ${widget.menteeFirstName}'),
+                              ),
+                            if (!widget.isMentor && !widget.isAdmin)
+                              MenuItemButton(
+                                trailingIcon: Icon(Icons.report_problem),
+                                onPressed: () => {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FractionallySizedBox(
+                                        widthFactor: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(40),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Report mentor',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              TextFormField(
+                                                decoration: InputDecoration(
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                  hintText:
+                                                      'Please explain reason for reporting.',
+                                                  suffixIcon: _isLoading
+                                                      ? CircularProgressIndicator()
+                                                      : IconButton(
+                                                          icon: Icon(
+                                                            Icons.send,
+                                                            color: Color(
+                                                              0xff32a2c0,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            _reportMentor();
+                                                          },
+                                                        ),
+                                                  focusedBorder:
+                                                      UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color: Color(
+                                                            0xff32a2c0,
+                                                          ),
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.trim().isEmpty) {
+                                                    return 'Message is required.';
+                                                  }
+                                                  return null;
+                                                },
+                                                autocorrect: false,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                maxLines: 5,
+                                                minLines: 5,
+                                                controller:
+                                                    _reportMessageController,
+                                                enabled: !_isLoading,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                },
+                                child: Text('Report mentor'),
+                              ),
+                            if (widget.isAdmin)
+                              MenuItemButton(
+                                trailingIcon: Icon(Icons.warning),
+                                onPressed: () => {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FractionallySizedBox(
+                                        widthFactor: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(40),
+                                          child: Column(
+                                            children: [
+                                              _isLoading
+                                                  ? CircularProgressIndicator()
+                                                  : SmallButtonFlexible(
+                                                      text: widget.isDisabled
+                                                          ? 'Enable connection'
+                                                          : 'Disable connection',
+                                                      handler:
+                                                          toggleConnectionDisabledHandler,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      forgroundColor:
+                                                          Colors.white,
+                                                    ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                },
+                                child: Text(
+                                  widget.isDisabled
+                                      ? 'Enable connection'
+                                      : 'Disable connection',
+                                ),
+                              ),
                           ],
                           builder:
                               (
@@ -665,10 +740,17 @@ class _SingleChatState extends State<SingleChat> {
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: widget.isPhone
-                        ? 'Please contact by phone'
+                    hintText: widget.isDisabled
+                        ? 'Connection disabled'
+                        : widget.isPhone
+                        ? 'Connected via phone'
                         : 'Enter chat message',
-                    suffixIcon: widget.isPhone
+                    suffixIcon: widget.isDisabled
+                        ? IconButton(
+                            icon: Icon(Icons.warning, color: Colors.red),
+                            onPressed: () {},
+                          )
+                        : widget.isPhone
                         ? IconButton(
                             icon: Icon(Icons.phone, color: Color(0xff32a2c0)),
                             onPressed: () {},
@@ -697,7 +779,7 @@ class _SingleChatState extends State<SingleChat> {
                   maxLines: 5,
                   minLines: 1,
                   controller: _newMessageController,
-                  enabled: !widget.isPhone,
+                  enabled: (!widget.isPhone && !widget.isDisabled),
                 ),
               ),
             ],

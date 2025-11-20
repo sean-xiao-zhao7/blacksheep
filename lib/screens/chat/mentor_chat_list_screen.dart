@@ -296,13 +296,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                                     backgroundColor: Colors.yellow,
                                     forgroundColor: Colors.black,
                                   ),
-                            // Text(
-                            //   'Type: ${widget.userData['type']!}',
-                            //   style: TextStyle(
-                            //     color: Color(0xff32a2c0),
-                            //     fontSize: 20,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
