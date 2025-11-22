@@ -12,6 +12,9 @@ import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
 import "package:blacksheep/services/email_service.dart";
 import "package:blacksheep/models/chat.dart";
+import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
+
+final _firebaseAuth = FirebaseAuth.instance;
 
 /// Only for mentee account
 /// Only contains 1 chat for both type 'chat' and 'phone'
@@ -69,13 +72,19 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     super.dispose();
   }
 
-  Future<void> _getChat() async {
-    /**
-     * Only for mentee, get the single chat corresponding to the chatId passed in. 
-     * In the future we might allow more than 1 chat for a mentee. 
-     */
+  void displaySnackMessage(String snackMessage) {
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
 
-    String snackMessage = 'Server error while getting matches for user.';
+  Future<void> _getChat() async {
+    // Only for mentee, get the single chat corresponding to the chatId passed in.
+    // In the future we might allow more than 1 chat for a mentee.
+
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref
@@ -116,26 +125,18 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       if (currentChatData['approved'] && !_myChat!.isPhone) {
         _makeMessagesBubbles();
       }
-    } catch (error) {
-      // print(error);
-      if (mounted) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(snackMessage)));
-      }
+    } on FirebaseException catch (error) {
+      displaySnackMessage(error.code);
     }
   }
 
   void _makeMessagesBubbles() {
-    /**
-     * Once the single chat has been received from Firebase,
-     * Make a list of ChatMessageBubble for the SingleChatScreen to display.
-     * Passes the result bubbles into the child widget.
-     * This workflow could be improved in the future.
-     * 
-     * Also, this function could be outsourced and shared between all chat lists.
-     */
+    // Once the single chat has been received from Firebase,
+    // Make a list of ChatMessageBubble for the SingleChatScreen to display.
+    // Passes the result bubbles into the child widget.
+    // This workflow could be improved in the future.
+    //
+    // Also, this function could be outsourced and shared between all chat lists.
 
     List<ChatBubble> tempBubbles = [];
     Map<dynamic, dynamic> messages = _myChat!.messages;
@@ -168,12 +169,10 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   }
 
   Future<void> _connectToMentor(String type) async {
-    /**
-     * Called initially when mentee clicks on "Connect By Phone/Chat"
-     * Finds the geographically nearest mentor, then adds a new "chat" document in Firebase.
-     * Currently does not balance a mentor's already connected mentees against other mentors.
-     * This connection requires admin approval, until then, nothing changes in the UI.
-     */
+    // Called initially when mentee clicks on "Connect By Phone/Chat"
+    // Finds the geographically nearest mentor, then adds a new "chat" document in Firebase.
+    // Currently does not balance a mentor's already connected mentees against other mentors.
+    // This connection requires admin approval, until then, nothing changes in the UI.
 
     setState(() {
       _isLoading = true;
@@ -287,27 +286,48 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           _showNewMenteeQuestions = true;
           _waitingForMentor = true;
         });
-      } catch (error) {
-        // print(error);
+      } on FirebaseException catch (error) {
         setState(() {
           _isLoading = false;
         });
-        snackMessage = 'Server error. Please check back later!';
+        snackMessage = error.code;
       }
     }
 
-    if (mounted && snackMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    displaySnackMessage(snackMessage);
+  }
+
+  Future<void> deleteAccountHandler() async {
+    // delete this user from firebase auth and firebase realtime database
+    // mentees can choose to remove themselves. A mentor cannot.
+
+    try {
+      final userRef = FirebaseDatabase.instance.ref(
+        'users/${widget.userData['uid']}',
+      );
+      await userRef.remove();
+
+      if (widget.userData['chatId'] != '') {
+        final chatRef = FirebaseDatabase.instance.ref(
+          'chats/${widget.userData['chatId']}',
+        );
+        await chatRef.remove();
+      }
+
+      await _firebaseAuth.currentUser!.delete();
+
+      if (mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => LoginScreen()));
+      }
+    } on FirebaseException catch (error) {
+      displaySnackMessage(error.code);
     }
   }
 
   double _calculateDistance(lat1, lon1, lat2, lon2) {
-    /**
-     * Calc distance between two (lat, long) coordinates.
-     */
+    // Calc distance between two (lat, long) coordinates.
 
     var p =
         0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
@@ -389,6 +409,14 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                               fontSize: 20,
                             ),
                           ),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : SmallButtonFlexible(
+                                  text: 'Delete Account',
+                                  handler: deleteAccountHandler,
+                                  backgroundColor: Colors.red,
+                                  forgroundColor: Colors.white,
+                                ),
                         ],
                       ),
                     ),

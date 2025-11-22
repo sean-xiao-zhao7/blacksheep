@@ -11,7 +11,7 @@ import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/genty_header.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
-final _firebase = FirebaseAuth.instance;
+final _firebaseAuth = FirebaseAuth.instance;
 
 /// Login using Firebase Auth
 class LoginScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     errorCode = '';
     try {
-      final userInfo = await _firebase.signInWithEmailAndPassword(
+      final userInfo = await _firebaseAuth.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );

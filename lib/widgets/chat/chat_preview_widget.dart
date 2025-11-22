@@ -11,15 +11,15 @@ class ChatPreviewWidget extends StatelessWidget {
   });
   final Map<dynamic, dynamic> chatInfo;
   final Function setChatListKey;
-  final bool showBothNames;
   final int chatPreviewIndex;
+  final bool showBothNames;
 
   @override
   Widget build(BuildContext context) {
+    Color secondaryTextColor = Color(0xff32a2c0);
     String headerText =
         "${chatInfo['menteeFirstName']} ${chatInfo['menteeLastName']}";
-    String secondaryText =
-        'Age ${chatInfo['age']}, ${chatInfo['gender']}. ${chatInfo['type'] == 'phone' ? chatInfo['phone'] : ''}';
+    String secondaryText = '${chatInfo['gender']}. Age ${chatInfo['age']}';
 
     if (showBothNames) {
       headerText =
@@ -30,10 +30,15 @@ class ChatPreviewWidget extends StatelessWidget {
       }
     }
 
+    if (chatInfo['disabled']) {
+      secondaryText = 'CONNECTION DISABLED';
+      secondaryTextColor = Colors.red;
+    }
+
     return LargeInfoButton(
       headerText: headerText,
       secondaryText: secondaryText,
-      secondaryTextColor: Colors.red,
+      secondaryTextColor: secondaryTextColor,
       () {
         setChatListKey(chatPreviewIndex);
       },
