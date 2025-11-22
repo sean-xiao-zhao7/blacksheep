@@ -75,7 +75,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   }
 
   // show snack message
-  void displaySnackMessage(String snackMessage) {
+  void _displaySnackMessage(String snackMessage) {
     if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(
@@ -91,14 +91,21 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: NowText(body: 'Delete my BlackSheep account', color: Colors.red,),
+          title: NowText(
+            body: 'Delete my BlackSheep account',
+            color: Colors.red,
+          ),
           content: NowText(body: content),
           actions: [
             TextButton(
               onPressed: Navigator.of(context).pop,
               child: const NowText(body: 'Cancel'),
             ),
-            SmallButtonFlexible(text: 'Confirm', handler: action, forgroundColor: Colors.red,),
+            SmallButtonFlexible(
+              text: 'Confirm',
+              handler: action,
+              forgroundColor: Colors.red,
+            ),
           ],
           backgroundColor: Colors.white,
         );
@@ -150,7 +157,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         _makeMessagesBubbles();
       }
     } on FirebaseException catch (error) {
-      displaySnackMessage(error.code);
+      _displaySnackMessage(error.code);
     }
   }
 
@@ -318,10 +325,10 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
       }
     }
 
-    displaySnackMessage(snackMessage);
+    _displaySnackMessage(snackMessage);
   }
 
-  Future<void> deleteAccountHandler() async {
+  Future<void> _deleteAccountHandler() async {
     // delete this user from firebase auth and firebase realtime database
     // mentees can choose to remove themselves. A mentor cannot.
 
@@ -346,7 +353,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         ).push(MaterialPageRoute(builder: (ctx) => LoginScreen()));
       }
     } on FirebaseException catch (error) {
-      displaySnackMessage(error.code);
+      _displaySnackMessage(error.code);
     }
   }
 
@@ -440,7 +447,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                   handler: () => _showDialog(
                                     context,
                                     'Please confirm deletion.\nThis cannot be undone.',
-                                    () => {},
+                                    _deleteAccountHandler,
                                   ),
                                   backgroundColor: Colors.red,
                                   forgroundColor: Colors.white,
