@@ -1,9 +1,11 @@
 import 'dart:math';
+
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'package:video_player/video_player.dart';
 
+import "package:blacksheep/widgets/text/now_text.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/buttons/main_button.dart";
@@ -72,6 +74,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     super.dispose();
   }
 
+  // show snack message
   void displaySnackMessage(String snackMessage) {
     if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -81,10 +84,31 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
   }
 
-  Future<void> _getChat() async {
-    // Only for mentee, get the single chat corresponding to the chatId passed in.
-    // In the future we might allow more than 1 chat for a mentee.
+  // show dialog popup
+  Future<void> _showDialog(BuildContext context, String content, action) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: NowText(body: 'Delete my BlackSheep account', color: Colors.red,),
+          content: NowText(body: content),
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const NowText(body: 'Cancel'),
+            ),
+            SmallButtonFlexible(text: 'Confirm', handler: action, forgroundColor: Colors.red,),
+          ],
+          backgroundColor: Colors.white,
+        );
+      },
+    );
+  }
 
+  // Only for mentee, get the single chat corresponding to the chatId passed in.
+  // In the future we might allow more than 1 chat for a mentee.
+  Future<void> _getChat() async {
     try {
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref
@@ -326,9 +350,8 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
   }
 
+  // Calc distance between two (lat, long) coordinates.
   double _calculateDistance(lat1, lon1, lat2, lon2) {
-    // Calc distance between two (lat, long) coordinates.
-
     var p =
         0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
     var c = cos;
@@ -409,11 +432,16 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                               fontSize: 20,
                             ),
                           ),
+                          SizedBox(height: 20),
                           _isLoading
                               ? CircularProgressIndicator()
                               : SmallButtonFlexible(
-                                  text: 'Delete Account',
-                                  handler: deleteAccountHandler,
+                                  text: 'Delete my BlackSheep account',
+                                  handler: () => _showDialog(
+                                    context,
+                                    'Please confirm deletion.\nThis cannot be undone.',
+                                    () => {},
+                                  ),
                                   backgroundColor: Colors.red,
                                   forgroundColor: Colors.white,
                                 ),
@@ -580,7 +608,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                       ),
                                     ),
                                     child: NowHeader(
-                                      'Find your place in your community!\nLock in your preference on how you\'d like to connect with someone.\n\nButton 1: In App Texting.\n\nButton 2: Contact Me By Phone',
+                                      'Find your place in your community!\nLock in your preference on how you\'d like to connect with someone.\n\nButton 1: In App Texting.\nButton 2: Contact Me By Phone',
                                       fontSize: 20,
                                       color: Colors.white,
                                     ),
@@ -589,7 +617,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                           .value
                                           .isInitialized
                                       ? SizedBox(
-                                          height: 360,
+                                          height: 370,
                                           child: VideoPlayer(
                                             _menteeConnectVideoController,
                                           ),
