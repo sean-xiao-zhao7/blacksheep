@@ -121,144 +121,149 @@ class _RegisterScreenInitialState extends State<RegisterScreen4> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff32a2c0),
-      body: Container(
-        padding: EdgeInsets.only(top: 100),
-        decoration: BoxDecoration(color: Color(0xff32a2c0)),
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 150),
-              padding: EdgeInsets.only(
-                top: 100,
-                left: 50,
-                right: 50,
-                bottom: 100,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xfffbee5e),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(200),
-                  topRight: Radius.circular(200),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'EMAIL (username)',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _emailController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Email is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 80),
+            decoration: BoxDecoration(color: Color(0xff32a2c0)),
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 150),
+                  padding: EdgeInsets.only(
+                    top: 120,
+                    left: 50,
+                    right: 50,
+                    bottom: 200,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xfffbee5e),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(200),
+                      topRight: Radius.circular(200),
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'PASSWORD',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _passwordController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Password is required.';
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'RE-ENTER PASSWORD',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _password2Controller,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Password re-enter is required.';
-                        } else if (_passwordController.text.compareTo(
-                              _password2Controller.text,
-                            ) !=
-                            0) {
-                          return "Both passwords must be equal.";
-                        }
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
-                    Column(
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      spacing: 30,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _isLoading
-                            ? CircularProgressIndicator()
-                            : SmallButton('COMPLETE', () {
-                                if (submit()) {
-                                  completeRegister();
-                                }
-                              }, 0xff32a2c0),
-                        SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () {
-                            newData['email'] = _emailController.text;
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) =>
-                                    RegisterScreen3(registerData: newData),
-                              ),
-                            );
-                          },
-                          child: NowText(
-                            body: 'BACK',
-                            fontWeight: FontWeight.bold,
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'EMAIL (username)',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          controller: _emailController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Email is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                        ),
+                        TextFormField(
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'PASSWORD',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Password is required.';
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                        ),
+                        TextFormField(
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'RE-ENTER PASSWORD',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          controller: _password2Controller,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Password re-enter is required.';
+                            } else if (_passwordController.text.compareTo(
+                                  _password2Controller.text,
+                                ) !=
+                                0) {
+                              return "Both passwords must be equal.";
+                            }
+                            return null;
+                          },
+                          autocorrect: false,
+                        ),
+                        Column(
+                          children: [
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : SmallButton('COMPLETE', () {
+                                    if (submit()) {
+                                      completeRegister();
+                                    }
+                                  }, 0xff32a2c0),
+                            SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () {
+                                newData['email'] = _emailController.text;
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        RegisterScreen3(registerData: newData),
+                                  ),
+                                );
+                              },
+                              child: NowText(
+                                body: 'BACK',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 0,
+                  width: MediaQuery.of(context).size.width,
+                  child: const NowHeader('LOGIN INFO'),
+                ),
+                Positioned(
+                  top: 40,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Image(
+                    image: AssetImage('assets/images/sheep.png'),
+                    height: 200,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 0,
-              width: MediaQuery.of(context).size.width,
-              child: const NowHeader('LOGIN INFO'),
-            ),
-            Positioned(
-              top: 40,
-              width: MediaQuery.of(context).size.width,
-              child: const Image(
-                image: AssetImage('assets/images/sheep.png'),
-                height: 200,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

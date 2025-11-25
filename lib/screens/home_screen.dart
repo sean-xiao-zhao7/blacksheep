@@ -37,9 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }),
           MainButton('LOGIN', () {
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (ctx) => LoginScreen()));
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => LoginScreen()),
+            );
           }),
         ],
       ),

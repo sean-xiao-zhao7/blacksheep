@@ -1,3 +1,4 @@
+import "package:blacksheep/widgets/text/now_text.dart";
 import "package:flutter/material.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:firebase_auth/firebase_auth.dart";
@@ -288,13 +289,22 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                             SizedBox(height: 20),
                             _isLoading
                                 ? CircularProgressIndicator()
-                                : SmallButtonFlexible(
-                                    text: isAccountActive!
-                                        ? 'Set account inactive'
-                                        : 'Set account active',
-                                    handler: toggleAccountInactiveHandler,
-                                    backgroundColor: Colors.yellow,
-                                    forgroundColor: Colors.black,
+                                : Column(
+                                    children: [
+                                      SmallButtonFlexible(
+                                        text: isAccountActive!
+                                            ? 'Set Account Inactive'
+                                            : 'Set Account Active',
+                                        handler: toggleAccountInactiveHandler,
+                                        backgroundColor: Colors.yellow,
+                                        forgroundColor: Colors.black,
+                                      ),
+                                      NowText(
+                                        body: isAccountActive!
+                                            ? 'Don\'t worry. This doesn\'t delete your account. It only temporarily disables it so you can return whenever you\'re available to serve. We ask that you mark your account as inactive if you are not available for matchups or messaging.'
+                                            : 'Welcome back! If you\'re ready to connect with people in search of community, please click the button to Activate your account.',
+                                      ),
+                                    ],
                                   ),
                           ],
                         ),
@@ -381,7 +391,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                     padding: EdgeInsets.all(20),
                     margin: EdgeInsets.only(top: 150),
                     child: NowHeader(
-                      'We have no matches for you at the moment. We will notify you once a matchup becomes available.',
+                      'Welcome to the BlackSheep App, connecting people with community!\n\nIt won\'t be long now before you receive your first connection.\n\nBe sure to reply promptly to messages, and check your email for meetup connections.\n\nFeel welcome to reach out to our support team if you have any questions.',
                       fontSize: 20,
                       color: Colors.white,
                     ),

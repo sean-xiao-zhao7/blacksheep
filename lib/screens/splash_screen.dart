@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     _timer = Timer(Duration(seconds: 6), () {
       if (mounted) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (ctx) => HomeScreen()),
         );

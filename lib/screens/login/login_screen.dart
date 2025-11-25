@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
       sessionData['active'] = userData['active'] ?? false;
 
       if (mounted) {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (ctx) {
               switch (userData['type']) {
