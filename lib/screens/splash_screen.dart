@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: _controller.value.isInitialized
               ? FractionallySizedBox(
                   widthFactor: 1.5,
-                  heightFactor: 0.70,
+                  heightFactor: 0.80,
                   child: VideoPlayer(_controller),
                 )
               : Text('BlackSheep loading...'),
