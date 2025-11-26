@@ -7,16 +7,18 @@ class NowText extends StatelessWidget {
     this.color = Colors.black,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 16,
+    this.uppercase = false,
   });
   final String body;
   final Color color;
   final FontWeight fontWeight;
   final double fontSize;
+  final bool uppercase;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      body,
+      uppercase ? body.toUpperCase() : body,
       style: TextStyle(
         fontFamily: 'Now',
         fontWeight: fontWeight,

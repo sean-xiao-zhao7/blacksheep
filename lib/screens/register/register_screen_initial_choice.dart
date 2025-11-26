@@ -1,4 +1,5 @@
 import 'package:blacksheep/screens/login/login_screen.dart';
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blacksheep/screens/register/register_screen_mentee_2.dart';
@@ -21,40 +22,41 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff32a2c0),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 50),
-            decoration: BoxDecoration(color: Color(0xff32a2c0)),
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 150),
-                  padding: EdgeInsets.only(
-                    top: 120,
-                    left: 50,
-                    right: 50,
-                    bottom: 150,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xfffbee5e),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(200),
-                      topRight: Radius.circular(200),
-                    ),
-                  ),
-                  child: Column(
-                    spacing: 15,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Container(
+        padding: EdgeInsets.only(top: 50),
+        decoration: BoxDecoration(color: Color(0xff32a2c0)),
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 150),
+              padding: EdgeInsets.only(
+                top: 150,
+                left: 50,
+                right: 50,
+                bottom: 150,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xfffbee5e),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(200),
+                  topRight: Radius.circular(200),
+                ),
+              ),
+              child: Column(
+                spacing: 10,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
                     children: [
                       Text(
                         'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 20,
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 10),
                       SmallButton('CLICK HERE', () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -62,15 +64,20 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                           ),
                         );
                       }, 0xff32a2c0),
-                      SizedBox(height: 30),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Column(
+                    children: [
                       Text(
                         'I AM THE LEADER OF A COMMUNITY GROUP',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 20,
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 10),
                       SmallButton('CLICK HERE', () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -78,35 +85,40 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                           ),
                         );
                       }, 0xff062d69),
-                      SizedBox(height: 30),
-                      TextButton(
-                        onPressed: () => {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (ctx) => LoginScreen()),
-                          ),
-                        },
-                        child: Text('Login Instead'),
-                      ),
                     ],
                   ),
-                ),
-                Positioned(
-                  top: 0,
-                  width: MediaQuery.of(context).size.width,
-                  child: const NowHeader('REGISTRATION'),
-                ),
-                Positioned(
-                  top: 40,
-                  width: MediaQuery.of(context).size.width,
-                  child: const Image(
-                    image: AssetImage('assets/images/sheep.png'),
-                    height: 200,
+                  SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (ctx) => LoginScreen()),
+                      ),
+                    },
+                    child: NowText(
+                      body: 'Login Instead',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      uppercase: true,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              top: 0,
+              width: MediaQuery.of(context).size.width,
+              child: const NowHeader('REGISTRATION'),
+            ),
+            Positioned(
+              top: 40,
+              width: MediaQuery.of(context).size.width,
+              child: const Image(
+                image: AssetImage('assets/images/sheep.png'),
+                height: 200,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

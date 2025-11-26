@@ -1,3 +1,4 @@
+import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -101,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Container(
               margin: EdgeInsets.only(top: 200),
               padding: EdgeInsets.only(
-                top: 30,
+                top: 150,
                 left: 50,
                 right: 50,
                 bottom: 100,
@@ -116,7 +117,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  spacing: 40,
                   children: [
                     NowHeader('Recover password', color: Colors.black),
                     TextFormField(
@@ -124,6 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         labelText: 'EMAIL (username)',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Now',
                           fontSize: 20,
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -158,7 +160,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               ),
                             ),
                           },
-                          child: Text('Back to login'),
+                          child: NowText(
+                            body: 'Back to login',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
