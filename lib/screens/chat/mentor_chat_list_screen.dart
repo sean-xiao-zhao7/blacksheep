@@ -264,21 +264,21 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Your info',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 43, 141, 168),
-                                fontSize: 20,
-                              ),
+                            NowText(
+                              body: 'Your info',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff32a2c0),
                             ),
                             SizedBox(height: 20),
-                            Text(
-                              '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
-                              style: TextStyle(fontSize: 20),
+                            NowText(
+                              body:
+                                  '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
+                              fontSize: 20,
                             ),
-                            Text(
-                              '${widget.userData['email']!}',
-                              style: TextStyle(fontSize: 20),
+                            NowText(
+                              body: '${widget.userData['email']!}',
+                              fontSize: 20,
                             ),
                             SizedBox(height: 20),
                             _isLoading
@@ -332,14 +332,22 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
               child: GentyHeader('BlackSheep', fontSize: 40),
             ),
             ListTile(
-              title: const Text('View All Connections'),
+              title: const NowText(
+                body: 'View All Connections',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
               onTap: () {
                 setCurrentChatKey(-1);
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Sign out'),
+              title: const NowText(
+                body: 'Sign out',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).push(

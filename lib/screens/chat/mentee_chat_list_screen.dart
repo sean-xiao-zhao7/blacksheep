@@ -417,13 +417,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       padding: EdgeInsets.all(40),
                       child: Column(
                         children: [
-                          Text(
-                            'Your info',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 43, 141, 168),
-                              fontSize: 20,
-                            ),
-                          ),
+                          NowText(body: 'Your info', fontSize: 20),
                           SizedBox(height: 20),
                           Text(
                             '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
