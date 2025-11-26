@@ -274,22 +274,18 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                             SizedBox(height: 20),
                             Text(
                               '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 43, 141, 168),
-                                fontSize: 20,
-                              ),
+                              style: TextStyle(fontSize: 20),
                             ),
                             Text(
                               '${widget.userData['email']!}',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 43, 141, 168),
-                                fontSize: 20,
-                              ),
+                              style: TextStyle(fontSize: 20),
                             ),
                             SizedBox(height: 20),
                             _isLoading
                                 ? CircularProgressIndicator()
                                 : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SmallButtonFlexible(
                                         text: isAccountActive!
@@ -299,6 +295,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                                         backgroundColor: Colors.yellow,
                                         forgroundColor: Colors.black,
                                       ),
+                                      SizedBox(height: 10),
                                       NowText(
                                         body: isAccountActive!
                                             ? 'Don\'t worry. This doesn\'t delete your account. It only temporarily disables it so you can return whenever you\'re available to serve. We ask that you mark your account as inactive if you are not available for matchups or messaging.'

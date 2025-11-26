@@ -129,7 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // padding: EdgeInsets.only(top: 5),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
@@ -138,124 +137,127 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: ListView(
           children: [
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 160),
-                  padding: EdgeInsets.only(
-                    top: 90,
-                    left: 50,
-                    right: 50,
-                    bottom: 150,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xfffbee5e),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(200),
-                      topRight: Radius.circular(200),
+            Expanded(
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 160),
+                    padding: EdgeInsets.only(
+                      top: 90,
+                      left: 50,
+                      right: 50,
+                      bottom: 150,
                     ),
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(height: 50),
-                        NowHeader(
-                          'Please Login',
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                        SizedBox(height: 50),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'EMAIL (username)',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            filled: true,
-                            fillColor: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Color(0xfffbee5e),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(200),
+                        topRight: Radius.circular(200),
+                      ),
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(height: 50),
+                          NowHeader(
+                            'Please Login',
+                            color: Colors.black,
+                            fontSize: 22,
                           ),
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Email is required.';
-                            }
+                          SizedBox(height: 50),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'EMAIL (username)',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Email is required.';
+                              }
 
-                            return null;
-                          },
-                          autocorrect: false,
-                        ),
-                        SizedBox(height: 30),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: 'PASSWORD',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            filled: true,
-                            fillColor: Colors.white,
+                              return null;
+                            },
+                            autocorrect: false,
                           ),
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Password is required.';
-                            }
-                            return null;
-                          },
-                          autocorrect: false,
-                        ),
-                        SizedBox(height: 50),
-                        _isLoading
-                            ? CircularProgressIndicator()
-                            : SmallButton('Login', () {
-                                if (submit()) {
-                                  loginAsyncAction();
-                                }
-                              }, 0xff32a2c0),
-                        SizedBox(height: 30),
-                        SmallButton('Register', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenInitial(),
+                          SizedBox(height: 30),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              labelText: 'PASSWORD',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              filled: true,
+                              fillColor: Colors.white,
                             ),
-                          );
-                        }, 0xff32a2c0),
-                        SizedBox(height: 30),
-                        TextButton(
-                          onPressed: () => {
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Password is required.';
+                              }
+                              return null;
+                            },
+                            autocorrect: false,
+                          ),
+                          SizedBox(height: 50),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : SmallButton('Login', () {
+                                  if (submit()) {
+                                    loginAsyncAction();
+                                  }
+                                }, 0xff32a2c0),
+                          SizedBox(height: 30),
+                          SmallButton('Register', () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (ctx) => ForgotPasswordScreen(),
+                                builder: (ctx) => RegisterScreenInitial(),
                               ),
-                            ),
-                          },
-                          child: Text('Forgot password?'),
-                        ),
-                      ],
+                            );
+                          }, 0xff32a2c0),
+                          SizedBox(height: 30),
+                          TextButton(
+                            onPressed: () => {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => ForgotPasswordScreen(),
+                                ),
+                              ),
+                            },
+                            child: Text('Forgot password?'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-
-                Positioned(
-                  top: 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: const GentyHeader('BlackSheep', fontSize: 70),
-                ),
-                Positioned(
-                  top: 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: const Image(
-                    image: AssetImage('assets/images/sheep.png'),
-                    height: 300,
+                  Positioned(
+                    top: 30,
+                    width: MediaQuery.of(context).size.width,
+                    child: const GentyHeader('BlackSheep', fontSize: 70),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 30,
+                    width: MediaQuery.of(context).size.width,
+                    child: const Image(
+                      image: AssetImage('assets/images/sheep.png'),
+                      height: 300,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
