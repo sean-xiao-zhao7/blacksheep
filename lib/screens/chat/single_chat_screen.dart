@@ -439,7 +439,7 @@ class _SingleChatState extends State<SingleChat> {
                       widget.menteeFirstName.isEmpty
                           ? 'Connecting with ${widget.mentorFirstName} ${widget.mentorLastName}'
                           : '${widget.isAdmin ? '${widget.mentorFirstName} ${widget.mentorLastName} |' : ''} ${widget.menteeFirstName} ${widget.menteeLastName}',
-                      fontSize: 12,
+                      fontSize: 14,
                       color: Color(0xff32a2c0),
                     ),
                     Row(
@@ -477,47 +477,50 @@ class _SingleChatState extends State<SingleChat> {
                                               Radius.circular(50),
                                             ),
                                           ),
-                                          padding: EdgeInsets.all(40),
+                                          padding: EdgeInsets.all(30),
                                           child: SelectionArea(
                                             child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  '${widget.menteeFirstName} ${widget.menteeLastName}',
-                                                  style: TextStyle(
-                                                    color: Color(0xff32a2c0),
-                                                    fontSize: 20,
-                                                  ),
+                                                const NowText(
+                                                  body: 'User info',
+                                                  color: Color(0xff32a2c0),
+                                                  fontSize: 16,
                                                 ),
+                                                SizedBox(height: 10),
+                                                NowText(
+                                                  body:
+                                                      '${widget.menteeFirstName} ${widget.menteeLastName}',
+                                                  color: Color(0xff32a2c0),
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                SizedBox(height: 10),
                                                 if (widget.menteeAge.isNotEmpty)
-                                                  Text(
-                                                    'Age: ${widget.menteeAge}',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                    ),
+                                                  NowText(
+                                                    body:
+                                                        'Age: ${widget.menteeAge}',
+                                                    fontSize: 20,
                                                   ),
                                                 if (widget
                                                     .menteeGender
                                                     .isNotEmpty)
-                                                  Text(
-                                                    'Gender: ${widget.menteeGender}',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                    ),
+                                                  NowText(
+                                                    body:
+                                                        'Gender: ${widget.menteeGender.toLowerCase()}',
+                                                    fontSize: 20,
                                                   ),
                                                 if (widget.isPhone &&
                                                     widget
                                                         .menteePhone
                                                         .isNotEmpty)
                                                   Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
                                                     children: [
-                                                      Text(
-                                                        'Phone: ${widget.menteePhone}',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                        ),
+                                                      NowText(
+                                                        body:
+                                                            'Phone: ${widget.menteePhone}',
+                                                        fontSize: 20,
                                                       ),
                                                       IconButton(
                                                         onPressed: () async {
@@ -568,7 +571,10 @@ class _SingleChatState extends State<SingleChat> {
                                     },
                                   ),
                                 },
-                                child: Text('About ${widget.menteeFirstName}'),
+                                child: NowText(
+                                  body: 'About ${widget.menteeFirstName}',
+                                  fontSize: 14,
+                                ),
                               ),
                             if (!widget.isMentor && !widget.isAdmin)
                               MenuItemButton(

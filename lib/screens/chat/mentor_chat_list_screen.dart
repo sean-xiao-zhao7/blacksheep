@@ -265,13 +265,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             NowText(
-                              body: 'Your info',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff32a2c0),
-                            ),
-                            SizedBox(height: 20),
-                            NowText(
                               body:
                                   '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
                               fontSize: 20,
@@ -394,9 +387,9 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                       color: Color(0xff32a2c0).withAlpha(210),
                     ),
                     padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.only(top: 150),
+                    margin: EdgeInsets.only(top: 100),
                     child: NowHeader(
-                      'Welcome to the BlackSheep App, connecting people with community!\n\nIt won\'t be long now before you receive your first connection.\n\nBe sure to reply promptly to messages, and check your email for meetup connections.\n\nFeel welcome to reach out to our support team if you have any questions.',
+                      'Welcome to the BlackSheep App, connecting people with community!\n\nIt won\'t be long now before you receive your first connection.\n\nBe sure to reply promptly to messages, and check your email for meetup connections.\n\nFeel welcome to reach out to our support team if you have any questions.\n\ncontact.us.blacksheep@gmail.com',
                       fontSize: 20,
                       color: Colors.white,
                     ),

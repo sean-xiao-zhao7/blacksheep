@@ -527,7 +527,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                             ),
                                           ),
                                           child: NowHeader(
-                                            'We\'ve sent your contact details to one of our community leaders. Someone will be in touch with your shortly.',
+                                            'We\'ve sent your contact details to one of our community leaders. Someone will be in touch with you shortly.',
                                             fontSize: 18,
                                             color: Colors.black,
                                           ),
@@ -609,7 +609,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                       ),
                                     ),
                                     child: NowHeader(
-                                      'Find your place in your community!\nLock in your preference on how you\'d like to connect with someone.\n\nButton 1: In App Texting.\nButton 2: Contact Me By Phone',
+                                      'Find your place in your community!\nLock in your preference on how you\'d like to connect with someone.',
                                       fontSize: 20,
                                       color: Colors.white,
                                     ),
@@ -625,7 +625,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                         )
                                       : CircularProgressIndicator(),
                                   MainButton(
-                                    'In app text',
+                                    'In App Texting',
                                     () => {
                                       setState(() {
                                         _showNewMenteeQuestions = true;
@@ -634,7 +634,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                                     size: 400,
                                   ),
                                   MainButton(
-                                    'Phone',
+                                    'Contact Me By Phone',
                                     () => {_connectToMentor('phone')},
                                     size: 400,
                                   ),
