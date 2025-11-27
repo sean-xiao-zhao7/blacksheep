@@ -1,9 +1,9 @@
-import "package:blacksheep/widgets/text/now_text.dart";
 import "package:flutter/material.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
+import "package:blacksheep/widgets/text/now_text.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
@@ -11,6 +11,8 @@ import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import 'package:blacksheep/widgets/chat/chat_preview_widget.dart';
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
+
+final _firebaseAuth = FirebaseAuth.instance;
 
 /// Only for mentor account
 /// Initially shows a list of both type 'chat' and 'phone'
@@ -77,6 +79,45 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     if (newKey == -1) {
       _getChats();
     }
+  }
+
+  // show snack message
+  void _displaySnackMessage(String snackMessage) {
+    if (mounted && snackMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(snackMessage)));
+    }
+  }
+
+  // show dialog popup
+  Future<void> _showDialog(BuildContext context, String content, action) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: NowText(
+            body: 'Delete my BlackSheep account',
+            color: Colors.red,
+          ),
+          content: NowText(body: content),
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const NowText(body: 'Cancel'),
+            ),
+            SmallButtonFlexible(
+              text: 'Confirm',
+              handler: action,
+              forgroundColor: Colors.red,
+            ),
+          ],
+          backgroundColor: Colors.white,
+        );
+      },
+    );
   }
 
   Future<void> _getChats() async {
@@ -221,6 +262,30 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     }
   }
 
+  Future<void> _deleteAccountHandler() async {
+    // delete this user from firebase auth and firebase realtime database
+    // mentees can choose to remove themselves. A mentor cannot.
+
+    try {
+      final userRef = FirebaseDatabase.instance.ref(
+        'users/${widget.userData['uid']}',
+      );
+      await userRef.remove();
+
+      // also remove all chats with this mentor.
+
+      await _firebaseAuth.currentUser!.delete();
+
+      if (mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => LoginScreen()));
+      }
+    } on FirebaseException catch (error) {
+      _displaySnackMessage(error.code);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final firstName = widget.userData['firstName'];
@@ -273,7 +338,7 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                               body: '${widget.userData['email']!}',
                               fontSize: 20,
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             _isLoading
                                 ? CircularProgressIndicator()
                                 : Column(
@@ -295,6 +360,19 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                                             : 'Welcome back! If you\'re ready to connect with people in search of community, please click the button to Activate your account.',
                                       ),
                                     ],
+                                  ),
+                            SizedBox(height: 10),
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : SmallButtonFlexible(
+                                    text: 'Delete my BlackSheep account',
+                                    handler: () => _showDialog(
+                                      context,
+                                      'Please confirm deletion.\nThis cannot be undone.',
+                                      _deleteAccountHandler,
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    forgroundColor: Colors.white,
                                   ),
                           ],
                         ),
