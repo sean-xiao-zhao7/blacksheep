@@ -3,6 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+import 'package:upgrader/upgrader.dart';
+
 import 'package:blacksheep/screens/splash_screen.dart';
 
 void main() async {
@@ -19,6 +21,9 @@ class BlackSheepApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashScreen(), debugShowCheckedModeBanner: false);
+    return MaterialApp(
+      home: UpgradeAlert(child: SplashScreen()),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
