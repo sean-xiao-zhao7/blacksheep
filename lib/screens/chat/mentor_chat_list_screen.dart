@@ -54,7 +54,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
     final token = await fcm.getToken();
-    print(token);
     if (token != null) {
       _updateFCMMentor(token);
     }
