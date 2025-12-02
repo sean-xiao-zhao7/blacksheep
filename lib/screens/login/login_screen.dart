@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        SizedBox(height: 50),
+                        SizedBox(height: 40),
                         NowHeader(
                           'Please Login',
                           color: Colors.black,
@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             labelText: 'EMAIL (username)',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 20,
                               fontFamily: 'Now',
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             labelText: 'PASSWORD',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 20,
                               fontFamily: 'Now',
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,

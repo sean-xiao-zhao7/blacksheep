@@ -283,45 +283,37 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                           maxLength: 14,
                           style: TextStyle(fontSize: 18),
                         ),
-                        Column(
-                          children: [
-                            RadioListTile(
-                              dense: true,
-                              title: Text(
-                                "Male",
-                                style: TextStyle(
+                        RadioGroup(
+                          groupValue: _genderController.text,
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value!;
+                            });
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                title: NowText(
+                                  body: "Male",
                                   color: Colors.white,
-                                  fontSize: 18,
+                                ),
+                                leading: Radio(
+                                  value: 'MALE',
+                                  activeColor: Colors.white,
                                 ),
                               ),
-                              value: 'MALE',
-                              groupValue: _genderController.text,
-                              onChanged: (value) {
-                                setState(() {
-                                  _genderController.text = value!;
-                                });
-                              },
-                              activeColor: Color(0xff32a2c0),
-                            ),
-                            RadioListTile(
-                              dense: true,
-                              title: Text(
-                                "Female",
-                                style: TextStyle(
+                              ListTile(
+                                title: NowText(
+                                  body: "Female",
                                   color: Colors.white,
-                                  fontSize: 18,
+                                ),
+                                leading: Radio(
+                                  value: 'FEMALE',
+                                  activeColor: Colors.white,
                                 ),
                               ),
-                              value: 'FEMALE',
-                              groupValue: _genderController.text,
-                              onChanged: (value) {
-                                setState(() {
-                                  _genderController.text = value!;
-                                });
-                              },
-                              activeColor: Color(0xff32a2c0),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         longitude == 0 && latitude == 0
                             ? (_isLoading
@@ -334,7 +326,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenMentor2> {
                                 color: Colors.white,
                                 fontSize: 18,
                               ),
-                        SmallButton('CONTINUE', () {
+                        SmallButton('Continue', () {
                           if (submit()) {
                             Navigator.of(context).push(
                               MaterialPageRoute(

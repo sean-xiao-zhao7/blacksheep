@@ -290,14 +290,20 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                                   body: "Male",
                                   color: Colors.black,
                                 ),
-                                leading: Radio(value: 'MALE'),
+                                leading: Radio(
+                                  value: 'MALE',
+                                  activeColor: Color(0xff32a2c0),
+                                ),
                               ),
                               ListTile(
                                 title: NowText(
                                   body: "Female",
                                   color: Colors.black,
                                 ),
-                                leading: Radio(value: 'FEMALE'),
+                                leading: Radio(
+                                  value: 'FEMALE',
+                                  activeColor: Color(0xff32a2c0),
+                                ),
                               ),
                             ],
                           ),
