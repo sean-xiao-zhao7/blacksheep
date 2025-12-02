@@ -1,4 +1,3 @@
-import 'package:blacksheep/widgets/text/now_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
@@ -8,6 +7,7 @@ import 'package:blacksheep/screens/register/register_screen_mentee_3.dart';
 import 'package:blacksheep/screens/register/register_screen_initial_choice.dart';
 import 'package:blacksheep/widgets/buttons/small_button.dart';
 import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
+import 'package:blacksheep/widgets/text/now_text.dart';
 
 /// Personal information for mentee
 class RegisterScreen2 extends StatefulWidget {
@@ -179,7 +179,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                       children: [
                         TextFormField(
                           decoration: const InputDecoration(
-                            labelText: 'FIRST NAME',
+                            labelText: 'First Name',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -200,7 +200,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            labelText: 'LAST NAME',
+                            labelText: 'Last Name',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -221,7 +221,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            labelText: 'AGE',
+                            labelText: 'Age',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -247,7 +247,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            labelText: 'PHONE',
+                            labelText: 'Phone',
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -276,43 +276,31 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                           ],
                           maxLength: 14,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: RadioListTile(
-                                dense: true,
-                                title: Text(
-                                  "Male",
-                                  style: TextStyle(color: Colors.black),
+                        RadioGroup(
+                          groupValue: _genderController.text,
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value!;
+                            });
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                title: NowText(
+                                  body: "Male",
+                                  color: Colors.black,
                                 ),
-                                value: 'MALE',
-                                groupValue: _genderController.text,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _genderController.text = value!;
-                                  });
-                                },
-                                activeColor: Color(0xff32a2c0),
+                                leading: Radio(value: 'MALE'),
                               ),
-                            ),
-                            Expanded(
-                              child: RadioListTile(
-                                dense: true,
-                                title: Text(
-                                  "Female",
-                                  style: TextStyle(color: Colors.black),
+                              ListTile(
+                                title: NowText(
+                                  body: "Female",
+                                  color: Colors.black,
                                 ),
-                                value: 'FEMALE',
-                                groupValue: _genderController.text,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _genderController.text = value!;
-                                  });
-                                },
-                                activeColor: Color(0xff32a2c0),
+                                leading: Radio(value: 'FEMALE'),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         longitude == 0 && latitude == 0
                             ? (_isLoading
@@ -321,7 +309,7 @@ class _RegisterScreenInitialState extends State<RegisterScreen2> {
                                       getLocationAsync();
                                     }, 0xff32a2c0))
                             : Text('Location obtained!'),
-                        SmallButton('CONTINUE', () {
+                        SmallButton('Continue', () {
                           if (submit()) {
                             Navigator.of(context).push(
                               MaterialPageRoute(

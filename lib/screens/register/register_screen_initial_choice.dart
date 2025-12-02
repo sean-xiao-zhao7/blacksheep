@@ -23,14 +23,14 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
     return Scaffold(
       backgroundColor: Color(0xff32a2c0),
       body: Container(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 70),
         decoration: BoxDecoration(color: Color(0xff32a2c0)),
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 150),
+              margin: EdgeInsets.only(top: 140),
               padding: EdgeInsets.only(
-                top: 150,
+                top: 120,
                 left: 50,
                 right: 50,
                 bottom: 150,
@@ -98,7 +98,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                       body: 'Login Instead',
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      uppercase: true,
                     ),
                   ),
                 ],
@@ -110,7 +109,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
               child: const NowHeader('REGISTRATION'),
             ),
             Positioned(
-              top: 40,
+              top: 30,
               width: MediaQuery.of(context).size.width,
               child: const Image(
                 image: AssetImage('assets/images/sheep.png'),
