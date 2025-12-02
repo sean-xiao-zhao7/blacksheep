@@ -576,87 +576,85 @@ class _SingleChatState extends State<SingleChat> {
                                   fontSize: 14,
                                 ),
                               ),
-                            if (!widget.isMentor && !widget.isAdmin)
-                              MenuItemButton(
-                                trailingIcon: Icon(Icons.report_problem),
-                                onPressed: () => {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return FractionallySizedBox(
-                                        widthFactor: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(50),
-                                            ),
+                            MenuItemButton(
+                              trailingIcon: Icon(Icons.report_problem),
+                              onPressed: () => {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return FractionallySizedBox(
+                                      widthFactor: 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(50),
                                           ),
-                                          padding: EdgeInsets.all(40),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Report mentor',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 20,
-                                                ),
+                                        ),
+                                        padding: EdgeInsets.all(40),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Report user',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 20,
                                               ),
-                                              TextFormField(
-                                                decoration: InputDecoration(
-                                                  fillColor: Colors.white,
-                                                  filled: true,
-                                                  hintText:
-                                                      'Please explain reason for reporting.',
-                                                  suffixIcon: _isLoading
-                                                      ? CircularProgressIndicator()
-                                                      : IconButton(
-                                                          icon: Icon(
-                                                            Icons.send,
-                                                            color: Color(
-                                                              0xff32a2c0,
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            _reportMentor();
-                                                          },
-                                                        ),
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                        borderSide: BorderSide(
+                                            ),
+                                            TextFormField(
+                                              decoration: InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                hintText:
+                                                    'Please explain reason for reporting.',
+                                                suffixIcon: _isLoading
+                                                    ? CircularProgressIndicator()
+                                                    : IconButton(
+                                                        icon: Icon(
+                                                          Icons.send,
                                                           color: Color(
                                                             0xff32a2c0,
                                                           ),
-                                                          width: 1,
                                                         ),
+                                                        onPressed: () {
+                                                          _reportMentor();
+                                                        },
                                                       ),
-                                                ),
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.trim().isEmpty) {
-                                                    return 'Message is required.';
-                                                  }
-                                                  return null;
-                                                },
-                                                autocorrect: false,
-                                                textCapitalization:
-                                                    TextCapitalization
-                                                        .sentences,
-                                                maxLines: 5,
-                                                minLines: 5,
-                                                controller:
-                                                    _reportMessageController,
-                                                enabled: !_isLoading,
+                                                focusedBorder:
+                                                    UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Color(
+                                                          0xff32a2c0,
+                                                        ),
+                                                        width: 1,
+                                                      ),
+                                                    ),
                                               ),
-                                            ],
-                                          ),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Message is required.';
+                                                }
+                                                return null;
+                                              },
+                                              autocorrect: false,
+                                              textCapitalization:
+                                                  TextCapitalization.sentences,
+                                              maxLines: 5,
+                                              minLines: 5,
+                                              controller:
+                                                  _reportMessageController,
+                                              enabled: !_isLoading,
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                },
-                                child: Text('Report mentor'),
-                              ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              },
+                              child: Text('Report User'),
+                            ),
                             if (widget.isAdmin)
                               MenuItemButton(
                                 trailingIcon: Icon(Icons.warning),
