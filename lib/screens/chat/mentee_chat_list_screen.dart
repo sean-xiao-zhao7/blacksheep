@@ -1,11 +1,11 @@
 import 'dart:math';
-import "package:blacksheep/helpers/chat_helpers.dart";
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'package:video_player/video_player.dart';
 
-import "package:blacksheep/screens/chat/single_chat_screen.dart";
+import "package:blacksheep/helpers/chat_helpers.dart";
+import "package:blacksheep/screens/chat/single_chat_subscreen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/buttons/main_button.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";

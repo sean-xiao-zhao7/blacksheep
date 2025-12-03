@@ -101,6 +101,19 @@ class _SingleChatState extends State<SingleChat> {
     widget.setChatListKey(-1);
   }
 
+  // after sending message in chat, scroll down to the bottom of the ListView
+  void _scrollDown({bool animated = true}) {
+    if (animated) {
+      _listViewController.animateTo(
+        _listViewController.position.maxScrollExtent + 100,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    } else {
+      _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
+    }
+  }
+
   // get all mentors only for admin
   // Since admin could switch mentor. This is not needed if not switching.
   Future<void> _getAllMentors() async {
@@ -160,19 +173,6 @@ class _SingleChatState extends State<SingleChat> {
     } catch (error) {
       snackMessage = 'Unable to send message, please try again later';
       displaySnackMessage(snackMessage);
-    }
-  }
-
-  // after sending message in chat, scroll down to the bottom of the ListView
-  void _scrollDown({bool animated = true}) {
-    if (animated) {
-      _listViewController.animateTo(
-        _listViewController.position.maxScrollExtent + 100,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.fastOutSlowIn,
-      );
-    } else {
-      _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
     }
   }
 
@@ -285,7 +285,7 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  Future<void> toggleConnectionDisabledHandler() async {
+  Future<void> _toggleConnectionDisabledHandler() async {
     /**
      * Switch account to active/inactive.
      * Inactive mentor account will not be connected by MenteeChatList screen.    
@@ -300,12 +300,12 @@ class _SingleChatState extends State<SingleChat> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              '${!widget.isDisabled ? 'Disabled' : 'Enabled'} connection.',
+              'Connection ${!widget.isDisabled ? 'disabled' : 'enabled'}.',
             ),
           ),
         );
         Navigator.pop(context);
-        resetChatList();
+        if (widget.isMentor) resetChatList();
       }
     } catch (e) {
       if (mounted) {
@@ -313,16 +313,13 @@ class _SingleChatState extends State<SingleChat> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Unable to disable/enable account. Please try later.',
+              'Unable to disable/enable connection. Please try later.',
             ),
           ),
         );
       }
     }
   }
-
-  // Block the mentee/mentor this user is connected to
-  Future<void> _blockUser() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -655,18 +652,19 @@ class _SingleChatState extends State<SingleChat> {
                               },
                               child: NowText(body: 'Report User'),
                             ),
-                            MenuItemButton(
-                              trailingIcon: Icon(Icons.block),
-                              onPressed: () => {
-                                showDialogHelper(
-                                  context: context,
-                                  contentText:
-                                      'Blocking user ${widget.isMentor ? widget.menteeFirstName : widget.mentorFirstName}.',
-                                  action: _blockUser,
-                                ),
-                              },
-                              child: NowText(body: 'Block User'),
-                            ),
+                            if (!widget.isDisabled)
+                              MenuItemButton(
+                                trailingIcon: Icon(Icons.block),
+                                onPressed: () => {
+                                  showDialogHelper(
+                                    context: context,
+                                    contentText:
+                                        'Blocking user ${widget.isMentor ? widget.menteeFirstName : widget.mentorFirstName}.',
+                                    action: _toggleConnectionDisabledHandler,
+                                  ),
+                                },
+                                child: NowText(body: 'Block User'),
+                              ),
                             if (widget.isAdmin)
                               MenuItemButton(
                                 trailingIcon: Icon(Icons.warning),
@@ -693,7 +691,7 @@ class _SingleChatState extends State<SingleChat> {
                                                           ? 'Enable connection'
                                                           : 'Disable connection',
                                                       handler:
-                                                          toggleConnectionDisabledHandler,
+                                                          _toggleConnectionDisabledHandler,
                                                       backgroundColor:
                                                           Colors.red,
                                                       forgroundColor:
@@ -757,7 +755,7 @@ class _SingleChatState extends State<SingleChat> {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: widget.isDisabled
-                        ? 'Connection disabled'
+                        ? 'Connection disabled / blocked'
                         : widget.isPhone
                         ? 'Connected via phone'
                         : 'Enter chat message',

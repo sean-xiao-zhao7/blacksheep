@@ -1,12 +1,12 @@
-import "package:blacksheep/helpers/chat_helpers.dart";
 import "package:flutter/material.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 
+import "package:blacksheep/helpers/chat_helpers.dart";
 import "package:blacksheep/widgets/text/now_text.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
-import "package:blacksheep/screens/chat/single_chat_screen.dart";
+import "package:blacksheep/screens/chat/single_chat_subscreen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/layouts/headers/genty_header.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
