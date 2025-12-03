@@ -1,10 +1,10 @@
 import 'dart:math';
+import "package:blacksheep/helpers/chat_helpers.dart";
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_database/firebase_database.dart";
 import 'package:video_player/video_player.dart';
 
-import "package:blacksheep/widgets/text/now_text.dart";
 import "package:blacksheep/screens/chat/single_chat_screen.dart";
 import "package:blacksheep/screens/login/login_screen.dart";
 import "package:blacksheep/widgets/buttons/main_button.dart";
@@ -81,35 +81,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text(snackMessage)));
     }
-  }
-
-  // show dialog popup
-  Future<void> _showDialog(BuildContext context, String content, action) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: NowText(
-            body: 'Delete my BlackSheep account',
-            color: Colors.red,
-          ),
-          content: NowText(body: content),
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const NowText(body: 'Cancel'),
-            ),
-            SmallButtonFlexible(
-              text: 'Confirm',
-              handler: action,
-              forgroundColor: Colors.red,
-            ),
-          ],
-          backgroundColor: Colors.white,
-        );
-      },
-    );
   }
 
   // Only for mentee, get the single chat corresponding to the chatId passed in.
@@ -416,8 +387,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                       padding: EdgeInsets.all(40),
                       child: Column(
                         children: [
-                          NowText(body: 'Your info', fontSize: 20),
-                          SizedBox(height: 20),
                           Text(
                             '${widget.userData['firstName']!} ${widget.userData['lastName']!}',
                             style: TextStyle(
@@ -437,10 +406,12 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
                               ? CircularProgressIndicator()
                               : SmallButtonFlexible(
                                   text: 'Delete my BlackSheep account',
-                                  handler: () => _showDialog(
-                                    context,
-                                    'Please confirm deletion.\nThis cannot be undone.',
-                                    _deleteAccountHandler,
+                                  handler: () => showDialogHelper(
+                                    context: context,
+                                    titleText: 'Delete my BlackSheep account',
+                                    contentText:
+                                        'Please confirm deletion.\nThis cannot be undone.',
+                                    action: _deleteAccountHandler,
                                   ),
                                   backgroundColor: Colors.red,
                                   forgroundColor: Colors.white,

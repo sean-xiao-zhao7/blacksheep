@@ -109,17 +109,28 @@ class _LoginScreenState extends State<LoginScreen> {
         if (errorCode == 'invalid-credential') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: NowText(body: 'Invalid email(username) or password.'),
+              content: NowText(
+                body: 'Invalid email(username) or password.',
+                color: Colors.white,
+              ),
             ),
           );
         } else if (errorCode == 'invalid-email') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: NowText(body: 'Email format invalid.')),
+            SnackBar(
+              content: NowText(
+                body: 'Email format invalid.',
+                color: Colors.white,
+              ),
+            ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: NowText(body: 'Invalid login. Please try again later.'),
+              content: NowText(
+                body: 'Invalid login. Please try again later.',
+                color: Colors.white,
+              ),
             ),
           );
         }

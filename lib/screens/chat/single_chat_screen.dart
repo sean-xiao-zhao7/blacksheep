@@ -8,6 +8,7 @@ import "package:blacksheep/services/email_service.dart";
 import "package:blacksheep/widgets/layouts/headers/now_header.dart";
 import "package:blacksheep/widgets/buttons/small_button_flexible.dart";
 import "package:blacksheep/widgets/chat/chat_bubble_widget.dart";
+import "package:blacksheep/helpers/chat_helpers.dart";
 
 /// A single chat between 2 people. Can be seen as mentor, mentee and admin.
 /// Not a scaffold widget, just a child of the "chat list" parent widget.
@@ -64,11 +65,7 @@ class _SingleChatState extends State<SingleChat> {
   final TextEditingController _reportMessageController =
       TextEditingController();
   final ScrollController _listViewController = ScrollController();
-
-  // all mentors map for admin
-  // key is Firebase UID
   Map<String, dynamic> _allMentors = {};
-
   bool _isLoading = false;
   String _newMentorUid = '';
 
@@ -89,6 +86,7 @@ class _SingleChatState extends State<SingleChat> {
     super.dispose();
   }
 
+  // helper for showing a snack message
   void displaySnackMessage(String snackMessage) {
     if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -98,6 +96,7 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  // for parent "chat list" to switch from single chat view to list of chats
   void resetChatList() {
     widget.setChatListKey(-1);
   }
@@ -321,6 +320,9 @@ class _SingleChatState extends State<SingleChat> {
       }
     }
   }
+
+  // Block the mentee/mentor this user is connected to
+  Future<void> _blockUser() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -594,12 +596,10 @@ class _SingleChatState extends State<SingleChat> {
                                         padding: EdgeInsets.all(40),
                                         child: Column(
                                           children: [
-                                            Text(
-                                              'Report user',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 20,
-                                              ),
+                                            NowText(
+                                              body: 'Report user',
+                                              color: Colors.red,
+                                              fontSize: 20,
                                             ),
                                             TextFormField(
                                               decoration: InputDecoration(
@@ -653,7 +653,19 @@ class _SingleChatState extends State<SingleChat> {
                                   },
                                 ),
                               },
-                              child: Text('Report User'),
+                              child: NowText(body: 'Report User'),
+                            ),
+                            MenuItemButton(
+                              trailingIcon: Icon(Icons.block),
+                              onPressed: () => {
+                                showDialogHelper(
+                                  context: context,
+                                  contentText:
+                                      'Blocking user ${widget.isMentor ? widget.menteeFirstName : widget.mentorFirstName}.',
+                                  action: _blockUser,
+                                ),
+                              },
+                              child: NowText(body: 'Block User'),
                             ),
                             if (widget.isAdmin)
                               MenuItemButton(

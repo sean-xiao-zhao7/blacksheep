@@ -1,3 +1,4 @@
+import "package:blacksheep/helpers/chat_helpers.dart";
 import "package:flutter/material.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:firebase_auth/firebase_auth.dart";
@@ -89,35 +90,6 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text(snackMessage)));
     }
-  }
-
-  // show dialog popup
-  Future<void> _showDialog(BuildContext context, String content, action) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: NowText(
-            body: 'Delete my BlackSheep account',
-            color: Colors.red,
-          ),
-          content: NowText(body: content),
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const NowText(body: 'Cancel'),
-            ),
-            SmallButtonFlexible(
-              text: 'Confirm',
-              handler: action,
-              forgroundColor: Colors.red,
-            ),
-          ],
-          backgroundColor: Colors.white,
-        );
-      },
-    );
   }
 
   Future<void> _getChats() async {
@@ -366,10 +338,12 @@ class _MentorChatListScreen extends State<MentorChatListScreen> {
                                 ? CircularProgressIndicator()
                                 : SmallButtonFlexible(
                                     text: 'Delete my BlackSheep account',
-                                    handler: () => _showDialog(
-                                      context,
-                                      'Please confirm deletion.\nThis cannot be undone.',
-                                      _deleteAccountHandler,
+                                    handler: () => showDialogHelper(
+                                      context: context,
+                                      titleText: 'Delete my BlackSheep account',
+                                      contentText:
+                                          'Please confirm deletion.\nThis cannot be undone.',
+                                      action: _deleteAccountHandler,
                                     ),
                                     backgroundColor: Colors.red,
                                     forgroundColor: Colors.white,
