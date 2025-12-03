@@ -87,7 +87,7 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   // helper for showing a snack message
-  void displaySnackMessage(String snackMessage) {
+  void _displaySnackMessage(String snackMessage) {
     if (mounted && snackMessage.isNotEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(
@@ -97,7 +97,7 @@ class _SingleChatState extends State<SingleChat> {
   }
 
   // for parent "chat list" to switch from single chat view to list of chats
-  void resetChatList() {
+  void _resetChatList() {
     widget.setChatListKey(-1);
   }
 
@@ -148,7 +148,7 @@ class _SingleChatState extends State<SingleChat> {
         _allMentors = allMentorsTemp;
       });
     } catch (error) {
-      displaySnackMessage(snackMessage);
+      _displaySnackMessage(snackMessage);
     }
   }
 
@@ -172,7 +172,7 @@ class _SingleChatState extends State<SingleChat> {
       _scrollDown();
     } catch (error) {
       snackMessage = 'Unable to send message, please try again later';
-      displaySnackMessage(snackMessage);
+      _displaySnackMessage(snackMessage);
     }
   }
 
@@ -231,7 +231,7 @@ class _SingleChatState extends State<SingleChat> {
     } catch (error) {
       snackMessage = 'Unable to change mentor, please try again later';
     }
-    displaySnackMessage(snackMessage);
+    _displaySnackMessage(snackMessage);
   }
 
   // admin function for approving new connection
@@ -247,13 +247,13 @@ class _SingleChatState extends State<SingleChat> {
       _sendMentorEmailPhone(chatsRef, _allMentors[widget.mentorUid]['email']);
 
       // set chat list to overview mode
-      resetChatList();
+      _resetChatList();
       snackMessage = 'Approved connection!';
     } catch (error) {
       // print(error);
       snackMessage = 'Server error.';
     }
-    displaySnackMessage(snackMessage);
+    _displaySnackMessage(snackMessage);
   }
 
   // send an email to mentor when either new connection approved by admin
@@ -305,7 +305,11 @@ class _SingleChatState extends State<SingleChat> {
           ),
         );
         Navigator.pop(context);
-        if (widget.isMentor) resetChatList();
+        if (widget.isMentor || widget.isAdmin) {
+          _resetChatList();
+        } else {
+          widget.refreshChat();
+        }
       }
     } catch (e) {
       if (mounted) {
