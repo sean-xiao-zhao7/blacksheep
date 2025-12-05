@@ -36,8 +36,7 @@ class EmailService {
     newMentorName = 'Test mentor name',
   }) {
     sendEmail(
-      // [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
-      [dotenv.env['EMAIL_ADMIN_SEAN']],
+      [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
       'Approval needed for new connection',
       'Please log into the app as admin and apporve/reject this new connection:\n\nMentor: $newMentorName\nMentee: $newMenteeName\n\nFor admin username/password, please see Google Drive.',
     );
@@ -66,7 +65,7 @@ class EmailService {
 
     final recipients = [
       dotenv.env['EMAIL_FROM_GMAIL'],
-      dotenv.env['EMAIL_ADMIN_SEAN'],
+      [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
     ];
     final subject = 'Mentor reported by mentee';
     final emailBody =
