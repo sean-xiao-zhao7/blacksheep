@@ -325,9 +325,61 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  Future<void> _endConnectionHandler() async {}
+
   @override
   Widget build(BuildContext context) {
     List<Widget> columnChildren = [];
+    if (widget.isDisabled && !widget.isMentor && !widget.isAdmin) {
+      columnChildren.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 10,
+          children: [
+            SmallButtonFlexible(
+              text: 'Find A New Connection',
+              handler: () => {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return FractionallySizedBox(
+                      widthFactor: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
+                        padding: EdgeInsets.all(40),
+                        child: Column(
+                          children: [
+                            NowText(
+                              body: 'Confirm finding a new connection',
+                              color: Color(0xff32a2c0),
+                              fontSize: 20,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Currenct connection will no longer be available.',
+                            ),
+                            SizedBox(height: 20),
+                            SmallButtonFlexible(
+                              text: "Confirm",
+                              handler: _endConnectionHandler,
+                              forgroundColor: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              },
+            ),
+          ],
+        ),
+      );
+      columnChildren.add(SizedBox(height: 10));
+    }
     if (widget.isAdmin) {
       columnChildren.add(
         Row(
@@ -671,7 +723,7 @@ class _SingleChatState extends State<SingleChat> {
                                 },
                                 child: NowText(body: 'Block User'),
                               ),
-                            if (widget.isAdmin)
+                            if (!widget.isDisabled || widget.isAdmin)
                               MenuItemButton(
                                 trailingIcon: Icon(Icons.warning),
                                 onPressed: () => {
@@ -690,12 +742,15 @@ class _SingleChatState extends State<SingleChat> {
                                           padding: EdgeInsets.all(40),
                                           child: Column(
                                             children: [
+                                              NowText(
+                                                body: widget.isDisabled
+                                                    ? 'Confirm enabling connection'
+                                                    : 'Confirm ending connection',
+                                              ),
                                               _isLoading
                                                   ? CircularProgressIndicator()
                                                   : SmallButtonFlexible(
-                                                      text: widget.isDisabled
-                                                          ? 'Enable connection'
-                                                          : 'Disable connection',
+                                                      text: 'Confirm action',
                                                       handler:
                                                           _toggleConnectionDisabledHandler,
                                                       backgroundColor:
@@ -710,10 +765,10 @@ class _SingleChatState extends State<SingleChat> {
                                     },
                                   ),
                                 },
-                                child: Text(
-                                  widget.isDisabled
+                                child: NowText(
+                                  body: widget.isDisabled && widget.isAdmin
                                       ? 'Enable connection'
-                                      : 'Disable connection',
+                                      : 'End connection',
                                 ),
                               ),
                           ],
@@ -761,7 +816,7 @@ class _SingleChatState extends State<SingleChat> {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: widget.isDisabled
-                        ? 'Connection disabled / blocked'
+                        ? 'This connection has ended.'
                         : widget.isPhone
                         ? 'Connected via phone'
                         : 'Enter chat message',
