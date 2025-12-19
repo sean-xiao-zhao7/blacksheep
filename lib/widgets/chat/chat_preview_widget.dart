@@ -6,13 +6,21 @@ class ChatPreviewWidget extends StatelessWidget {
     super.key,
     required this.chatInfo,
     required this.setChatListKey,
-    required this.chatPreviewIndex,
+    this.chatPreviewIndex = -1,
     this.showBothNames = false,
   });
   final Map<dynamic, dynamic> chatInfo;
   final Function setChatListKey;
   final int chatPreviewIndex;
   final bool showBothNames;
+
+  bool get needsApproval {
+    return !chatInfo['approved'] || chatInfo['disabled'];
+  }
+
+  String get mentorFirstName {
+    return chatInfo['mentorFirstName'];
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -55,8 +55,9 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
      * Display as list of ChatBubbles initially, until setCurrentChatKey is called with index.     
      */
 
-    String snackMessage = 'Server error while getting matches for user.';
+    String snackMessage = 'Server error while getting chats for user.';
     try {
+      // get all chats from db
       DatabaseReference ref = FirebaseDatabase.instance.ref();
       DataSnapshot snapshot = await ref.child("chats").get();
       if (!snapshot.exists) {
@@ -64,11 +65,22 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
       }
       Map<dynamic, dynamic> allChats = snapshot.value as Map<dynamic, dynamic>;
 
+      // sort all chats first by unapproved status
+      List<Map<dynamic, dynamic>> chatPreviewsListSorted = [];
+      for (final String key in allChats.keys) {
+        Map<dynamic, dynamic> currentChat = allChats[key];
+        currentChat['chatId'] = key;
+        if (!currentChat['approved'] || currentChat['disabled']) {
+          chatPreviewsListSorted.insert(0, currentChat);
+        } else {
+          chatPreviewsListSorted.add(currentChat);
+        }
+      }
+
       List<ChatPreviewWidget> chatPreviewsListTemp = [];
       int chatPreviewIndex = 0;
-      for (final String key in allChats.keys) {
-        var currentChat = allChats[key];
-        currentChat['chatId'] = key;
+      for (final Map<dynamic, dynamic> currentChat in chatPreviewsListSorted) {
+        // set up chat bubbles list and chat previews list with correct indices
         ChatPreviewWidget currentChatPreview = ChatPreviewWidget(
           setChatListKey: setCurrentChatKey,
           chatPreviewIndex: chatPreviewIndex,
@@ -84,6 +96,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         _chatsPreviewList = chatPreviewsListTemp;
       });
     } catch (error) {
+      // print(error);
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(
