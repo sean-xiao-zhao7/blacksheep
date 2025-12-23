@@ -92,7 +92,10 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
           .child("chats/${widget.userData['chatId']}")
           .get();
       if (!snapshot.exists) {
-        // print('No matches/chats in database.');
+        // no chat data exists for this chatId. Could have been deleted.
+        setState(() {
+          _myChat = null;
+        });
         return;
       }
       Map<dynamic, dynamic> currentChatData =
@@ -131,14 +134,13 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     }
   }
 
+  // Once the single chat has been received from Firebase,
+  // Make a list of ChatMessageBubble for the SingleChatScreen to display.
+  // Passes the result bubbles into the child widget.
+  // This workflow could be improved in the future.
+  //
+  // Also, this function could be outsourced and shared between all chat lists.
   void _makeMessagesBubbles() {
-    // Once the single chat has been received from Firebase,
-    // Make a list of ChatMessageBubble for the SingleChatScreen to display.
-    // Passes the result bubbles into the child widget.
-    // This workflow could be improved in the future.
-    //
-    // Also, this function could be outsourced and shared between all chat lists.
-
     List<ChatBubble> tempBubbles = [];
     Map<dynamic, dynamic> messages = _myChat!.messages;
     for (String key in messages.keys) {
@@ -169,12 +171,11 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     });
   }
 
+  // Called initially when mentee clicks on "Connect By Phone/Chat"
+  // Finds the geographically nearest mentor, then adds a new "chat" document in Firebase.
+  // Currently does not balance a mentor's already connected mentees against other mentors.
+  // This connection requires admin approval, until then, nothing changes in the UI.
   Future<void> _connectToMentor(String type) async {
-    // Called initially when mentee clicks on "Connect By Phone/Chat"
-    // Finds the geographically nearest mentor, then adds a new "chat" document in Firebase.
-    // Currently does not balance a mentor's already connected mentees against other mentors.
-    // This connection requires admin approval, until then, nothing changes in the UI.
-
     setState(() {
       _isLoading = true;
     });
@@ -298,10 +299,9 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
     _displaySnackMessage(snackMessage);
   }
 
+  // delete this user from firebase auth and firebase realtime database
+  // mentees can choose to remove themselves. A mentor cannot.
   Future<void> _deleteAccountHandler() async {
-    // delete this user from firebase auth and firebase realtime database
-    // mentees can choose to remove themselves. A mentor cannot.
-
     try {
       final userRef = FirebaseDatabase.instance.ref(
         'users/${widget.userData['uid']}',
@@ -314,7 +314,6 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
         );
         await chatRef.remove();
       }
-
       await _firebaseAuth.currentUser!.delete();
 
       if (mounted) {

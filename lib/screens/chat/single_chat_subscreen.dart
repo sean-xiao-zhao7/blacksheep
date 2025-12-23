@@ -285,11 +285,9 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
+  // Switch account to active/inactive.
+  // Inactive mentor account will not be connected by MenteeChatList screen.
   Future<void> _toggleConnectionDisabledHandler() async {
-    /**
-     * Switch account to active/inactive.
-     * Inactive mentor account will not be connected by MenteeChatList screen.    
-     */
     try {
       DatabaseReference chatRef = FirebaseDatabase.instance.ref(
         '/chats/${widget.chatId}/disabled',
@@ -325,7 +323,27 @@ class _SingleChatState extends State<SingleChat> {
     }
   }
 
-  Future<void> _endConnectionHandler() async {}
+  Future<void> _endConnectionHandler() async {
+    try {
+      DatabaseReference chatRef = FirebaseDatabase.instance.ref(
+        '/chats/${widget.chatId}/',
+      );
+      await chatRef.remove();
+      if (mounted) {
+        Navigator.pop(context);
+        widget.refreshChat();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to reset connection. Please try later.'),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -631,7 +649,7 @@ class _SingleChatState extends State<SingleChat> {
                                   fontSize: 14,
                                 ),
                               ),
-                            if (!widget.isAdmin)
+                            if (!widget.isAdmin && !widget.isDisabled)
                               MenuItemButton(
                                 trailingIcon: Icon(Icons.report_problem),
                                 onPressed: () => {
@@ -653,7 +671,7 @@ class _SingleChatState extends State<SingleChat> {
                                               NowText(
                                                 body: 'Report user',
                                                 color: Colors.red,
-                                                fontSize: 20,
+                                                fontSize: 14,
                                               ),
                                               TextFormField(
                                                 decoration: InputDecoration(
@@ -708,7 +726,10 @@ class _SingleChatState extends State<SingleChat> {
                                     },
                                   ),
                                 },
-                                child: NowText(body: 'Report User'),
+                                child: NowText(
+                                  body: 'Report User',
+                                  fontSize: 14,
+                                ),
                               ),
                             if (!widget.isDisabled && !widget.isAdmin)
                               MenuItemButton(
@@ -721,7 +742,10 @@ class _SingleChatState extends State<SingleChat> {
                                     action: _toggleConnectionDisabledHandler,
                                   ),
                                 },
-                                child: NowText(body: 'Block User'),
+                                child: NowText(
+                                  body: 'Block User',
+                                  fontSize: 14,
+                                ),
                               ),
                             if (!widget.isDisabled || widget.isAdmin)
                               MenuItemButton(
@@ -769,6 +793,7 @@ class _SingleChatState extends State<SingleChat> {
                                   body: widget.isDisabled && widget.isAdmin
                                       ? 'Enable connection'
                                       : 'End connection',
+                                  fontSize: 14,
                                 ),
                               ),
                           ],
