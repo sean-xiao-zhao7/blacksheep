@@ -23,6 +23,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
     return Scaffold(
       backgroundColor: Color(0xff32a2c0),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(top: 70),
         decoration: BoxDecoration(color: Color(0xff32a2c0)),
         child: Stack(
@@ -44,7 +45,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
               ),
               child: Column(
                 spacing: 10,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     children: [
@@ -66,7 +66,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                       }, 0xff32a2c0),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 50),
                   Column(
                     children: [
                       Text(
@@ -87,7 +87,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                       }, 0xff062d69),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 30),
                   TextButton(
                     onPressed: () => {
                       Navigator.of(context).push(
