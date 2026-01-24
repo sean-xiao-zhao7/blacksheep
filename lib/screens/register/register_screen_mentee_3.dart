@@ -57,96 +57,126 @@ class _RegisterScreenInitialState extends State<RegisterScreen3> {
                         children: [
                           Text(
                             'Commitment Statements',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'I commit to work with people from different denominations and/or no denomination(s) in a respectful manner from diverse religious backgrounds, cultures, and sexual orientations.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Confidentiality Agreement',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'All information that you will encounter as Mentee is highly sensitive and confidential. It is governed by the federal Privacy Act of Canada, the Personal Information Protection and Electronic Documents Act (PIPEDA), and provincial privacy and confidentiality legislation where applicable (Note: In Alberta, British Columbia and Quebec, provincial legislation supersedes PIPEDA).',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Therefore, as a Mentee, you agree that you will not at any time disclose or disseminate in an unauthorized manner information pertaining to the communities you are involved in through the BlackSheep app, their families, or contact information, or any other information you may encounter as it relates to using the BlackSheep or meeting someone from the BlackSheep app.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text('An authorized manner is as follows:'),
                           SizedBox(height: 20),
                           Text(
                             '1. The person to whom the information directly relates has disclosed that information in particular and consented to its disclosure.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '2. The information is being used for the purpose for which it was obtained or compiled or for a consistent purpose.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '3. The information is disposed of in a secure manner given its highly sensitive nature, once it is no longer required for the purpose (e.g. deleting messages or contact information from your device) or respecting someone’s preference to not be contacted any further.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'This requires strict adherence by you to the express recorded or written permissions and implied consent given (or not given) by community connections via the BlackSheep App regarding all information provided; for example, express consent must be given on the BlackSheep App. You also agree to the principles of confidentiality in this agreement entitled “Confidentiality of the Community Seeker” (see below).',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Further, you agree to take reasonable steps to protect any confidential information you receive as it relates to your involvement on the BlackSheep App, and will destroy any paperwork you or anyone on your team has upon completion of your duties.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Lastly, all unpublished data regarding community members that you meet on the BlackSheep App is confidential and this information shall not be disclosed by you at any time both during your registered use of the BlackSheep App and/or afterwards.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Confidentiality of the Community*',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Confidentiality, as a practice and responsibility of BlackSheep App users, is based on respect for the individual. The person who has identified themselves as a community members on the BlackSheep App may be extremely sensitive in community interactions.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'The responsibility for a community relationship is based on mutual trust, hence the necessity for strict adherence to the principles of confidentiality as set out below.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Information concerning community members that is kept on file must be factual and verifiable. All records and files are subject to subpoena by the courts.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Information obtained from a client is shared with other agencies and professionals only with the permission from the community member. Exceptions to this may include: ',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '- A person who is too ill, physically or mentally, to give such permission and it is to the member’s benefit that the information be shared.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '- If withholding of such information may endanger a community member or another person.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '- If case records are used in research, the researcher must agree to make every effort to keep the material confidential and to use it in such a way that no individual case will be identifiable through the material published.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Case histories, when used as illustrative material in talks or published material, are changed in such a way that no individual can be identified. Case histories are, where possible, prefaced by a remark indicating that the story has been altered to protect the identity of the client.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             '*Refers to Mentor, Mentee, or any other member of the community who is met whether through sign up or introduction via someone who signed up on the BlackSheep app looking for community connection.',
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
                             'End-User License Agreement (EULA)\nLast Updated: December 2, 2025',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Text(
@@ -201,11 +231,72 @@ If you have any questions regarding this Agreement, you may contact us at:
 
 BlackSheep
 Email: contact.us.blacksheep@gmail.com""",
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 20),
                           Text(
+                            """BlackSheep Child Safety & CSAE Standards
+Last updated: January 2025""",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text("""
+1. Zero-Tolerance Policy for Child Sexual Abuse and Exploitation (CSAE)
+BlackSheep has a zero-tolerance policy toward Child Sexual Abuse and Exploitation (CSAE). The use of the BlackSheep app to create, upload, distribute, request, promote, store, or facilitate any form of CSAE is strictly prohibited.
+This includes, but is not limited to:
+	•	Child Sexual Abuse Material (CSAM)
+	•	Sexualized content involving minors
+	•	Grooming, solicitation, or exploitation of minors
+	•	Any behavior intended to harm, exploit, or endanger a child
+Any violation of this policy may result in immediate content removal, account suspension or termination, and referral to law enforcement where required.
+
+2. Scope and Applicability
+These standards apply to all users, content, interactions, and activities on the BlackSheep platform, including user-generated content, messages, media uploads, and profile information.
+Use of the BlackSheep app constitutes agreement to comply with these standards.
+
+3. In-App Reporting & User Feedback Mechanism (Self-Certification)
+BlackSheep provides an in-app mechanism that allows users to:
+	•	Report suspected CSAE or CSAM
+	•	Submit safety concerns or policy violations
+	•	Provide feedback related to child safety
+Reports can be submitted directly within the app and are reviewed by BlackSheep’s safety and moderation team.
+
+4. Handling of CSAM and CSAE Content (Self-Certification)
+Upon obtaining actual knowledge of CSAM or CSAE-related activity, BlackSheep will take appropriate and prompt action, which may include:
+	•	Immediate removal of the offending content
+	•	Suspension or termination of involved accounts
+	•	Preservation of relevant data where legally required
+	•	Escalation to appropriate authorities
+Actions are taken in accordance with these published standards and applicable laws.
+
+5. Compliance with Child Safety Laws & Mandatory Reporting (Self-Certification)
+BlackSheep complies with all applicable child safety laws and regulations.
+Where required by law, confirmed CSAM is reported to the National Center for Missing and Exploited Children (NCMEC) or the relevant regional authority. BlackSheep maintains internal processes to ensure lawful and timely reporting.
+
+6. Child Safety Point of Contact
+BlackSheep maintains a designated Child Safety Point of Contact to receive notifications related to CSAE, including communications from Google Play.
+This representative is authorized to:
+	•	Address CSAE enforcement actions
+	•	Explain BlackSheep’s review and moderation procedures
+	•	Take immediate action when required
+Contact: contact.us.blacksheep@gmail.com
+
+7. Enforcement
+BlackSheep reserves the right to:
+	•	Investigate suspected violations
+	•	Enforce these standards at its sole discretion
+	•	Cooperate with law enforcement and regulatory authorities
+Failure to comply with these standards may result in permanent loss of access to the BlackSheep app.
+""", style: TextStyle(fontSize: 16)),
+                          Text(
                             'To agree and move forward, click Continue',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
@@ -229,7 +320,11 @@ Email: contact.us.blacksheep@gmail.com""",
                         ),
                       ),
                     },
-                    child: NowText(body: 'BACK', fontWeight: FontWeight.bold),
+                    child: NowText(
+                      body: 'BACK',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),
