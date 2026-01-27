@@ -1,9 +1,10 @@
-import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 import 'package:blacksheep/screens/home_screen.dart';
+import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 
 /// Shows a sheep video for 6 seconds then go to HomeScreen
 class SplashScreen extends StatefulWidget {
@@ -45,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     _controller.play();
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
