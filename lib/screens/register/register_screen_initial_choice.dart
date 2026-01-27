@@ -29,12 +29,7 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
           children: [
             Container(
               margin: EdgeInsets.only(top: 140),
-              padding: EdgeInsets.only(
-                top: 120,
-                left: 50,
-                right: 50,
-                bottom: 150,
-              ),
+              padding: EdgeInsets.only(top: 80, left: 50, right: 50),
               decoration: BoxDecoration(
                 color: Color(0xfffbee5e),
                 borderRadius: BorderRadius.only(
@@ -43,50 +38,39 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
                 ),
               ),
               child: Column(
-                spacing: 10,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10),
-                      SmallButton('CLICK HERE', () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => RegisterScreen2({}),
-                          ),
-                        );
-                      }, 0xff32a2c0),
-                    ],
+                  Text(
+                    'I AM LOOKING TO CONNECT WITH PEOPLE IN MY COMMUNITY',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 50),
-                  Column(
-                    children: [
-                      Text(
-                        'I AM THE LEADER OF A COMMUNITY GROUP',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10),
-                      SmallButton('CLICK HERE', () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => RegisterScreenMentor2({}),
-                          ),
-                        );
-                      }, 0xff062d69),
-                    ],
+                  SizedBox(height: 10),
+                  SmallButton('CLICK HERE', () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => RegisterScreen2({})),
+                    );
+                  }, 0xff32a2c0),
+                  SizedBox(height: 40),
+                  Text(
+                    'I AM THE LEADER OF A COMMUNITY GROUP',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
+                  SmallButton('CLICK HERE', () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => RegisterScreenMentor2({}),
+                      ),
+                    );
+                  }, 0xff062d69),
+                  SizedBox(height: 20),
                   TextButton(
                     onPressed: () => {
                       Navigator.of(context).push(
