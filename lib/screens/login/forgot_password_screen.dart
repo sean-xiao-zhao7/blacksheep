@@ -90,7 +90,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
@@ -99,83 +99,84 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         child: Stack(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 200),
-              padding: EdgeInsets.only(
-                top: 150,
-                left: 50,
-                right: 50,
-                bottom: 100,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xfffbee5e),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(200),
-                  topRight: Radius.circular(200),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 40,
-                  children: [
-                    NowHeader('Recover password', color: Colors.black),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'EMAIL (username)',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Now',
-                          fontSize: 20,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      controller: _emailController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Email is required.';
-                        }
-
-                        return null;
-                      },
-                      autocorrect: false,
-                    ),
-                    Column(
-                      children: [
-                        _isLoading
-                            ? CircularProgressIndicator()
-                            : SmallButton('Recover via email', () {
-                                if (submit()) {
-                                  recoverPasswordAsyncAction();
-                                }
-                              }, 0xff32a2c0),
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => LoginScreen(),
-                              ),
-                            ),
-                          },
-                          child: NowText(
-                            body: 'Back to login',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Positioned(
               top: 40,
               width: MediaQuery.of(context).size.width,
               child: const GentyHeader('BlackSheep', fontSize: 70),
+            ),
+            Positioned(
+              child: Container(
+                margin: EdgeInsets.only(top: 160),
+                padding: EdgeInsets.only(top: 120, left: 50, right: 50),
+                decoration: BoxDecoration(
+                  color: Color(0xfffbee5e),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(200),
+                    topRight: Radius.circular(200),
+                  ),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    spacing: 30,
+                    children: [
+                      NowHeader(
+                        'Recover Password',
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'EMAIL (username)',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Now',
+                            fontSize: 20,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Email is required.';
+                          }
+
+                          return null;
+                        },
+                        autocorrect: false,
+                      ),
+                      Column(
+                        children: [
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : SmallButton('Recover via email', () {
+                                  if (submit()) {
+                                    recoverPasswordAsyncAction();
+                                  }
+                                }, 0xff32a2c0),
+                          SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () => {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => LoginScreen(),
+                                ),
+                              ),
+                            },
+                            child: NowText(
+                              body: 'Back to login',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
             Positioned(
               top: 40,

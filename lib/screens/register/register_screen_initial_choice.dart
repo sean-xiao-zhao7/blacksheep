@@ -23,7 +23,6 @@ class _RegisterScreenInitialState extends State<RegisterScreenInitial> {
     return Scaffold(
       backgroundColor: Color(0xff32a2c0),
       body: Container(
-        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(top: 70),
         decoration: BoxDecoration(color: Color(0xff32a2c0)),
         child: Stack(

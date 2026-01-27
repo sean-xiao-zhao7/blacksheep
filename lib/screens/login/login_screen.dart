@@ -145,147 +145,137 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/blacksheep_background_full.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: ListView(
+        child: Stack(
           children: [
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 160),
-                  padding: EdgeInsets.only(
-                    top: 120,
-                    left: 50,
-                    right: 50,
-                    bottom: 200,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xfffbee5e),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(200),
-                      topRight: Radius.circular(200),
+            Container(
+              margin: EdgeInsets.only(top: 160),
+              padding: EdgeInsets.only(top: 120, left: 50, right: 50),
+              decoration: BoxDecoration(
+                color: Color(0xfffbee5e),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(200),
+                  topRight: Radius.circular(200),
+                ),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    NowHeader(
+                      'Please Login',
+                      color: Colors.black,
+                      fontSize: 20,
                     ),
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(height: 40),
-                        NowHeader(
-                          'Please Login',
-                          color: Colors.black,
-                          fontSize: 22,
+                    SizedBox(height: 20),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'EMAIL (username)',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontFamily: 'Now',
                         ),
-                        SizedBox(height: 30),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'EMAIL (username)',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              fontFamily: 'Now',
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Now',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Email is required.';
-                            }
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Now',
+                        fontWeight: FontWeight.bold,
+                      ),
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Email is required.';
+                        }
 
-                            return null;
-                          },
-                          autocorrect: false,
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: 'PASSWORD',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              fontFamily: 'Now',
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Now',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Password is required.';
-                            }
-                            return null;
-                          },
-                          autocorrect: false,
-                        ),
-                        SizedBox(height: 30),
-                        _isLoading
-                            ? CircularProgressIndicator()
-                            : SmallButton('Login', () {
-                                if (submit()) {
-                                  loginAsyncAction();
-                                }
-                              }, 0xff32a2c0),
-                        SizedBox(height: 20),
-                        SmallButton('Register', () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => RegisterScreenInitial(),
-                            ),
-                          );
-                        }, 0xff32a2c0),
-                        SizedBox(height: 30),
-                        TextButton(
-                          onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => ForgotPasswordScreen(),
-                              ),
-                            ),
-                          },
-                          child: NowText(
-                            body: 'Forgot password?',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                        return null;
+                      },
+                      autocorrect: false,
                     ),
-                  ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'PASSWORD',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontFamily: 'Now',
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Now',
+                        fontWeight: FontWeight.bold,
+                      ),
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Password is required.';
+                        }
+                        return null;
+                      },
+                      autocorrect: false,
+                    ),
+                    SizedBox(height: 20),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : SmallButton('Login', () {
+                            if (submit()) {
+                              loginAsyncAction();
+                            }
+                          }, 0xff32a2c0),
+                    SizedBox(height: 20),
+                    SmallButton('Register', () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => RegisterScreenInitial(),
+                        ),
+                      );
+                    }, 0xff32a2c0),
+                    SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => ForgotPasswordScreen(),
+                          ),
+                        ),
+                      },
+                      child: NowText(
+                        body: 'Forgot password?',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  top: 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: const GentyHeader('BlackSheep', fontSize: 70),
-                ),
-                Positioned(
-                  top: 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: const Image(
-                    image: AssetImage('assets/images/sheep.png'),
-                    height: 300,
-                  ),
-                ),
-              ],
+              ),
+            ),
+            Positioned(
+              top: 40,
+              width: MediaQuery.of(context).size.width,
+              child: const GentyHeader('BlackSheep', fontSize: 70),
+            ),
+            Positioned(
+              top: 30,
+              width: MediaQuery.of(context).size.width,
+              child: const Image(
+                image: AssetImage('assets/images/sheep.png'),
+                height: 300,
+              ),
             ),
           ],
         ),
