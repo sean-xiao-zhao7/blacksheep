@@ -1,3 +1,4 @@
+import 'package:blacksheep/widgets/layouts/headers/now_header.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:video_player/video_player.dart';
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
-    _timer = Timer(Duration(seconds: 6), () {
+    _timer = Timer(Duration(seconds: 5), () {
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -44,26 +45,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     _controller.play();
-
     return Scaffold(
-      body: FractionallySizedBox(
-        widthFactor: 1,
-        heightFactor: 1,
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/blacksheep_background_full.png"),
-              fit: BoxFit.cover,
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blacksheep_background_full.png"),
+            fit: BoxFit.cover,
           ),
-          child: _controller.value.isInitialized
-              ? FractionallySizedBox(
-                  widthFactor: 1.5,
-                  heightFactor: 0.80,
-                  child: VideoPlayer(_controller),
-                )
-              : Text('BlackSheep loading...'),
         ),
+        child: _controller.value.isInitialized
+            ? OverflowBox(
+                maxWidth: _controller.value.size.width / 1.5,
+                maxHeight: _controller.value.size.height / 1.5,
+                child: VideoPlayer(_controller),
+              )
+            : NowHeader('BlackSheep loading...'),
       ),
     );
   }
