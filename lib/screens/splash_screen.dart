@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 import 'package:blacksheep/screens/home_screen.dart';
@@ -57,8 +56,8 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
         child: _controller.value.isInitialized
             ? OverflowBox(
-                maxWidth: _controller.value.size.width / 1.5,
-                maxHeight: _controller.value.size.height / 1.5,
+                maxWidth: _controller.value.size.width / 1.4,
+                maxHeight: _controller.value.size.height / 1.4,
                 child: VideoPlayer(_controller),
               )
             : NowHeader('BlackSheep loading...'),
