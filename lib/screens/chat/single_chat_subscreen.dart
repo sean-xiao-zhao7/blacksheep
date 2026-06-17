@@ -221,7 +221,7 @@ class _SingleChatState extends State<SingleChat> {
       });
 
       // send email to mentor
-      _sendMentorEmailPhone(chatsRef, newMentor['email']);
+      _sendMentorEmail(chatsRef, newMentor['email']);
 
       // set chat list to overview mode
       snackMessage = 'Updated mentor successfully.';
@@ -244,7 +244,7 @@ class _SingleChatState extends State<SingleChat> {
       await chatsRef.update({'approved': true});
 
       // send email to mentor
-      _sendMentorEmailPhone(chatsRef, _allMentors[widget.mentorUid]['email']);
+      _sendMentorEmail(chatsRef, _allMentors[widget.mentorUid]['email']);
 
       // set chat list to overview mode
       _resetChatList();
@@ -258,30 +258,31 @@ class _SingleChatState extends State<SingleChat> {
 
   // send an email to mentor when either new connection approved by admin
   // or mentee changed by admin
-  Future<void> _sendMentorEmailPhone(
+  Future<void> _sendMentorEmail(
     DatabaseReference chatsRef,
     String email,
   ) async {
-    if (widget.isPhone) {
-      DataSnapshot result = await chatsRef.child('menteeUid').get();
-      if (result.exists) {
-        String menteeUid = result.value as String;
-        DatabaseReference usersRef = FirebaseDatabase.instance.ref(
-          'users/$menteeUid',
-        );
-        result = await usersRef.child('age').get();
+    DataSnapshot result = await chatsRef.child('menteeUid').get();
+    if (result.exists) {
+      String menteeUid = result.value as String;
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref(
+        'users/$menteeUid',
+      );
+      result = await usersRef.child('age').get();
 
-        String age = result.value as String;
+      String age = result.value as String;
+      String phone = '';
+      if (widget.isPhone) {
         result = await usersRef.child('phone').get();
-        String phone = result.value as String;
-
-        EmailService.sendNewMatchPhoneMentor(
-          newMenteeName: "${widget.menteeFirstName} ${widget.menteeLastName}",
-          phone: phone,
-          age: age,
-          mentorEmail: email,
-        );
+        phone = result.value as String;
       }
+
+      EmailService.sendNewMatchMentor(
+        newMenteeName: "${widget.menteeFirstName} ${widget.menteeLastName}",
+        phone: phone,
+        age: age,
+        mentorEmail: email,
+      );
     }
   }
 

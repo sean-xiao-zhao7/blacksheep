@@ -38,21 +38,22 @@ class EmailService {
     sendEmail(
       [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
       'Approval needed for new connection',
-      'Please log into the app as admin and apporve/reject this new connection:\n\nMentor: $newMentorName\nMentee: $newMenteeName\n\nFor admin username/password, please see Google Drive.',
+      'Please log into the app as admin and approve/reject this new connection:\n\nMentor: $newMentorName\nMentee: $newMenteeName\n\nFor admin username/password, please see Google Drive.',
     );
   }
 
-  static sendNewMatchPhoneMentor({
+  static sendNewMatchMentor({
     //  Sent when admin approves a new phone connection, or changes a phone connection to another mentor.
     newMenteeName = 'Asif Sajid (Test mentee)',
-    phone = '416-123-1234',
+    phone = '',
     age = 42,
     mentorEmail = '',
   }) {
+    final phoneText = phone != '' ? '\nPhone: $phone' : '';
     sendEmail(
       [mentorEmail, dotenv.env['EMAIL_ADMIN_SEAN']],
       'Someone near you is in search of community',
-      'Please contact:\n\nName: $newMenteeName\nPhone: $phone\nAge: $age\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com',
+      'Please contact:\n\nName: $newMenteeName$phoneText\nAge: $age\n\nPlease contact them within 48 hours of receiving this message.\n\nif you have any question, email: contact.us.blacksheep@gmail.com',
     );
   }
 
