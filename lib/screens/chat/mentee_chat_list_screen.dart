@@ -327,7 +327,7 @@ class _MenteeChatListScreen extends State<MenteeChatListScreen> {
   }
 
   // Calc distance between two (lat, long) coordinates.
-  double _calculateDistance(lat1, lon1, lat2, lon2) {
+  double _calculateDistance(int lat1, int lon1, int lat2, int lon2) {
     var p =
         0.017453292519943295; //conversion factor from radians to decimal degrees, exactly math.pi/180
     var c = cos;

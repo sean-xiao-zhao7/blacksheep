@@ -4,7 +4,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Static class to send emails
 class EmailService {
-  static Future sendEmail(recipients, subject, body) async {
+  static Future sendEmail(
+    dynamic recipients,
+    String subject,
+    String body,
+  ) async {
     // Construct email data and metadata using Mailgun.
 
     final message = Message()
@@ -29,11 +33,11 @@ class EmailService {
     }
   }
 
-  static sendNewMatchEmailAdmin({
+  static void sendNewMatchEmailAdmin({
     // Mentee chat list initiates a connection between a new mentee and an existing mentor.
     // This connection requires admin to approve from his/her single chat screen.
-    newMenteeName = 'Test mentee name',
-    newMentorName = 'Test mentor name',
+    String newMenteeName = 'Test mentee name',
+    String newMentorName = 'Test mentor name',
   }) {
     sendEmail(
       [dotenv.env['EMAIL_ADMIN_RAY'], dotenv.env['EMAIL_ADMIN_SEAN']],
@@ -42,12 +46,12 @@ class EmailService {
     );
   }
 
-  static sendNewMatchMentor({
+  static void sendNewMatchMentor({
     //  Sent when admin approves a new phone connection, or changes a phone connection to another mentor.
-    newMenteeName = 'Asif Sajid (Test mentee)',
-    phone = '',
-    age = 42,
-    mentorEmail = '',
+    String newMenteeName = 'Asif Sajid (Test mentee)',
+    String phone = '',
+    String age = '42',
+    String mentorEmail = '',
   }) {
     final phoneText = phone != '' ? '\nPhone: $phone' : '';
     sendEmail(
@@ -57,7 +61,7 @@ class EmailService {
     );
   }
 
-  static sendReportEmail(
+  static void sendReportEmail(
     String menteeFirstName,
     String mentorFirstName,
     String message,
